@@ -53,7 +53,7 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
   for(const f of floats){f.t+=dt;f.y-=36*dt}floats=floats.filter(f=>f.t<1.4);for(const b of bubbles)b.t+=dt;bubbles=bubbles.filter(b=>b.t<2.8);
   if(state!=='play')return;if(overlay){overlay.t+=dt;if(overlay.k==='done'&&R()<0.05)confetti(3);return}
   const c=cat;c.t+=dt;c.sT+=dt;
-  let ix=0,iy=0;{if(Math.abs(joy.dx)>0.15)ix=joy.dx;iy=joy.dy;ix+=(keys.ArrowRight||keys.KeyD?1:0)-(keys.ArrowLeft||keys.KeyA?1:0);if(keys.ArrowDown||keys.KeyS)iy=1;ix=clamp(ix,-1,1)}
+  let ix=0,iy=0;{if(Math.abs(joy.dx)>0.15)ix=joy.dx;iy=joy.dy;ix+=arrowDir();ix+=(keys.ArrowRight||keys.KeyD?1:0)-(keys.ArrowLeft||keys.KeyA?1:0);if(keys.ArrowDown||keys.KeyS)iy=1;ix=clamp(ix,-1,1)}
   if(tapQ){const p=tapQ;tapQ=null;const wx=p.x+camX,wy=p.y-GY();if(Math.abs(wx-zoe.x)<40&&wy>-140&&wy<10){if(Math.abs(zoe.x-c.x)<110)petCat();else{zoe.happy=1.5;AUD.SFX.squeak();bubble(zoe.x,-125,'Come here, Doodle!','zoe')}}else if(Math.hypot(wx-c.x,wy-(c.y-30))<50){setSt('meow');AUD.SFX.meow()}else jumpQ=1}
   if(jumpQ){c.buf=0.16;jumpQ=0}if(pawQ){pawQ=0;paw()}
   const busy=c.st==='sleep'||c.st==='bisc'||c.st==='flop'||c.st==='purr'||c.st==='meow'||c.st==='bat';

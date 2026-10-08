@@ -43,7 +43,11 @@ const ptrs=new Map(),keys={};let jumpQ=0,jumpHeld=0,pawQ=0,tapQ=null;
 const joy={id:null,ox:0,oy:0,dx:0,dy:0},JR=52;
 const toG=e=>({x:e.clientX/SC,y:e.clientY/SC});
 function jumpBtn(){const r=Math.min(58,H*0.11);return{x:W-INR-r-22,y:H-Math.max(BOT,8)-r-20,r}}
-function pawBtn(){const j=jumpBtn();return{x:j.x-j.r-56,y:j.y+j.r*0.3,r:40}}
+function pawBtn(){const j=jumpBtn();return W<640?{x:j.x-6,y:j.y-j.r-52,r:40}:{x:j.x-j.r-56,y:j.y+j.r*0.3,r:40}}
+// big LEFT/RIGHT arrows: primary walking controls (hold to walk), low on screen and clear of the home bar
+function arrowBtns(){const r=Math.min(64,H*0.12,(W-INL-INR)*0.13),y=H-Math.max(BOT,8)-r-18,lx=INL+r+18,rx=lx+r*2+18;return{L:{x:lx,y,r},R:{x:rx,y,r},zx:Math.min(rx+r+14,jumpBtn().x-jumpBtn().r-12),zy:y-r-26}}
+function arrowAt(p){const a=arrowBtns();if(p.x<=a.zx&&p.y>=a.zy)return p.x<(a.L.x+a.R.x)/2?-1:1;return 0}
+function arrowDir(){let d=0;for(const q of ptrs.values())if(q.role==='arrow')d+=q.dir;return d<0?-1:d>0?1:0}
 function inR(p,b){return p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h}
 const nearB=(p,b,s)=>Math.hypot(p.x-b.x,p.y-b.y)<b.r+(s||10);
 function recount(){jumpHeld=0;for(const q of ptrs.values())if(q.role==='jump')jumpHeld++}
@@ -51,12 +55,14 @@ cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=toG(e);
   if(state!=='play'||overlay){uiTap(p);return}
   for(const b of HUDB)if(inR(p,b)){b.fn();return}
   let role='none';
+  let ad=0;
   if(nearB(p,pawBtn(),10)){pawQ=1;role='btn'}
   else if(nearB(p,jumpBtn(),24)){role='jump';jumpQ=1}
+  else if((ad=arrowAt(p))){role='arrow'}
   else if(p.x<W*0.5&&joy.id==null){role='joy';joy.id=e.pointerId;joy.ox=p.x;joy.oy=p.y;joy.dx=joy.dy=0}
   else{tapQ=p;role='tap'}
-  ptrs.set(e.pointerId,{role});recount()},{passive:false});
-cv.addEventListener('pointermove',e=>{if(e.pointerId!==joy.id)return;const p=toG(e);let dx=p.x-joy.ox,dy=p.y-joy.oy,d=Math.hypot(dx,dy);
+  ptrs.set(e.pointerId,{role,dir:ad});recount()},{passive:false});
+cv.addEventListener('pointermove',e=>{const q=ptrs.get(e.pointerId);if(q&&q.role==='arrow'){const d=arrowAt(toG(e));if(d)q.dir=d;return}if(e.pointerId!==joy.id)return;const p=toG(e);let dx=p.x-joy.ox,dy=p.y-joy.oy,d=Math.hypot(dx,dy);
   if(d>JR*1.25){const k=(d-JR*1.25)/d;joy.ox+=dx*k;joy.oy+=dy*k;dx=p.x-joy.ox;dy=p.y-joy.oy;d=Math.hypot(dx,dy)}
   const m=Math.min(1,d/JR);joy.dx=d?dx/d*m:0;joy.dy=d?dy/d*m:0},{passive:false});
 const endP=e=>{if(e.pointerId===joy.id){joy.id=null;joy.dx=joy.dy=0}ptrs.delete(e.pointerId);recount()};
