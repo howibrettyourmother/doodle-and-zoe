@@ -45,7 +45,8 @@ const toG=e=>({x:e.clientX/SC,y:e.clientY/SC});
 function jumpBtn(){const r=Math.min(58,H*0.11);return{x:W-INR-r-22,y:H-Math.max(BOT,8)-r-20,r}}
 function pawBtn(){const j=jumpBtn();return W<640?{x:j.x-6,y:j.y-j.r-52,r:40}:{x:j.x-j.r-56,y:j.y+j.r*0.3,r:40}}
 // big LEFT/RIGHT arrows: primary walking controls (hold to walk), low on screen and clear of the home bar
-function arrowBtns(){const r=Math.min(64,H*0.12,(W-INL-INR)*0.13),y=H-Math.max(BOT,8)-r-18,lx=INL+r+18,rx=lx+r*2+18;return{L:{x:lx,y,r},R:{x:rx,y,r},zx:Math.min(rx+r+14,jumpBtn().x-jumpBtn().r-12),zy:y-r-26}}
+// ~92pt across on iPad landscape (r in game units = 46pt / SC); hit zone stays a bit larger than the drawn buttons
+function arrowBtns(){const r=clamp(46/SC,30,44),y=H-Math.max(BOT,8)-r-24,lx=INL+r+24,rx=lx+r*2+28;return{L:{x:lx,y,r},R:{x:rx,y,r},zx:Math.min(rx+r+26,jumpBtn().x-jumpBtn().r-12),zy:y-r-30}}
 function arrowAt(p){const a=arrowBtns();if(p.x<=a.zx&&p.y>=a.zy)return p.x<(a.L.x+a.R.x)/2?-1:1;return 0}
 function arrowDir(){let d=0;for(const q of ptrs.values())if(q.role==='arrow')d+=q.dir;return d<0?-1:d>0?1:0}
 function inR(p,b){return p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h}
