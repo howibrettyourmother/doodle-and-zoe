@@ -1,0 +1,29 @@
+title|Doodle and Zoe's Sparkle Adventure!|amy|1.22
+yay|Yay, Doodle!|amy|1.3
+star|You found a star!|amy|1.25
+good|Good kitty!|amy|1.3
+allstars|You found all the stars!|amy|1.25
+sticker|You earned a sticker!|amy|1.25
+newitem|Ooh! Something new in the closet!|amy|1.25
+fish|Yum! A fish treat!|amy|1.25
+pet|Purr purr. Doodle loves you!|amy|1.28
+nap|Shhh. Doodle is napping.|amy|1.25
+oops|Uh oh, Doodle!|amy|1.3
+closet|Dress up time!|amy|1.28
+book|Your sticker book!|amy|1.25
+map|Where should we go?|amy|1.25
+p1|Dad's House!|amy|1.25
+p2|Mom's Apartment!|amy|1.25
+p3|KiddieKlub!|amy|1.25
+p4|The Park!|amy|1.25
+p5|Grandma Gail's Apartment!|amy|1.25
+dadhi|Hey Doodle! Have you seen my TV remote?|ryan|1.05
+dadty|Thank you, Zoe! You found my remote!|ryan|1.05
+momhi|Hi Doodle! I lost my sparkly earring.|lessac|1.08
+momty|Thank you, Zoe! You found my earring!|lessac|1.08
+teachhi|Oh no! Our class bunny is hiding!|kristin|1.08
+teachty|Thank you, Zoe! Our bunny is safe!|kristin|1.08
+duckhi|Quack! Where is my baby duckling?|hfc_female|1.3
+duckty|Quack quack! Thank you, Zoe!|hfc_female|1.3
+gmahi|Hello, Doodle dear! Have you seen my yarn ball?|hfc_female|0.98
+gmaty|Thank you, Zoe! Have a cookie!|hfc_female|0.98

@@ -1,0 +1,12 @@
+# TTS pipeline: piper (offline) -> per-line pitch (field 4, default 1.18) -> 24k mono mp3 into /tmp/dz, then build.py copies to src/clips
+set -e
+mkdir -p /tmp/dz && cd /tmp/dz
+[ -f silent.mp3 ] || ffmpeg -y -loglevel error -f lavfi -i anullsrc=r=24000:cl=mono -t 1 -b:a 32k silent.mp3
+while IFS='|' read -r k t v pr; do
+  [ -z "$k" ] && continue
+  [ -f $k.mp3 ] && [ "$FORCE" != 1 ] && continue
+  pr=${pr:-1.18}
+  echo "$t" | /workspace/.tts/venv/bin/piper -m /workspace/.tts/en_US-$v-medium.onnx -f raw_$k.wav --length-scale 0.95 >/dev/null 2>&1
+  ffmpeg -y -loglevel error -i raw_$k.wav -af "silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,asetrate=22050*$pr,aresample=24000,atempo=0.95,highpass=f=120,acompressor=threshold=-18dB:ratio=3,volume=1.7,alimiter=limit=0.95" -ac 1 -ar 24000 -b:a 32k $k.mp3
+  echo $k $(stat -c%s $k.mp3)
+done < /workspace/doodle-and-zoe/src/lines.txt
