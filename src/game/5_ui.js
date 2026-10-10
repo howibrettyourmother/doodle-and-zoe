@@ -1,8 +1,9 @@
 // ================= UI: map, sticker book, closet, HUD, controls, render + loop =================
-let UI=[],HUDB=[];const ICONM=/[?&]icon=1/.test(Q);
+const VERSION='1.2 (Oct 9 2026)';let UI=[],HUDB=[],bookFrom='title';const ICONM=/[?&]icon=1/.test(Q);
 function btn(id,x,y,w,h,fn){const b={id,x,y,w,h,fn};UI.push(b);return b}
-function uiTap(p){for(const b of UI)if(inR(p,b)){AUD.SFX.click();b.fn();return}}
-function uiKey(){if(overlay){overlay=null;AUD.setTheme(pl.th);return}if(state==='title'){let i=PLACES.findIndex(q=>!pdata(q.k).sticker);enterPlace(i<0?0:i)}else goMap()}
+// last-drawn button wins (it is the one on top): in portrait the 5th map stop's hit box used to overlap the Stickers button
+function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){AUD.SFX.click();b.fn();return}}}
+function uiKey(){if(state==='book'){closeBook();return}if(overlay){overlay=null;AUD.setTheme(pl.th);return}if(state==='title'){let i=PLACES.findIndex(q=>!pdata(q.k).sticker);enterPlace(i<0?0:i)}else goMap()}
 function pill(x,y,w,h,label,c,size,o){o=o||{};X.fillStyle='rgba(120,60,140,0.18)';rrect(x,y+4,w,h,h/2);X.fill();X.fillStyle=c;rrect(x,y,w,h,h/2);X.fill();X.fillStyle='rgba(255,255,255,0.35)';rrect(x+6,y+3,w-12,h*0.36,h*0.18);X.fill();txt(label,x+w/2,y+h/2+1,size||20,o.fc||'#fff')}
 function wrap(s,maxW,size){X.font='800 '+size+'px '+FONT;const out=[];let line='';for(const w of s.split(' ')){const t=line?line+' '+w:w;if(X.measureText(t).width>maxW&&line){out.push(line);line=w}else line=t}out.push(line);return out}
 function softBg(top,bot){const g=X.createLinearGradient(0,0,0,H);g.addColorStop(0,top);g.addColorStop(1,bot);X.fillStyle=g;X.fillRect(0,0,W,H);
@@ -30,14 +31,21 @@ function drawTitle(){UI=[];softBg('#ffd6ec','#e4d4ff');const land=W>H*1.15,ty=TO
     btn('place'+i,p.x-r,p.y-r,r*2,r*2+44,()=>enterPlace(i))});
   // Doodle & Zoe on the map
   X.save();X.translate(land?W*0.88:W*0.5,land?H-BOT-120:N[4].y+120);X.scale(0.8,0.8);X.translate(0,0);drawZoe(-56,{t:T,face:1,top:SAVE.zoe.top,tutu:SAVE.zoe.tutu,bow:SAVE.zoe.bow,happy:Math.sin(T)>0.6?1:0});drawCat(20,0,{t:T,st:'idle',acc:catAcc()});X.restore();
-  const bw=land?170:150,by=H-Math.max(BOT,8)-72,gx=land?W*0.08:W/2-bw-8;pill(gx,by,bw,56,'📖 Stickers','#ba68c8',20);btn('book',gx,by,bw,56,()=>{state='book';stT=0;say('book',2)});
+  const bw=land?170:150,by=H-Math.max(BOT,8)-72,gx=land?W*0.08:W/2-bw-8;pill(gx,by,bw,56,'📖 Stickers','#ba68c8',20);btn('book',gx,by,bw,56,openBook);
   pill(gx+bw+16,by,bw,56,'👗 Closet','#f06292',20);btn('closet',gx+bw+16,by,bw,56,()=>{state='closet';stT=0;say('closet',2)});
-  muteBtn(UI);if(stT>0.4&&stT<0.45&&AUD.unlocked)say('map',1)}
+  txt('v'+VERSION,W-INR-8,H-Math.max(BOT,4)-10,11,'rgba(123,63,160,0.55)',{a:'right'});muteBtn(UI);if(stT>0.4&&stT<0.45&&AUD.unlocked)say('map',1)}
 // ---------- sticker book ----------
-function drawBook(){UI=[];softBg('#f3e5ff','#ffe0f0');txt('My Sticker Book',W/2,TOP+(land?52:88),land?34:30,'#7b3fa0');const land=W>H*1.15,cols=land?5:3,r=land?Math.min(70,W/14):Math.min(50,W/9),cw=land?W/5.6:W/3.2;
-  const tot=PLACES.reduce((a,p)=>a+pdata(p.k).stars.length,0);txt('★ '+tot+'/25 stars   🐟 '+SAVE.fish+' fish treats',W/2,TOP+(land?92:122),18,'#c2185b');
-  PLACES.forEach((P,i)=>{const c=i%cols,rw=(i/cols)|0,n=Math.min(cols,5-rw*cols),x=W/2+(c-(n-1)/2)*cw,y=TOP+(land?H*0.42:215)+rw*(r*2+76),d=pdata(P.k);sticker(P.k,x,y,r,d.sticker);txt(P.n,x,y+r+18,16,'#6a1b9a');txt('★'+d.stars.length+'/5 '+(d.task?'✓ helped':'○ help'),x,y+r+38,13,'#ab47bc')});
-  backBtn()}
+// sticker book: open from the map or from the in-game HUD; the big Back button returns to wherever you came from
+function openBook(){bookFrom=state==='play'&&cat?'play':'title';state='book';stT=0;resetInput();say('book',2)}
+function closeBook(){if(bookFrom==='play'&&cat){state='play';stT=0;overlay=null;resetInput();AUD.setTheme(pl.th)}else goMap()}
+function drawBook(){UI=[];softBg('#f3e5ff','#ffe0f0');const land=W>H*1.15;txt('My Sticker Book',W/2,TOP+(land?52:110),land?34:30,'#7b3fa0');const cols=land?5:3,r=land?Math.min(70,W/14):Math.min(50,W/9),cw=land?W/5.6:W/3.2;
+  const tot=PLACES.reduce((a,p)=>a+pdata(p.k).stars.length,0);txt('★ '+tot+'/25 stars   🐟 '+SAVE.fish+' fish treats',W/2,TOP+(land?92:142),18,'#c2185b');
+  PLACES.forEach((P,i)=>{const c=i%cols,rw=(i/cols)|0,n=Math.min(cols,5-rw*cols),x=W/2+(c-(n-1)/2)*cw,y=TOP+(land?H*0.42:235)+rw*(r*2+76),d=pdata(P.k);sticker(P.k,x,y,r,d.sticker);txt(P.n,x,y+r+18,16,'#6a1b9a');txt('★'+d.stars.length+'/5 '+(d.task?'✓ helped':'○ help'),x,y+r+38,13,'#ab47bc')});
+  closeBtn()}
+// big kid-sized close button (>= ~90pt tall on iPad), with a little bounce so it is easy to spot
+function closeBtn(){const play=bookFrom==='play',bw=play?200:190,bh=64,bx=INL+12,by=TOP+12,s=1+Math.sin(T*3)*0.025;
+  X.save();X.translate(bx+bw/2,by+bh/2);X.scale(s,s);X.translate(-bx-bw/2,-by-bh/2);pill(bx,by,bw,bh,play?'✕  Back to Play':'🗺️  Back to Map','#ff5c9e',22);X.restore();
+  btn('close',bx-6,by-6,bw+12,bh+12,closeBook);muteBtn(UI)}
 function backBtn(){const bx=INL+10,by=TOP+10;pill(bx,by,112,48,'🗺️ Map','#ba68c8',18);btn('back',bx,by,112,48,goMap);muteBtn(UI)}
 // ---------- closet ----------
 function drawCloset(){UI=[];softBg('#ffe0f0','#efe0ff');const land=W>H*1.15;txt('Dress-Up Closet',W/2,TOP+(land?46:84),land?32:28,'#c2185b');
@@ -89,12 +97,13 @@ function drawHUD(){HUDB=[];const y=TOP+10,x=INL+10;
   const fx=x+62+5*SP+26;X.fillStyle='rgba(255,255,255,0.8)';rrect(fx,y,FW,48,16);X.fill();drawItem('fish',fx+24,y+24,0);txt(''+SAVE.fish,fx+FW-28,y+25,20,'#c2185b');
   const tx=fx+FW+(W<500?6:10);X.fillStyle='rgba(255,255,255,0.8)';rrect(tx,y,60,48,16);X.fill();X.save();X.translate(tx+30,y+24+(task.k==='bunny'||task.k==='duckling'||task.k==='yarn'?12:0));const k=task.k==='remote'?0.8:0.9;X.scale(k,k);drawItem(task.k,0,0,0);X.restore();if(task.st==='done'){circ(tx+50,y+10,10,'#81c784');txt('✓',tx+50,y+11,13,'#fff')}
   muteBtn(HUDB);
-  // controls
-  X.globalAlpha=0.9;if(joy.id!=null){circ(joy.ox,joy.oy,JR+8,'rgba(255,255,255,0.35)');circ(joy.ox+joy.dx*JR,joy.oy+joy.dy*JR,28,'rgba(255,143,200,0.85)')}
-  const A=arrowBtns(),ad=arrowDir();for(const [b,dr] of [[A.L,-1],[A.R,1]]){const on=ad===dr,yy=b.y+(on?3:0);circ(b.x,b.y+5,b.r,'rgba(120,60,140,0.28)');circ(b.x,yy,b.r,on?'#ff5c9e':'rgba(255,255,255,0.92)');X.beginPath();X.arc(b.x,yy,b.r-3,0,TAU);strokeC(on?'#fff':'#ff8fc8',5);
+  const bk={id:'book',x:W-INR-58,y:TOP+66,w:48,h:48,fn:openBook};HUDB.push(bk);X.fillStyle='rgba(255,255,255,0.8)';rrect(bk.x,bk.y,48,48,16);X.fill();txt('📖',bk.x+24,bk.y+25,22,'#7b3fa0');
+  // controls: semi-transparent while idle, solid while pressed
+  if(joy.id!=null){X.globalAlpha=0.6;circ(joy.ox,joy.oy,JR+8,'rgba(255,255,255,0.5)');circ(joy.ox+joy.dx*JR,joy.oy+joy.dy*JR,26,'rgba(255,143,200,0.9)')}
+  const A=arrowBtns(),ad=arrowDir();for(const [b,dr] of [[A.L,-1],[A.R,1]]){const on=ad===dr,yy=b.y+(on?3:0);X.globalAlpha=on?0.95:0.55;circ(b.x,yy,b.r,on?'#ff5c9e':'#fff');X.beginPath();X.arc(b.x,yy,b.r-3,0,TAU);strokeC(on?'#fff':'#ff8fc8',4);
     const k=b.r*0.42;poly([b.x+dr*k*1.1,yy,b.x-dr*k*0.6,yy-k,b.x-dr*k*0.6,yy+k],on?'#fff':'#ff5c9e')}
-  const j=jumpBtn(),pr=jumpHeld>0;circ(j.x,j.y+4,j.r,'rgba(120,60,140,0.25)');circ(j.x,j.y+(pr?3:0),j.r,pr?'#ff5c9e':'#ff8fc8');poly([j.x,j.y-j.r*0.45,j.x-j.r*0.32,j.y-j.r*0.05,j.x+j.r*0.32,j.y-j.r*0.05],'#fff');txt('JUMP',j.x,j.y+j.r*0.32,Math.max(14,j.r*0.3),'#fff');
-  const pb=pawBtn(),hint=nearHint(),pg=hint?1+Math.sin(T*6)*0.06:1;if(hint)circ(pb.x,pb.y,pb.r*pg+8,'rgba(255,245,157,0.6)');circ(pb.x,pb.y,pb.r*pg,'#b388ff');circ(pb.x,pb.y+5,11,'#fff');for(let i=0;i<4;i++)circ(pb.x-13+i*8.6,pb.y-9-(i===1||i===2?4:0),4.6,'#fff');X.globalAlpha=1;
+  const j=jumpBtn(),pr=jumpHeld>0;X.globalAlpha=pr?0.95:0.55;circ(j.x,j.y+(pr?3:0),j.r,pr?'#ff5c9e':'#ff8fc8');poly([j.x,j.y-j.r*0.5,j.x-j.r*0.32,j.y-j.r*0.1,j.x+j.r*0.32,j.y-j.r*0.1],'#fff');txt('JUMP',j.x,j.y+j.r*0.3,Math.max(12,j.r*0.32),'#fff');
+  const pb=pawBtn(),hint=nearHint(),pg=hint?1+Math.sin(T*6)*0.06:1;X.globalAlpha=hint?0.9:0.55;if(hint)circ(pb.x,pb.y,pb.r*pg+6,'rgba(255,245,157,0.7)');circ(pb.x,pb.y,pb.r*pg,'#b388ff');const pk=pb.r/40;circ(pb.x,pb.y+5*pk,11*pk,'#fff');for(let i=0;i<4;i++)circ(pb.x+(-13+i*8.6)*pk,pb.y+(-9-(i===1||i===2?4:0))*pk,4.6*pk,'#fff');X.globalAlpha=1;
   if(banner){const a=Math.min(1,banner.t*4,(2.6-banner.t)*3);X.globalAlpha=Math.max(0,a);const w=Math.min(W-40,360);X.fillStyle='#fff';rrect(W/2-w/2,TOP+70,w,54,27);X.fill();txt('✨ '+banner.s+' ✨',W/2,TOP+98,24,'#c2185b');X.globalAlpha=1}}
 function drawDone(){UI=[];X.fillStyle='rgba(90,40,110,0.45)';X.fillRect(0,0,W,H);const s=back(overlay.t*2.2),w=Math.min(W-40,420),h=380,x=W/2-w/2,y=H/2-h/2;X.save();X.translate(W/2,H/2);X.scale(s,s);X.translate(-W/2,-H/2);
   X.fillStyle='#fff';rrect(x,y,w,h,28);X.fill();txt('You earned a sticker!',W/2,y+40,26,'#c2185b');sticker(pl.k,W/2-70,y+120,52,1);

@@ -20,7 +20,8 @@ const R=Math.random,rr=(a,b)=>a+R()*(b-a),pick=a=>a[(R()*a.length)|0],clamp=(v,a
 const ease=t=>t<0?0:t>1?1:1-Math.pow(1-t,3),back=t=>{t=clamp(t,0,1);const c=1.7;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
 let seed=1;const srand=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646},srr=(a,b)=>a+srand()*(b-a);
 // ---------- playfield: ground line in screen units; world y is 0 at the floor, negative = up ----------
-const GY=()=>H-Math.max(BOT,6)-64;
+// the floor sits just above the on-screen control row, so the controls only ever overlap floor, never Doodle, Zoe or the things you can play with
+const GY=()=>ctrlTop()-6;
 // ---------- persistence ----------
 const LS={get:(k,d)=>{try{const v=localStorage.getItem('dz_'+k);return v==null?d:v}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem('dz_'+k,v)}catch(e){}}};
 // ---------- drawing helpers ----------
@@ -42,11 +43,14 @@ function blit(s,x,y,sc){sc=sc||1;X.drawImage(s.c,x-s.w*sc/2,y-s.h*sc/2,s.w*sc,s.
 const ptrs=new Map(),keys={};let jumpQ=0,jumpHeld=0,pawQ=0,tapQ=null;
 const joy={id:null,ox:0,oy:0,dx:0,dy:0},JR=52;
 const toG=e=>({x:e.clientX/SC,y:e.clientY/SC});
-function jumpBtn(){const r=Math.min(58,H*0.11);return{x:W-INR-r-22,y:H-Math.max(BOT,8)-r-20,r}}
-function pawBtn(){const j=jumpBtn();return W<640?{x:j.x-6,y:j.y-j.r-52,r:40}:{x:j.x-j.r-56,y:j.y+j.r*0.3,r:40}}
-// big LEFT/RIGHT arrows: primary walking controls (hold to walk), low on screen and clear of the home bar
-// ~92pt across on iPad landscape (r in game units = 46pt / SC); hit zone stays a bit larger than the drawn buttons
-function arrowBtns(){const r=clamp(46/SC,30,44),y=H-Math.max(BOT,8)-r-24,lx=INL+r+24,rx=lx+r*2+28;return{L:{x:lx,y,r},R:{x:rx,y,r},zx:Math.min(rx+r+26,jumpBtn().x-jumpBtn().r-12),zy:y-r-30}}
+// one low row of controls pinned to the bottom corners (clear of the home bar / safe area):
+// LEFT/RIGHT arrows ~92pt across (r = 46pt / SC), JUMP ~88pt, PAW ~72pt. Drawn semi-transparent; hit zones a bit larger than the art.
+const ROWPAD=14;
+function jumpBtn(){const r=clamp(44/SC,30,44);return{x:W-INR-r-18,y:H-Math.max(BOT,8)-r-ROWPAD,r}}
+function pawBtn(){const j=jumpBtn(),r=clamp(36/SC,26,36);return{x:j.x-j.r-r-20,y:j.y+j.r-r,r}}
+function arrowBtns(){const r=clamp(46/SC,30,44),y=H-Math.max(BOT,8)-r-ROWPAD,lx=INL+r+18,rx=lx+r*2+20,pb=pawBtn();return{L:{x:lx,y,r},R:{x:rx,y,r},zx:Math.min(rx+r+26,pb.x-pb.r-12),zy:y-r-24}}
+// top edge of the control row (game units)
+function ctrlTop(){const ar=clamp(46/SC,30,44),jr=clamp(44/SC,30,44);return H-Math.max(BOT,8)-ROWPAD-2*Math.max(ar,jr)}
 function arrowAt(p){const a=arrowBtns();if(p.x<=a.zx&&p.y>=a.zy)return p.x<(a.L.x+a.R.x)/2?-1:1;return 0}
 function arrowDir(){let d=0;for(const q of ptrs.values())if(q.role==='arrow')d+=q.dir;return d<0?-1:d>0?1:0}
 function inR(p,b){return p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h}
@@ -58,7 +62,7 @@ cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=toG(e);
   let role='none';
   let ad=0;
   if(nearB(p,pawBtn(),10)){pawQ=1;role='btn'}
-  else if(nearB(p,jumpBtn(),24)){role='jump';jumpQ=1}
+  else if(nearB(p,jumpBtn(),16)){role='jump';jumpQ=1}
   else if((ad=arrowAt(p))){role='arrow'}
   else if(p.x<W*0.5&&joy.id==null){role='joy';joy.id=e.pointerId;joy.ox=p.x;joy.oy=p.y;joy.dx=joy.dy=0}
   else{tapQ=p;role='tap'}
@@ -70,5 +74,5 @@ const endP=e=>{if(e.pointerId===joy.id){joy.id=null;joy.dx=joy.dy=0}ptrs.delete(
 ['pointerup','pointercancel','lostpointercapture'].forEach(n=>cv.addEventListener(n,endP));
 function resetInput(){ptrs.clear();joy.id=null;joy.dx=joy.dy=0;jumpHeld=0;jumpQ=0;pawQ=0;tapQ=null}
 addEventListener('keydown',e=>{if(!keys[e.code]){if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')jumpQ=1;if(e.code==='KeyX'||e.code==='KeyE'||e.code==='KeyZ')pawQ=1}keys[e.code]=1;if(e.code==='Space'||e.code.startsWith('Arrow'))e.preventDefault();
-  if((state!=='play'||overlay)&&(e.code==='Enter'))uiKey()});
+  if((state!=='play'||overlay)&&(e.code==='Enter'||e.code==='Escape'))uiKey()});
 addEventListener('keyup',e=>{keys[e.code]=0});

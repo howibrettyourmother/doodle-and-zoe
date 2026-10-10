@@ -79,7 +79,9 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
   if(c.st==='bisc'&&((c.sT*9/Math.PI)|0)!==(((c.sT-dt)*9/Math.PI)|0))AUD.SFX.pat();
   if(c.st==='sleep'&&R()<dt*1.2)floats.push({s:'z',x:c.x+20,y:c.y-40,t:0,c:'#b39ddb',z:1});
   // camera
-  const tx=clamp(c.x-W*0.42+c.face*40,0,Math.max(0,pl.w-W));camX+=(tx-camX)*Math.min(1,dt*5);
+  // camera: lead Doodle a little, but also keep Zoe in frame when she lags behind (Doodle always wins if they are too far apart)
+  let tx=c.x-W*0.42+c.face*40;if(zoe)tx=clamp(tx,zoe.x-W+50,zoe.x-50);tx=clamp(tx,c.x-W+70,c.x-70);
+  tx=clamp(tx,0,Math.max(0,pl.w-W));camX+=(tx-camX)*Math.min(1,dt*5);
   // Zoe follows (on the floor), runs when far, pets Doodle when he rests near her
   const z=zoe;z.t+=dt;z.pet-=dt;z.happy-=dt;z.petCD-=dt;const zt=c.x-c.face*72,dz=zt-z.x;
   if(z.pet>0)z.walk=0;else if(Math.abs(dz)>14){const sp=Math.abs(dz)>260?330:170;z.x+=Math.sign(dz)*Math.min(Math.abs(dz),sp*dt);z.face=Math.sign(dz);z.walk=1}else{z.walk=0;z.face=c.x>z.x?1:-1}
