@@ -48,7 +48,7 @@ const toG=e=>({x:e.clientX/SC,y:e.clientY/SC});
 const ROWPAD=14;
 function jumpBtn(){const r=clamp(44/SC,30,44);return{x:W-INR-r-18,y:H-Math.max(BOT,8)-r-ROWPAD,r}}
 function pawBtn(){const j=jumpBtn(),r=clamp(36/SC,26,36);return{x:j.x-j.r-r-20,y:j.y+j.r-r,r}}
-function arrowBtns(){const r=clamp(46/SC,30,44),y=H-Math.max(BOT,8)-r-ROWPAD,lx=INL+r+18,rx=lx+r*2+20,pb=pawBtn();return{L:{x:lx,y,r},R:{x:rx,y,r},zx:Math.min(rx+r+26,pb.x-pb.r-12),zy:y-r-24}}
+function arrowBtns(){const pb=pawBtn(),r=Math.min(clamp(46/SC,30,44),(pb.x-pb.r-14-INL-18-20)/4),y=H-Math.max(BOT,8)-clamp(46/SC,30,44)-ROWPAD+(clamp(46/SC,30,44)-r),lx=INL+r+18,rx=lx+r*2+20;return{L:{x:lx,y,r},R:{x:rx,y,r},zx:Math.min(rx+r+26,pb.x-pb.r-12),zy:y-r-24}}
 // top edge of the control row (game units)
 function ctrlTop(){const ar=clamp(46/SC,30,44),jr=clamp(44/SC,30,44);return H-Math.max(BOT,8)-ROWPAD-2*Math.max(ar,jr)}
 function arrowAt(p){const a=arrowBtns();if(p.x<=a.zx&&p.y>=a.zy)return p.x<(a.L.x+a.R.x)/2?-1:1;return 0}
@@ -56,23 +56,49 @@ function arrowDir(){let d=0;for(const q of ptrs.values())if(q.role==='arrow')d+=
 function inR(p,b){return p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h}
 const nearB=(p,b,s)=>Math.hypot(p.x-b.x,p.y-b.y)<b.r+(s||10);
 function recount(){jumpHeld=0;for(const q of ptrs.values())if(q.role==='jump')jumpHeld++}
+// screens (mini-games, photo booth, cafe...) register handlers here: SCR[state]={down,move,up,key,back}
+const SCR={};const PT=n=>n/SC; // PT(44) = 44 points in game units (touch-target minimum)
 cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=toG(e);
-  if(state!=='play'||overlay){uiTap(p);return}
+  if(state!=='play'||overlay){if(uiTap(p))return;const S=SCR[state];if(S&&S.down&&state!=='play')S.down(p,e.pointerId);return}
   for(const b of HUDB)if(inR(p,b)){b.fn();return}
   let role='none';
   let ad=0;
   if(nearB(p,pawBtn(),10)){pawQ=1;role='btn'}
   else if(nearB(p,jumpBtn(),16)){role='jump';jumpQ=1}
   else if((ad=arrowAt(p))){role='arrow'}
+  else if(tapWorld(p)){role='btn'}
   else if(p.x<W*0.5&&joy.id==null){role='joy';joy.id=e.pointerId;joy.ox=p.x;joy.oy=p.y;joy.dx=joy.dy=0}
   else{tapQ=p;role='tap'}
   ptrs.set(e.pointerId,{role,dir:ad});recount()},{passive:false});
-cv.addEventListener('pointermove',e=>{const q=ptrs.get(e.pointerId);if(q&&q.role==='arrow'){const d=arrowAt(toG(e));if(d)q.dir=d;return}if(e.pointerId!==joy.id)return;const p=toG(e);let dx=p.x-joy.ox,dy=p.y-joy.oy,d=Math.hypot(dx,dy);
+cv.addEventListener('pointermove',e=>{if(state!=='play'){const S=SCR[state];if(S&&S.move)S.move(toG(e),e.pointerId);return}const q=ptrs.get(e.pointerId);if(q&&q.role==='arrow'){const d=arrowAt(toG(e));if(d)q.dir=d;return}if(e.pointerId!==joy.id)return;const p=toG(e);let dx=p.x-joy.ox,dy=p.y-joy.oy,d=Math.hypot(dx,dy);
   if(d>JR*1.25){const k=(d-JR*1.25)/d;joy.ox+=dx*k;joy.oy+=dy*k;dx=p.x-joy.ox;dy=p.y-joy.oy;d=Math.hypot(dx,dy)}
   const m=Math.min(1,d/JR);joy.dx=d?dx/d*m:0;joy.dy=d?dy/d*m:0},{passive:false});
-const endP=e=>{if(e.pointerId===joy.id){joy.id=null;joy.dx=joy.dy=0}ptrs.delete(e.pointerId);recount()};
+const endP=e=>{if(state!=='play'){const S=SCR[state];if(S&&S.up)S.up(toG(e),e.pointerId)}if(e.pointerId===joy.id){joy.id=null;joy.dx=joy.dy=0}ptrs.delete(e.pointerId);recount()};
 ['pointerup','pointercancel','lostpointercapture'].forEach(n=>cv.addEventListener(n,endP));
 function resetInput(){ptrs.clear();joy.id=null;joy.dx=joy.dy=0;jumpHeld=0;jumpQ=0;pawQ=0;tapQ=null}
 addEventListener('keydown',e=>{if(!keys[e.code]){if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')jumpQ=1;if(e.code==='KeyX'||e.code==='KeyE'||e.code==='KeyZ')pawQ=1}keys[e.code]=1;if(e.code==='Space'||e.code.startsWith('Arrow'))e.preventDefault();
-  if((state!=='play'||overlay)&&(e.code==='Enter'||e.code==='Escape'))uiKey()});
+  if(state!=='play'){const S=SCR[state];if(S&&S.key)S.key(e.code)}
+  if((state!=='play'||overlay)&&(e.code==='Enter'||e.code==='Escape'))uiKey(e.code)});
 addEventListener('keyup',e=>{keys[e.code]=0});
+
+const SPOKEN=[];
+// ---------- read-aloud voice (Web Speech API). iOS only allows speech after a user gesture, so the first touch speaks a silent
+// utterance to unlock it. Prefers a cheerful en-US voice with a slightly higher pitch. Fails silently when unavailable. ----------
+const SPEAK=(()=>{const ss=window.speechSynthesis,U=window.SpeechSynthesisUtterance;let on=LS.get('voice','1')!=='0',voice=null,unlocked=false,lastT='',lastAt=0,timer=0;
+  const NOVELTY=/bad news|bahh|bells|boing|bubbles|cellos|wobble|deranged|good news|hysterical|jester|organ|superstar|trinoids|whisper|zarvox|albert|fred|junior|ralph|grandpa|grandma|rocko|eddy|reed|sandy|shelley|flo\b/i;
+  const LIKE=[/samantha/i,/ava/i,/allison/i,/susan/i,/zoe/i,/nicky/i,/joelle/i,/google us english/i,/aria/i,/jenny/i,/female/i,/karen/i,/moira/i,/tessa/i];
+  function pickVoice(){try{const vs=ss.getVoices()||[];let best=null,bs=-1;for(const v of vs){if(!/^en/i.test(v.lang)||NOVELTY.test(v.name))continue;let sc=/en[-_]US/i.test(v.lang)?10:3;
+      const li=LIKE.findIndex(r=>r.test(v.name));if(li>=0)sc+=20-li;if(/enhanced|premium/i.test(v.name))sc+=4;if(/compact/i.test(v.name))sc-=1;if(sc>bs){bs=sc;best=v}}voice=best}catch(e){}}
+  if(ss&&U){pickVoice();try{ss.addEventListener?ss.addEventListener('voiceschanged',pickVoice):(ss.onvoiceschanged=pickVoice)}catch(e){}
+    const unlock=()=>{if(unlocked)return;unlocked=true;try{const u=new U(' ');u.volume=0;ss.speak(u)}catch(e){}if(!voice)pickVoice()};
+    ['touchend','click','keydown','pointerup'].forEach(ev=>addEventListener(ev,unlock,{capture:true,passive:true}));
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)try{ss.cancel()}catch(e){}})}
+  // prio 1: skip if already talking; prio 2+: interrupt. Waits for a recorded voice clip to finish so voices never overlap.
+  function say(text,prio,tries){prio=prio||1;tries=tries||0;if(!ss||!U||!on||!unlocked||(typeof AUD!=='undefined'&&AUD.muted))return false;
+    const t=performance.now();if(text===lastT&&t-lastAt<1500)return false;
+    if(typeof AUD!=='undefined'&&AUD.speaking&&tries<40){clearTimeout(timer);timer=setTimeout(()=>say(text,prio,tries+1),100);return true}
+    try{if(ss.speaking||ss.pending){if(prio<2)return false;ss.cancel()}lastT=text;lastAt=t;const u=new U(text);u.lang='en-US';if(voice)u.voice=voice;u.pitch=1.35;u.rate=0.95;u.volume=1;
+      setTimeout(()=>{try{ss.speak(u)}catch(e){}},ss.speaking?80:0);if(SPOKEN.length<200)SPOKEN.push(text)}catch(e){return false}return true}
+  function setOn(v){on=!!v;LS.set('voice',on?'1':'0');if(!on&&ss)try{ss.cancel()}catch(e){}}
+  return{say,setOn,get on(){return on},get ok(){return !!(ss&&U)},get voice(){return voice&&voice.name},get unlocked(){return unlocked}}})();
+const sayT=(s,p)=>SPEAK.say(s,p);

@@ -6,6 +6,7 @@ function crown(x,y,s){X.save();X.translate(x,y);X.scale(s,s);poly([-12,4,-12,-8,
 // Doodle: chubby orange-and-white tabby, white blaze/chest/paws, pink nose. Faces right; (x,y)=feet.
 function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X.save();X.translate(x,y);X.scale(f*(o.s||1),o.s||1);
   ell(0,1,30,5,'rgba(80,40,90,0.15)');
+  if(A.wings&&st!=='sleep'&&st!=='flop'){const fl=Math.sin(t*7)*0.15;X.globalAlpha=0.8;ell(-8,-56,12,22,'#ffc1e3',-0.5+fl);ell(-20,-44,9,15,'#e1bee7',-1.1+fl);X.globalAlpha=1;circ(-10,-60,2,'#fff');circ(-20,-46,1.6,'#fff')}
   if(A.cape&&st!=='sleep'&&st!=='flop'){X.fillStyle='#b388ff';X.beginPath();X.moveTo(18,-40);X.quadraticCurveTo(-20,-46-Math.sin(t*6)*4,-40,-14+Math.sin(t*8)*3);X.lineTo(-10,-12);X.closePath();X.fill();star5(-18,-26,4,'#fff59d')}
   if(st==='sleep'){ell(0,-16,30,17,OR);ell(6,-10,18,8,WH);for(let i=0;i<3;i++){X.beginPath();X.arc(-6+i*9,-24,6,Math.PI*1.15,Math.PI*1.85);sl(3,ORD)}
     X.beginPath();X.moveTo(-26,-8);X.quadraticCurveTo(-30,8,8,4);sl(9,OR);circ(9,4,4.6,WH);circ(20,-22,15,OR);ell(24,-18,8,6,WH);poly([10,-32,12,-44,20,-35],OR);poly([24,-36,32,-44,32,-31],OR);
@@ -23,8 +24,10 @@ function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X
     X.beginPath();X.moveTo(lx,-18);X.lineTo(lx+dx,-4-lift);sl(9,i%2?ORD:OR);ell(lx+dx+1,-3-lift,5.5,4,WH)}
   // body
   ell(0,-24,31,19,OR);ell(8,-16,20,10,WH);for(let i=0;i<4;i++){X.beginPath();X.arc(-16+i*9,-38,8,Math.PI*1.2,Math.PI*1.8);sl(3.2,ORD)}
+  if(A.sweater){ell(0,-25,29,17,'#f8a5c8');for(let i=0;i<3;i++){X.beginPath();X.moveTo(-22+i*4,-12-i*2);X.lineTo(22-i*4,-12-i*2);sl(1.6,'rgba(255,255,255,0.6)')}heartP(4,-24,7,'#fff');heartP(4,-24,4.5,'#ff5c9e')}
   if(A.tutu){for(let i=0;i<7;i++)ell(-20+i*7,-18,8,6,i%2?'#ffc1e3':'#e1bee7');}
   if(A.collar){X.beginPath();X.arc(22,-36,13,0.6,2.4);sl(4,'#ff5c9e');circ(22,-23,3.2,'#ffd54f')}
+  if(A.bowtie)bow(22,-26,0.75,'#b388ff');
   // head
   const hb=walk?Math.sin(ph*2)*1.2:0,hx=24,hy=-42+hb;
   poly([hx-14,hy-6,hx-12,hy-24,hx-2,hy-14],OR);poly([hx-11,hy-9,hx-10,hy-19,hx-5,hy-13],PN);poly([hx+4,hy-14,hx+14,hy-24,hx+16,hy-6],OR);poly([hx+7,hy-13,hx+13,hy-19,hx+13,hy-9],PN);
@@ -39,7 +42,12 @@ function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X
   if(st==='bat'){X.beginPath();X.moveTo(18,-26);X.lineTo(36,-34+Math.sin(t*20)*4);sl(8,OR);circ(36,-34+Math.sin(t*20)*4,5,WH)}
   if(A.glasses){heartP(hx-6,hy-1,7,'#ff5c9e');heartP(hx+10,hy-1,7,'#ff5c9e');X.beginPath();X.moveTo(hx-1,hy-3);X.lineTo(hx+5,hy-3);sl(1.6,'#ff5c9e')}
   accHead(A,hx,hy,1,t);X.restore()}
-function accHead(A,hx,hy,s,t){if(A.crown)crown(hx-2,hy-20,0.9);if(A.bow)bow(hx+10,hy-17,0.85,'#ff5c9e');if(A.flower){for(let i=0;i<5;i++){const a=i*TAU/5;circ(hx-10+Math.cos(a)*4,hy-16+Math.sin(a)*4,3.2,'#c5a3ff')}circ(hx-10,hy-16,2.4,'#fff59d')}}
+function partyHat(x,y,s,rot){X.save();X.translate(x,y);X.rotate(rot||0);X.scale(s,s);poly([-9,0,9,0,0,-24],'#ff8fc8');X.beginPath();X.moveTo(-6,-6);X.lineTo(6,-8);X.moveTo(-3,-14);X.lineTo(4,-15);sl(2.4,'#fff59d');circ(0,-25,3.6,'#b388ff');X.restore()}
+function accHead(A,hx,hy,s,t){if(A.party){partyHat(hx+2,hy-14,1,0.15);return}
+  if(A.horn){X.save();X.translate(hx+3,hy-15);X.rotate(0.25);poly([-5,0,5,0,0,-22],'#fff3b0');X.beginPath();X.moveTo(-4,-4);X.lineTo(4,-7);X.moveTo(-3,-10);X.lineTo(3,-13);X.moveTo(-2,-16);X.lineTo(2,-18);sl(1.6,'#ff8fc8');X.restore();circ(hx-6,hy-15,3,'#c5a3ff');circ(hx+12,hy-15,3,'#ffc1e3')}
+  if(A.witch){X.save();X.translate(hx+1,hy-15);X.rotate(-0.12);ell(0,0,18,4.5,'#7e57c2');poly([-10,-1,10,-1,4,-26],'#9575cd');poly([4,-26,8,-24,14,-30],'#9575cd');X.fillStyle='#ff8fc8';X.fillRect(-10,-6,20,4);star5(-2,-14,3.4,'#fff59d');X.restore()}
+  if(A.santa){X.save();X.translate(hx+1,hy-15);X.rotate(0.1);poly([-12,0,12,0,10,-14,-6,-20],'#ff6fa8');poly([-6,-20,10,-14,18,-6],'#ff6fa8');circ(19,-5,4,'#fff');X.fillStyle='#fff';rrect(-14,-4,28,7,3.5);X.fill();X.restore()}
+  if(A.crown)crown(hx-2,hy-20,0.9);if(A.bow)bow(hx+10,hy-17,0.85,'#ff5c9e');if(A.flower){for(let i=0;i<5;i++){const a=i*TAU/5;circ(hx-10+Math.cos(a)*4,hy-16+Math.sin(a)*4,3.2,'#c5a3ff')}circ(hx-10,hy-16,2.4,'#fff59d')}}
 // Zoe: light brown ponytail, pink unicorn sweatshirt, light blue tutu, gray floppy bunny
 function drawZoe(x,o){const f=o.face||1,t=o.t||0,walk=o.walk,pet=o.pet>0,top=o.top||'#ff9cc8',tutu=o.tutu||'#bfe3ff',sk='#f7d5bf',hair='#a8754a';X.save();X.translate(x,0);X.scale(f,1);
   ell(0,2,26,5,'rgba(80,40,90,0.15)');const b=walk?Math.abs(Math.sin(t*9))*3:0,cr=pet?14:0;X.translate(0,-b+cr);
@@ -55,7 +63,32 @@ function drawZoe(x,o){const f=o.face||1,t=o.t||0,walk=o.walk,pet=o.pet>0,top=o.t
   circ(0,-94,16,sk);X.fillStyle=hair;X.beginPath();X.arc(0,-96,17,Math.PI*1.02,TAU*1.0);X.fill();X.beginPath();X.ellipse(5,-104,12,6,-0.2,0,TAU);X.fill();
   if(o.happy>0){X.beginPath();X.arc(-2,-94,2.6,Math.PI*1.1,Math.PI*1.9);sl(2,'#4a3030');X.beginPath();X.arc(8,-94,2.6,Math.PI*1.1,Math.PI*1.9);sl(2,'#4a3030')}else{circ(-2,-94,2.4,'#4a3030');circ(8,-94,2.4,'#4a3030');circ(-1.3,-95,0.9,'#fff');circ(8.7,-95,0.9,'#fff')}
   ell(-6,-88,3.4,2,'rgba(255,130,160,0.5)');ell(12,-88,3.4,2,'rgba(255,130,160,0.5)');X.beginPath();X.arc(4,-88,4,0.3,Math.PI-0.3);sl(1.8,'#c2185b');
-  if(o.bow)bow(-8,-110,0.7,o.bow);X.restore()}
+  if(o.ears){poly([-15,-104,-12,-122,-3,-111],o.ears);poly([-12.5,-107,-11,-117,-6,-111],'#fff0f6');poly([3,-111,12,-122,15,-104],o.ears);poly([6,-111,11,-117,12.5,-107],'#fff0f6')}
+  if(o.bow)bow(-8,-110,0.7,o.bow);if(o.party)partyHat(4,-110,1,0.2);X.restore()}
+// ---------- kitty friends: small side-view cats, drawn once per pose into the sprite cache ----------
+function drawKit(K,pose,fr,o){o=o||{};X.save();X.scale(K.s,K.s);const B=K.c,D=K.d,Wb=K.w,sit=pose==='sit',ph=fr?1:0;
+  ell(0,1,24,4.5,'rgba(80,40,90,0.15)');
+  if(sit){X.beginPath();X.moveTo(-14,-6);X.quadraticCurveTo(-34,-2,-30,-24);sl(K.fluff?13:8,B)}else{const tw=fr?5:-3;X.beginPath();X.moveTo(-20,-24);X.quadraticCurveTo(-38,-30,-36,-50+tw);sl(K.fluff?13:8,B)}
+  if(K.tip){circ(sit?-30:-36,sit?-24:-50+(fr?5:-3),K.fluff?6:4.5,K.tip)}
+  let bx,by,hx,hy;
+  if(sit){bx=-2;by=-20;if(K.fluff){for(let i=0;i<7;i++){const a=Math.PI*0.6+i*0.42;circ(bx+Math.cos(a)*19,by+Math.sin(a)*19,8,B)}}ell(bx,by,19,19,B);hx=8;hy=-46}
+  else{const L=[[-16,0],[-8,Math.PI],[10,Math.PI*0.5],[17,Math.PI*1.5]];for(let i=0;i<4;i++){const [lx,p]=L[i],lift=Math.max(0,Math.sin(ph*Math.PI+p))*5,dx=Math.cos(ph*Math.PI+p)*3;X.beginPath();X.moveTo(lx,-16);X.lineTo(lx+dx,-4-lift);sl(7,i%2?D:B);ell(lx+dx+1,-3-lift,4.5,3.4,Wb)}
+    bx=0;by=-22;if(K.fluff){for(let i=0;i<8;i++){const a=Math.PI*1.05+i*0.27;circ(bx+Math.cos(a)*24,by+Math.sin(a)*13,7,B)}}ell(bx,by,25,15,B);hx=20;hy=-38}
+  if(K.pat)for(const q of K.pat)ell(bx+q[0],by+q[1],q[2],q[3],q[4]);
+  if(sit){ell(bx+9,by+3,9,13,Wb);for(const lx of [3,12]){X.beginPath();X.moveTo(bx+lx,by+4);X.lineTo(bx+lx,by+17);sl(6.5,B);ell(bx+lx+1,-2.5,4.8,3.4,Wb)}}else ell(bx+6,by+7,15,6,Wb);
+  if(K.stars)for(let i=0;i<6;i++)star5(bx-14+((i*13)%28),by-8+((i*7)%14),i%2?2:2.8,i%3?'#fff':'#fff59d');
+  // head
+  poly([hx-13,hy-5,hx-11,hy-23,hx-2,hy-13],B);poly([hx-10,hy-8,hx-9.5,hy-18,hx-4.5,hy-12],K.ear||PN);poly([hx+3,hy-13,hx+13,hy-23,hx+15,hy-5],B);poly([hx+6,hy-12,hx+12,hy-18,hx+12,hy-8],K.ear||PN);
+  if(K.fluff){for(let i=0;i<6;i++){const a=Math.PI*0.25+i*0.5;circ(hx+Math.cos(a)*14,hy+Math.sin(a)*13,6,B)}}
+  circ(hx,hy,15,B);if(K.hp)ell(hx+K.hp[0],hy+K.hp[1],K.hp[2],K.hp[3],K.hp[4]);ell(hx+3,hy+6,10,6.5,Wb);
+  if(o.closed){X.beginPath();X.arc(hx-5,hy-1,3.2,0.2,Math.PI-0.2);sl(2,'#3a2b2b');X.beginPath();X.arc(hx+9,hy-1,3.2,0.2,Math.PI-0.2);sl(2,'#3a2b2b')}
+  else{ell(hx-5,hy-1,4,5,K.eye||'#3a2b2b');ell(hx+9,hy-1,4,5,K.eye||'#3a2b2b');circ(hx-5,hy,2,'#2a1f2a');circ(hx+9,hy,2,'#2a1f2a');circ(hx-3.8,hy-2.8,1.5,'#fff');circ(hx+10.2,hy-2.8,1.5,'#fff');
+    if(K.lash){X.beginPath();X.moveTo(hx-9,hy-4);X.lineTo(hx-11,hy-7);X.moveTo(hx+13,hy-4);X.lineTo(hx+15,hy-7);sl(1.4,'#3a2b2b')}}
+  ell(hx-10,hy+5,3.6,2.2,'rgba(255,140,170,0.55)');ell(hx+14,hy+5,3.6,2.2,'rgba(255,140,170,0.55)');poly([hx+1,hy+3,hx+5,hy+3,hx+3,hy+5.5],PN);
+  X.beginPath();X.moveTo(hx,hy+7.5);X.quadraticCurveTo(hx+1.5,hy+9.5,hx+3,hy+7);X.quadraticCurveTo(hx+4.5,hy+9.5,hx+6,hy+7.5);sl(1.3,'#7a4a4a');
+  if(K.bow)bow(hx+8,hy-16,0.95,K.bow);if(K.star)star5(hx-4,hy-9,3.2,'#fff59d');
+  if(o.party)partyHat(hx+1,hy-13,0.9,0.15);
+  X.restore()}
 // friendly grown-ups (generic, cozy)
 function drawNPC(k,x,o){const t=o.t||0,wave=o.wave>0;X.save();X.translate(x,0);ell(0,2,28,5,'rgba(80,40,90,0.15)');
   if(k==='duck'){X.translate(0,Math.sin(t*2)*1.5);ell(0,-16,24,15,'#fff');circ(16,-34,11,'#fff');poly([26,-35,36,-32,26,-29],'#ffb74d');circ(19,-37,2,'#333');ell(-6,-18,12,7,'#eee');poly([-24,-20,-32,-26,-22,-12],'#fff');X.fillStyle='#ffb74d';X.fillRect(-6,-2,3,4);X.fillRect(4,-2,3,4);if(o.bow)bow(10,-44,0.6,'#ff8fc8');X.restore();return}

@@ -109,7 +109,10 @@ const AUD=(()=>{
     pat:safe(()=>{const t=now(),G=g(0,sfxBus);env(G,t,0.002,0.01,0.05,0.06);n(t,0.06,f('lowpass',800,1,G))}),
     rustle:safe(()=>{const t=now(),G=g(0,sfxBus);env(G,t,0.02,0.15,0.25,0.16);n(t,0.4,f('bandpass',2500,0.8,G))}),
     sticker:safe(()=>{const t=now();[72,76,79,84,79,84,88].forEach((m,i)=>{const G=g(0,sfxBus);env(G,t+i*0.1,0.005,0.06,0.4,0.08);o('triangle',mtof(m),t+i*0.1,0.5,G);o('sine',mtof(m+12),t+i*0.1,0.3,g(0.3,G))})}),
-    click:safe(()=>{const t=now();blip('square',900,1300,t,0.05,0.07)})
+    click:safe(()=>{const t=now();blip('square',900,1300,t,0.05,0.07)}),
+    note:safe((m)=>{const t=now(),G=g(0,sfxBus);env(G,t,0.003,0.05,0.45,0.13);o('triangle',mtof(m),t,0.55,G);const G2=g(0,sfxBus);env(G2,t,0.002,0.01,0.25,0.05);o('sine',mtof(m+12),t,0.3,G2)}),
+    munch:safe(()=>{const t=now();for(let i=0;i<4;i++){const s=t+i*0.17,G=g(0,sfxBus);env(G,s,0.004,0.02,0.07,0.14);n(s,0.1,f('bandpass',rr(500,900),1.2,G));blip('sine',rr(220,300),150,s,0.06,0.05)}}),
+    shutter:safe(()=>{const t=now();for(const d of [0,0.07]){const G=g(0,sfxBus);env(G,t+d,0.001,0.01,0.05,0.25);n(t+d,0.07,f('highpass',2500,0.7,G))}blip('sine',1500,2200,t+0.15,0.12,0.06)})
   };
   // ---------- one voice at a time, with ducking ----------
   let curEnd=0,curPrio=0,queue=[];

@@ -1,13 +1,23 @@
 // ================= state, save data, cat physics, Zoe, interactions, tasks =================
 let state='title',T=0,stT=0,TS=1,overlay=null,camX=0;
-const ITEMS=[{k:'bow',n:'Pink Bow'},{k:'crown',n:'Crown'},{k:'tutu',n:'Tutu'},{k:'cape',n:'Cape'},{k:'glasses',n:'Heart Sunglasses'},{k:'flower',n:'Flower'},{k:'collar',n:'Bell Collar'}];
+const ITEMS=[{k:'bow',n:'Pink Bow'},{k:'crown',n:'Crown'},{k:'tutu',n:'Tutu'},{k:'cape',n:'Cape'},{k:'glasses',n:'Heart Sunglasses'},{k:'flower',n:'Flower'},{k:'collar',n:'Bell Collar'},
+  {k:'horn',n:'Unicorn Horn'},{k:'bowtie',n:'Purple Bow Tie'},{k:'trail',n:'Sparkle Trail'},{k:'wings',n:'Fairy Wings'},{k:'sweater',n:'Heart Sweater'},
+  {k:'witch',n:'Witch Hat',sea:'hal'},{k:'santa',n:'Santa Hat',sea:'win'},{k:'party',n:'Party Hat',sea:'bday'}];
+// how the new items unlock (all gentle): kitty friends found, different mini-games played; seasonal hats unlock on their own during the season
+const UNLOCK2={bowtie:()=>kitCount()>=1,horn:()=>mgCount()>=1,trail:()=>mgCount()>=2,wings:()=>kitCount()>=3,sweater:()=>mgCount()>=3};
+const UNLOCK_HINT={bowtie:'Find a kitty friend!',horn:'Play a game!',trail:'Play 2 games!',wings:'Find 3 kitty friends!',sweater:'Play 3 games!',witch:'Comes in October!',santa:'Comes in December!',party:"Comes on Zoe's birthday!",collar:'Collect 30 fish!'};
 const UNLOCK={dad:'crown',mom:'tutu',klub:'cape',park:'glasses',gma:'flower'};
-const TOPS=['#ff9cc8','#c39bef','#9fd8ff','#ffe08a','#a8e6c8'],TOPFISH=[0,10,25,40,60],TUTUS=['#bfe3ff','#ffc1e3','#e1bee7','#fff59d'],HBOWS=[null,'#ff5c9e','#b388ff','#ffd54f'];
-function defSave(){return{p:{},fish:0,un:{bow:1},wear:{bow:1},zoe:{top:TOPS[0],tutu:TUTUS[0],bow:HBOWS[1]}}}
+const TOPS=['#ff9cc8','#c39bef','#9fd8ff','#ffe08a','#a8e6c8','#d1a6ff','#ff6fae'],TOPFISH=[0,10,25,40,60,75,90],TUTUS=['#bfe3ff','#ffc1e3','#e1bee7','#fff59d','#c9a8ff','#ffffff'],HBOWS=[null,'#ff5c9e','#b388ff','#ffd54f'],ZEARS=[null,'#ff8fc8','#b388ff','#f2eef0'];
+function defSave(){return{p:{},fish:0,un:{bow:1},wear:{bow:1},zoe:{top:TOPS[0],tutu:TUTUS[0],bow:HBOWS[1],ears:null},kit:{},mg:{},fl:{}}}
+// older saves (v1.2) simply lack the new fields: fill them in without touching what is there
 let SAVE;try{SAVE=Object.assign(defSave(),JSON.parse(LS.get('save','{}')))}catch(e){SAVE=defSave()}
+for(const k of ['kit','mg','fl','un','wear','p'])if(!SAVE[k]||typeof SAVE[k]!=='object')SAVE[k]={};if(!SAVE.zoe||typeof SAVE.zoe!=='object')SAVE.zoe=defSave().zoe;if(typeof SAVE.fish!=='number')SAVE.fish=+SAVE.fish||0;
+const kitCount=()=>Object.keys(SAVE.kit).length,mgCount=()=>Object.keys(SAVE.mg).length;
+// returns the items that just unlocked (so the caller can celebrate)
+function checkUnlocks(){const got=[];for(const k in UNLOCK2)if(!SAVE.un[k]&&UNLOCK2[k]()){SAVE.un[k]=1;got.push(k)}if(got.length)save();return got}
 function save(){LS.set('save',JSON.stringify(SAVE))}
 function pdata(k){return SAVE.p[k]||(SAVE.p[k]={stars:[],task:0,sticker:0})}
-const say=(k,p)=>AUD.say(k,p);
+const say=(k,p)=>SPEAK.on?AUD.say(k,p):false;// recorded voice clips follow the voice toggle too
 let PI=0,pl=PLACES[0],plats=[],cat=null,zoe=null,stars=[],fish=[],task=null,giver=null,ex=[],parts=[],floats=[],bubbles=[],banner=null;
 // ---------- flow ----------
 function enterPlace(i){PI=i;pl=PLACES[i];plats=buildPlace(pl);const d=pdata(pl.k);
@@ -16,6 +26,7 @@ function enterPlace(i){PI=i;pl=PLACES[i];plats=buildPlace(pl);const d=pdata(pl.k
   stars=pl.stars.map((s,j)=>({x:s[0],y:s[1],got:d.stars.includes(j),j}));fish=pl.fish.map(f=>({x:f[0],y:f[1],got:0}));
   const tk=pl.task;task={k:tk.item,x:tk.ix,y:tk.iy,st:d.task?'done':(tk.hide?'hidden':'free')};giver={k:tk.who,x:tk.x,said:-99,wave:0};
   ex=pl.extras.map(e=>Object.assign({},e,{ox:e.x,oy:e.y,vx:0,vy:0,st:0,tm:0,ph:R()*6}));parts=[];floats=[];bubbles=[];overlay=null;camX=0;
+  kitsEnter();spotEnter();seasonEnter();
   state='play';stT=0;resetInput();AUD.setTheme(pl.th);banner={s:pl.n,t:0};setTimeout(()=>say('p'+(i+1),3),300)}
 function goMap(){state='title';overlay=null;resetInput();AUD.setTheme('title');stT=0}
 // ---------- fx ----------
@@ -31,7 +42,7 @@ function nearEx(t,r){let b=null,bd=r;for(const e of ex){if(e.t!==t)continue;cons
 function knockCup(c){if(c.st)return;c.st=1;c.vx=cat.face*120;c.vy=-200;AUD.SFX.knock();cat.st!=='air'&&setSt('bat');setTimeout(()=>{if(R()<0.7)say('oops',2)},400);zoe.happy=1.5;bubble(zoe.x,-120,'Hee hee!','zoe')}
 function petCat(){zoe.pet=2;zoe.happy=2;zoe.petCD=7;setSt('purr');cat.vx=0;AUD.SFX.purr(1.6);hearts(cat.x+10,cat.y-60,6);if(R()<0.6)say(R()<0.5?'good':'pet',2);bubble(zoe.x,-125,pick(['Good kitty!','I love you, Doodle!','Soft kitty!']),'zoe')}
 let pawCycle=0;
-function paw(){const c=nearEx('cup',70);if(c&&!c.st){knockCup(c);return}
+function paw(){if(kitPaw()||spotPaw())return;const c=nearEx('cup',70);if(c&&!c.st){knockCup(c);return}
   const lf=nearEx('leaves',60);if(lf){pounce(lf);return}
   const y=nearEx('yarn',60);if(y){setSt('bat');y.vx=cat.face*300;AUD.SFX.squeak();return}
   if(Math.abs(zoe.x-cat.x)<80&&cat.y>-80&&zoe.petCD<=4){petCat();return}
@@ -51,6 +62,7 @@ function checkDone(){const d=pdata(pl.k);if(d.sticker||d.stars.length<5||!d.task
 function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner=null}
   for(const p of parts){p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.conf){p.vy=Math.min(p.vy+60*dt,160);p.vx+=Math.sin(T*3+p.rot)*20*dt;p.rot+=dt*4}else if(p.heart){p.vy+=20*dt}else{p.vx*=0.95;p.vy*=0.95;p.vy+=60*dt}}parts=parts.filter(p=>p.t<p.life);
   for(const f of floats){f.t+=dt;f.y-=36*dt}floats=floats.filter(f=>f.t<1.4);for(const b of bubbles)b.t+=dt;bubbles=bubbles.filter(b=>b.t<2.8);
+  updScr(dt);updSeason(dt);if(state==='mini')updMini(dt);else if(state==='cafe')updCafe(dt);else if(state==='photo')updPhoto(dt);
   if(state!=='play')return;if(overlay){overlay.t+=dt;if(overlay.k==='done'&&R()<0.05)confetti(3);return}
   const c=cat;c.t+=dt;c.sT+=dt;
   let ix=0,iy=0;{if(Math.abs(joy.dx)>0.15)ix=joy.dx;iy=joy.dy;ix+=arrowDir();ix+=(keys.ArrowRight||keys.KeyD?1:0)-(keys.ArrowLeft||keys.KeyA?1:0);if(keys.ArrowDown||keys.KeyS)iy=1;ix=clamp(ix,-1,1)}
@@ -85,6 +97,7 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
   // Zoe follows (on the floor), runs when far, pets Doodle when he rests near her
   const z=zoe;z.t+=dt;z.pet-=dt;z.happy-=dt;z.petCD-=dt;const zt=c.x-c.face*72,dz=zt-z.x;
   if(z.pet>0)z.walk=0;else if(Math.abs(dz)>14){const sp=Math.abs(dz)>260?330:170;z.x+=Math.sign(dz)*Math.min(Math.abs(dz),sp*dt);z.face=Math.sign(dz);z.walk=1}else{z.walk=0;z.face=c.x>z.x?1:-1}
+  updKits(dt);updSpot(dt);updTrail(dt);
   if(z.petCD<=0&&z.pet<=0&&c.st==='idle'&&c.idle>1.2&&Math.abs(z.x-c.x)<90&&c.y>-70)petCat();
   // collectibles
   for(const s of stars)if(!s.got&&Math.hypot(s.x-c.x,s.y-(c.y-26))<34)collectStar(s);
