@@ -1,5 +1,5 @@
 // ================= UI: map, menus, sticker book, closet, kitty collection, HUD, controls, render =================
-const VERSION='1.3.1 (Oct 16 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
+const VERSION='1.4 (Oct 16 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
 function btn(id,x,y,w,h,fn){const b={id,x,y,w,h,fn};UI.push(b);return b}
 // last-drawn button wins (it is the one on top)
 function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){if(b.id!=='block'&&b.id!=='stage')AUD.SFX.click();b.fn();return true}}return false}
@@ -64,16 +64,16 @@ function drawTitle(){UI=[];softBg('#ffd6ec','#e4d4ff');const L=mapLayout(),land=
   if(dz){X.save();X.translate(dz.x,dz.y);X.scale(0.8,0.8);drawZoe(-56,{t:T,face:1,top:SAVE.zoe.top,tutu:SAVE.zoe.tutu,bow:SAVE.zoe.bow,ears:SAVE.zoe.ears,party:SEASON.bday,happy:Math.sin(T)>0.6?1:0});drawCat(20,0,{t:T,st:'idle',acc:catAcc()});
     parade().forEach((K,i)=>blitKit(K.k,'sit',0,(land?-110:84)+(land?-i*40:i*38),0,land?1:-1,0.9));X.restore()}
   // bottom row: big picture buttons (labels are for grown-ups)
-  const items=[['📖','Stickers',openBook],['👗','Closet',()=>openScreen('closet')],['🐱','Kitties',()=>openScreen('kitties')],['🍰','Café',()=>openScreen('cafe')],['📷','Photo',()=>openScreen('photo')]];
-  const b=L.b,gap=land?Math.min(36,(W-5*b)/6):Math.max(6,(W-INL-INR-5*b)/6),tw=5*b+4*gap,x0=land?Math.min(W/2-tw/2,W*0.78-tw):W/2-tw/2;
-  items.forEach(([ic,lab,fn],i)=>{const x=x0+i*(b+gap),y=L.rowY,bb=1+Math.sin(T*2+i)*0.03;X.fillStyle='rgba(120,60,140,0.18)';X.beginPath();X.arc(x+b/2+1,y+b/2+4,b/2,0,TAU);X.fill();circ(x+b/2,y+b/2,b/2*bb,['#ba68c8','#f06292','#ff8fc8','#ffb74d','#9575cd'][i]);
+  const items=[['📖','Stickers',openBook],['👗','Closet',()=>openScreen('closet')],['🐱','Kitties',()=>openScreen('kitties')],['🍰','Café',()=>openScreen('cafe')],['📷','Photo',()=>openScreen('photo')],[giftReady()?'🎁':'✨','Fun',()=>openScreen('fun')]];
+  const NB=items.length,b=Math.min(L.b,land?L.b:(W-INL-INR-6*(NB+1))/NB),gap=land?Math.min(36,(W-NB*b)/(NB+1)):Math.max(6,(W-INL-INR-NB*b)/(NB+1)),tw=NB*b+(NB-1)*gap,x0=land?Math.max(INL+10,Math.min(W/2-tw/2,W*0.78-tw)):W/2-tw/2;
+  items.forEach(([ic,lab,fn],i)=>{const x=x0+i*(b+gap),y=L.rowY,bb=1+Math.sin(T*2+i)*0.03;X.fillStyle='rgba(120,60,140,0.18)';X.beginPath();X.arc(x+b/2+1,y+b/2+4,b/2,0,TAU);X.fill();circ(x+b/2,y+b/2,b/2*bb*(lab==='Fun'&&giftReady()?1+Math.sin(T*6)*0.06:1),['#ba68c8','#f06292','#ff8fc8','#ffb74d','#9575cd','#4fc3f7'][i]);
     txt(ic,x+b/2,y+b/2+2,b*0.48,'#000');txt(lab,x+b/2,y+b+12,13,'#6a1b9a');btn('m_'+lab.toLowerCase(),x-gap/2,y-4,b+gap,b+24,fn)});
   txt('v'+VERSION,INL+8,TOP+10,10,'rgba(123,63,160,0.5)',{a:'left'});const s=tB();muteBtn(UI,W-INR-s-10,TOP+10);voiceBtn(UI,W-INR-s-10,TOP+18+s);
   if(stT>0.4&&stT<0.45&&AUD.unlocked)say('map',1)}
 // ---------- sticker book ----------
-function drawBook(){UI=[];softBg('#f3e5ff','#ffe0f0');const land=W>H*1.15;txt('My Sticker Book',W/2,TOP+(land?52:110),land?34:30,'#7b3fa0');const cols=land?5:3,r=land?Math.min(70,W/14,H/9):Math.min(50,W/9),cw=land?W/5.6:W/3.2;
-  const tot=PLACES.reduce((a,p)=>a+pdata(p.k).stars.length,0);txt('★ '+tot+'/25 stars   🐟 '+SAVE.fish+'   🐱 '+kitCount()+'/5',W/2,TOP+(land?92:142),18,'#c2185b');
-  PLACES.forEach((P,i)=>{const c=i%cols,rw=(i/cols)|0,n=Math.min(cols,5-rw*cols),x=W/2+(c-(n-1)/2)*cw,y=TOP+(land?H*0.42:235)+rw*(r*2+76),d=pdata(P.k);sticker(P.k,x,y,r,d.sticker);txt(P.n,x,y+r+18,16,'#6a1b9a');txt('★'+d.stars.length+'/5 '+(d.task?'✓ helped':'○ help'),x,y+r+38,13,'#ab47bc');
+function drawBook(){UI=[];softBg('#f3e5ff','#ffe0f0');const land=W>H*1.15;txt('My Sticker Book',W/2,TOP+(land?52:110),land?34:30,'#7b3fa0');const NP=PLACES.length,cols=land?(NP>5?4:5):(NP>6?3:3),r=land?Math.min(NP>5?56:70,W/14,H/(NP>5?11:9)):Math.min(NP>6?40:50,W/9),cw=land?W/(cols+0.6):W/3.2;
+  const tot=PLACES.reduce((a,p)=>a+pdata(p.k).stars.length,0);txt('★ '+tot+'/'+PLACES.length*5+' stars   🐟 '+SAVE.fish+'   🐱 '+kitCount()+'/'+KITTIES.length,W/2,TOP+(land?92:142),18,'#c2185b');
+  PLACES.forEach((P,i)=>{const c=i%cols,rw=(i/cols)|0,n=Math.min(cols,NP-rw*cols),x=W/2+(c-(n-1)/2)*cw,y=TOP+(land?(NP>5?H*0.3:H*0.42):(NP>6?205:235))+rw*(r*2+(NP>5?66:76)),d=pdata(P.k);sticker(P.k,x,y,r,d.sticker);txt(P.n,x,y+r+18,16,'#6a1b9a');txt('★'+d.stars.length+'/5 '+(d.task?'✓ helped':'○ help'),x,y+r+38,13,'#ab47bc');
     const m=MGSPOT[P.k],g=SAVE.mg[m.k];if(g){circ(x-r*0.7,y-r*0.7,16,'#fff');mgIcon(m.k,x-r*0.7,y-r*0.7,0.9)}});
   bigBack()}
 // ---------- closet (tabs: Doodle / Zoe) ----------
@@ -173,7 +173,7 @@ function render(){X.setTransform(RS,0,0,RS,0,0);
     X.save();X.translate(W/2,H/2);X.scale(6.4,6.4);drawCat(-24,50,{t:0.3,st:'idle',acc:{bow:1}});X.restore();return}
   if(state==='play'){drawWorld();drawHUD();if(overlay&&overlay.k==='done')drawDone();else if(overlay&&overlay.k==='name'){UI=[];drawNamePicker(overlay.K,overlay.sel,nameSel,nameConfirm,true)}else UI=[]}
   else if(state==='book')drawBook();else if(state==='closet')drawCloset();else if(state==='menu')drawMenu();else if(state==='kitties')drawKitties();
-  else if(state==='mini')drawMini();else if(state==='cafe')drawCafe();else if(state==='photo')drawPhotoScreen();else drawTitle();
+  else if(state==='mini')drawMini();else if(state==='cafe')drawCafe();else if(state==='photo')drawPhotoScreen();else if(XS[state])XS[state].draw();else drawTitle();
   drawScr();if(state!=='play')HUDB=[]}
 // ---------- loop + adaptive quality ----------
 let last=performance.now(),acc=0;const rafA=[],workA=[];let qWin=[];const FIXQ=/[?&]q=fixed/.test(Q);

@@ -8,7 +8,7 @@ const KITTIES=[
 const KIT=k=>KITTIES.find(q=>q.k===k),PARADE_MAX=5;
 const kitName=k=>SAVE.kit[k]&&SAVE.kit[k].name||KIT(k).names[0][0];
 const kitEmoji=k=>{const K=KIT(k),n=kitName(k),e=K.names.find(q=>q[0]===n);return e?e[1]:'🐱'};
-function parade(){return KITTIES.filter(K=>SAVE.kit[K.k]).sort((a,b)=>(SAVE.kit[a.k].at||0)-(SAVE.kit[b.k].at||0)).slice(0,PARADE_MAX)}
+function parade(){return KITTIES.filter(K=>SAVE.kit[K.k]).sort((a,b)=>(SAVE.kit[a.k].at||0)-(SAVE.kit[b.k].at||0)).slice(-PARADE_MAX)}// newest five follow Doodle
 // sprite cache: each kitty pose is drawn once and then blitted (cheap on the iPad's A10)
 function kitSpr(k,pose,fr,party,closed){return spr('kit:'+k+pose+fr+(party?1:0)+(closed?1:0),120,130,()=>{X.translate(0,60);drawKit(KIT(k),pose,fr,{party,closed})})}
 function blitKit(k,pose,fr,x,y,face,sc,o){o=o||{};sc=sc||1;const s=kitSpr(k,pose,fr,o.party!=null?o.party:SEASON.bday,o.closed);X.save();X.translate(x,y);X.scale(face<0?-sc:sc,sc);X.drawImage(s.c,-60,-125,120,130);X.restore()}
@@ -55,10 +55,10 @@ function nameConfirm(){const o=overlay;if(!o||o.k!=='name')return;nameDone(o.K,o
   const got=checkUnlocks();if(got.length){setTimeout(()=>{float('Something new in the closet!',cat.x,cat.y-100,'#fff59d');say('newitem',2)},2600)}}
 // ---------- collection page ----------
 function drawKitties(){UI=[];softBg('#ffe0f0','#e8dcff');const land=W>H*1.15,n=kitCount();
-  txt('My Kitty Friends',W/2,TOP+(land?50:104),land?32:28,'#c2185b');txt('🐱 '+n+' / 5',W/2,TOP+(land?86:138),20,'#7b3fa0');
-  const cols=land?5:2,rows=Math.ceil(5/cols),top=TOP+(land?108:160),bot=H-Math.max(BOT,8)-(land?82:84),gap=12;
+  txt('My Kitty Friends',W/2,TOP+(land?50:104),land?32:28,'#c2185b');txt('🐱 '+n+' / '+KITTIES.length,W/2,TOP+(land?86:138),20,'#7b3fa0');
+  const KN=KITTIES.length,cols=land?(KN>5?4:5):(KN>6?3:2),rows=Math.ceil(KN/cols),top=TOP+(land?108:160),bot=H-Math.max(BOT,8)-(land?82:84),gap=12;
   const cw=Math.min(land?170:180,(W-INL-INR-24-gap*(cols-1))/cols),ch=Math.min(land?300:220,(bot-top-gap*(rows-1))/rows);
-  KITTIES.forEach((K,i)=>{const c=i%cols,r=(i/cols)|0,inRow=Math.min(cols,5-r*cols),x=W/2-(inRow*cw+(inRow-1)*gap)/2+c*(cw+gap),y=top+r*(ch+gap),got=!!SAVE.kit[K.k];
+  KITTIES.forEach((K,i)=>{const c=i%cols,r=(i/cols)|0,inRow=Math.min(cols,KN-r*cols),x=W/2-(inRow*cw+(inRow-1)*gap)/2+c*(cw+gap),y=top+r*(ch+gap),got=!!SAVE.kit[K.k];
     X.fillStyle=got?'#fff':'rgba(255,255,255,0.55)';rrect(x,y,cw,ch,20);X.fill();const ks=Math.min(1.7,ch/130,cw/80),fy=y+ch-44;
     if(got){blitKit(K.k,'sit',0,x+cw/2,fy-Math.abs(Math.sin(T*2+i))*3,i%2?-1:1,ks);txt(kitEmoji(K.k)+' '+kitName(K.k),x+cw/2,y+ch-22,Math.min(20,cw/7.5),'#7b3fa0');
       const rb=Math.max(44,PT(44));X.fillStyle='rgba(255,193,227,0.9)';rrect(x+cw-rb-4,y+4,rb,rb,14);X.fill();txt('✏️',x+cw-rb/2-4,y+4+rb/2+1,20,'#000');

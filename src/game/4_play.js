@@ -62,7 +62,7 @@ function checkDone(){const d=pdata(pl.k);if(d.sticker||d.stars.length<5||!d.task
 function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner=null}
   for(const p of parts){p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.conf){p.vy=Math.min(p.vy+60*dt,160);p.vx+=Math.sin(T*3+p.rot)*20*dt;p.rot+=dt*4}else if(p.heart){p.vy+=20*dt}else{p.vx*=0.95;p.vy*=0.95;p.vy+=60*dt}}parts=parts.filter(p=>p.t<p.life);
   for(const f of floats){f.t+=dt;f.y-=36*dt}floats=floats.filter(f=>f.t<1.4);for(const b of bubbles)b.t+=dt;bubbles=bubbles.filter(b=>b.t<2.8);
-  updScr(dt);updSeason(dt);if(state==='mini')updMini(dt);else if(state==='cafe')updCafe(dt);else if(state==='photo')updPhoto(dt);
+  updScr(dt);updSeason(dt);if(state==='mini')updMini(dt);else if(state==='cafe')updCafe(dt);else if(state==='photo')updPhoto(dt);else if(XS[state]&&XS[state].upd)XS[state].upd(dt);
   if(state!=='play')return;if(overlay){overlay.t+=dt;if(overlay.k==='done'&&R()<0.05)confetti(3);return}
   const c=cat;c.t+=dt;c.sT+=dt;
   let ix=0,iy=0;{if(Math.abs(joy.dx)>0.15)ix=joy.dx;iy=joy.dy;ix+=arrowDir();ix+=(keys.ArrowRight||keys.KeyD?1:0)-(keys.ArrowLeft||keys.KeyA?1:0);if(keys.ArrowDown||keys.KeyS)iy=1;ix=clamp(ix,-1,1)}

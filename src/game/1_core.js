@@ -57,7 +57,8 @@ function inR(p,b){return p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h}
 const nearB=(p,b,s)=>Math.hypot(p.x-b.x,p.y-b.y)<b.r+(s||10);
 function recount(){jumpHeld=0;for(const q of ptrs.values())if(q.role==='jump')jumpHeld++}
 // screens (mini-games, photo booth, cafe...) register handlers here: SCR[state]={down,move,up,key,back}
-const SCR={};const PT=n=>n/SC; // PT(44) = 44 points in game units (touch-target minimum)
+const SCR={},XS={}; // XS: extra v1.4 screens {draw,upd}
+const PT=n=>n/SC; // PT(44) = 44 points in game units (touch-target minimum)
 cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=toG(e);
   if(state!=='play'||overlay){if(uiTap(p))return;const S=SCR[state];if(S&&S.down&&state!=='play')S.down(p,e.pointerId);return}
   for(const b of HUDB)if(inR(p,b)){b.fn();return}

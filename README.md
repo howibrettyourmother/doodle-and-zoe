@@ -23,3 +23,13 @@ Play: https://howibrettyourmother.github.io/doodle-and-zoe/ (tip: Share → Add 
 - **Every screen has a big Back button, and Esc works too.** In play, the 🐾 button in the top-right opens the menu (Kitties, Café, Photo Booth, Closet, Stickers), and 🗺️ goes to the map.
 
 Single self-contained `index.html`, built by `python3 src/build.py`.
+
+## v1.4 (Oct 2026): iPad-first extras for Zoe
+All read aloud, no fail states, saved on the device. New ✨/🎁 **Fun** button on the map opens the **Fun Corner**:
+- 🎁 **Doodle's daily surprise**: one gift a day (a new sticker, outfit or kitty toy) plus a weekly sticker chart. A bouncing present on the map shows when today's gift is waiting.
+- 🌙 **Kitty Sleepover**: tuck in Doodle and every kitty friend, with blankets, a night light and a music-box lullaby.
+- 🏠 **My House**: wallpaper, floors, furniture and toys. Tap to add, drag to move, drag to the bin to remove. Three cushions for the kitty friends.
+- 🛁 **Pet Care**: brush, bubble bath and food for Doodle and the kitties, with purrs and a happiness heart for each.
+- 🖍️ **Color & Draw**: coloring pages of Doodle, Zoe and the kitties with big-tap fill, crayons, undo and free drawing. 🧲 saves to the **Fridge** gallery (last 12 pictures).
+- 🙈 **Kitty hide-and-seek** in every place: ears peek over the furniture, and tapping one gets a giggle and a peekaboo.
+- 🎃 **Pumpkin Patch**, ❄️ **Snowy Park** and 🏖️ **Beach**: each place has 5 stars, a helper task, a new kitty friend and a mini-game (Pumpkin Peek, Snowflake Catch, Seashell Dig).

@@ -133,6 +133,8 @@ const AUD=(()=>{
       e6 . d6 . c6 . g5 .  a5 . e5 . a5 . c6 .  f6 . e6 . d6 . c6 .  d6 - - . b5 . g5 .`)},
     park:{bpm:118,prog:'G C D G Em C D D',dr:'soft',lead:'box',mel:P(`d5 . g5 . b5 . d6 .  e6 . c6 . g5 . c6 .  f#5 . a5 . d6 . f#6 .  g6 - - . d6 . b5 .
       b5 . e6 . g6 . e6 .  e6 . c6 . g5 . e5 .  d6 . f#6 . a6 . f#6 .  d6 - - . a5 . f#5 .`)},
+    lull:{bpm:62,prog:'C C C F C G G C',dr:'none',lead:'box',mel:P(`e5 . e5 . g5 - - .  e5 . e5 . g5 - - .  e5 . g5 . c6 - b5 .  a5 - - . g5 - - .
+      d5 . e5 . f5 - d5 .  d5 . e5 . f5 - - .  d5 . f5 . b5 . a5 g5  b5 - - . c6 - - .`)},
     cozy:{bpm:98,prog:'D G A D Bm G A D',dr:'none',lead:'box',mel:P(`f#5 . a5 . d6 . a5 .  g5 . b5 . d6 - . .  e5 . a5 . c#6 . e6 .  d6 - - . a5 . f#5 .
       b5 . d6 . f#6 . d6 .  g6 . d6 . b5 . g5 .  a5 . c#6 . e6 . g6 .  f#6 - - . - . . .`)},
     win:{bpm:120,prog:'C F G C Am F G C',dr:'soft',lead:'box',mel:P(`c5 . e5 . g5 . c6 -  a5 - f5 . c6 . a5 .  b5 . g5 . d6 . b5 .  c6 - - . g5 . c6 .
