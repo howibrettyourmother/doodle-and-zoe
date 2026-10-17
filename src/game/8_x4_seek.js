@@ -17,4 +17,4 @@ function seekFound(s){s.found=1;s.ft=0;AUD.SFX.squeak();setTimeout(()=>AUD.SFX.m
   const nm=SAVE.kit[s.K.k]?kitName(s.K.k):'a kitty';const left=SEEK.filter(q=>!q.found).length;
   sayT('Hee hee! Peekaboo! You found '+nm+'!'+(left?'':' You found all the hiding kitties!'),3);if(!left)confetti(50)}
 const _update=update;update=function(dt){_update(dt);if(state==='play'&&SEEK.length){SEEK.t=(SEEK.t||0)+dt;for(const s of SEEK)if(s.found)s.ft+=dt}};
-if(DEBUG)window.__X={SCR,artFill,uiHit:p=>UI.filter(b=>inR(p,b)).map(b=>b.id),AR:()=>AR,artRect,SEEK:()=>SEEK,PC:()=>PC,SL:()=>SL,GF:()=>GF};
+if(DEBUG)window.__X={SCR,artFill,artMake,PAGES,CRAY,ART_N,SCg:()=>SC,uiHit:p=>UI.filter(b=>inR(p,b)).map(b=>b.id),AR:()=>AR,artRect,SEEK:()=>SEEK,PC:()=>PC,SL:()=>SL,GF:()=>GF};

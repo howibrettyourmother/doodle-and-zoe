@@ -1,5 +1,5 @@
 // ================= UI: map, menus, sticker book, closet, kitty collection, HUD, controls, render =================
-const VERSION='1.4 (Oct 16 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
+const VERSION='1.4.1 (Oct 16 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
 function btn(id,x,y,w,h,fn){const b={id,x,y,w,h,fn};UI.push(b);return b}
 // last-drawn button wins (it is the one on top)
 function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){if(b.id!=='block'&&b.id!=='stage')AUD.SFX.click();b.fn();return true}}return false}
