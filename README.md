@@ -11,6 +11,8 @@ Play: https://howibrettyourmother.github.io/doodle-and-zoe/ (tip: Share → Add 
 - Controls: one low, semi-transparent row pinned to the bottom corners (LEFT/RIGHT arrows, JUMP, PAW) with the floor drawn above it so the controls never cover Doodle or Zoe; floating joystick anywhere on the left half (multi-touch). Arrows/WASD + Space + X work on a keyboard.
 - Original music-box tunes; progress is saved on the device (older saves keep working).
 
+- **v1.5:** My House delete (tap item → red ✕, drag to bin fixed on iPad, 🧹 start over with picture yes/no), Kitty Dance Party, spoken idle hints, 72px+ touch targets on iPad, tap sparkles.
+
 ## New in v1.3
 
 - **Kitty friends:** one kitty waits at each place (fluffy white Persian at Dad's, purple galaxy kitty at Mom's, tiny grey kitten at KiddieKlub, calico at the Park, fancy pink-bow kitty at Grandma Gail's). Tap her or press PAW nearby to pet (purr and hearts), then pick a name from picture buttons that are read aloud. Found kitties follow Doodle in a little parade (all 5 at most, each a cached sprite so it stays fast). The kitty icon in the top bar shows whether this place's kitty has been found. You can see all of them on the 🐱 Kitties page.

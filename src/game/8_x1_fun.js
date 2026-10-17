@@ -92,7 +92,7 @@ XS.fun={draw(){UI=[];softBg('#fff0f8','#e0f2ff');const L=XL();xHead('Fun Corner'
   const cols=L.land?5:3,n=FUN.length,rows=Math.ceil(n/cols),gap=14,top=TOP+L.bb+30,bot=H-Math.max(BOT,8)-16,ts=Math.min((W-INL-INR-30-gap*(cols-1))/cols,(bot-top-gap*(rows-1))/rows,L.land?170:160);
   FUN.forEach(([ic,lab,fn,c,sy],i)=>{const r=(i/cols)|0,inRow=Math.min(cols,n-r*cols),cc=i%cols,x=W/2-(inRow*ts+(inRow-1)*gap)/2+cc*(ts+gap),y=top+r*(ts+gap);
     bigTile(x,y,ts,ts,i===0&&giftReady()?'🎁':ic,lab,c,()=>{if(sy)sayT(sy,2);fn()},'fun_'+lab.split(' ')[0].toLowerCase(),i===0&&giftReady());
-    if(i>=6){const d=pdata(PLACES[i-1].k);if(d.sticker)star5(x+ts-18,y+18,12,'#ffd54f')}});
+    if(i>=6&&PLACES[i-1]){const d=pdata(PLACES[i-1].k);if(d.sticker)star5(x+ts-18,y+18,12,'#ffd54f')}});
   bigBack()}};
 // gift button on the map when today's surprise is waiting
 const _drawTitle=drawTitle;drawTitle=function(){_drawTitle();if(!giftReady())return;const x=INL+46,y=TOP+50,b=Math.abs(Math.sin(T*3))*6,r=Math.max(30,PT(30));

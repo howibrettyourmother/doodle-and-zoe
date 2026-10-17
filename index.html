@@ -255,7 +255,8 @@ const nearB=(p,b,s)=>Math.hypot(p.x-b.x,p.y-b.y)<b.r+(s||10);
 function recount(){jumpHeld=0;for(const q of ptrs.values())if(q.role==='jump')jumpHeld++}
 // screens (mini-games, photo booth, cafe...) register handlers here: SCR[state]={down,move,up,key,back}
 const SCR={},XS={}; // XS: extra v1.4 screens {draw,upd}
-const PT=n=>n/SC; // PT(44) = 44 points in game units (touch-target minimum)
+const TOUCHMIN=()=>Math.min(SW,SH)>=700?72:0;
+const PT=n=>Math.max(n,TOUCHMIN())/SC; // v1.5: every PT() touch target is at least 72px on iPad
 cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=toG(e);
   if(state!=='play'||overlay){if(uiTap(p))return;const S=SCR[state];if(S&&S.down&&state!=='play')S.down(p,e.pointerId);return}
   for(const b of HUDB)if(inR(p,b)){b.fn();return}
@@ -684,7 +685,7 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
 }
 
 // ================= UI: map, menus, sticker book, closet, kitty collection, HUD, controls, render =================
-const VERSION='1.4.1 (Oct 16 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
+const VERSION='1.5 (Oct 16 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
 function btn(id,x,y,w,h,fn){const b={id,x,y,w,h,fn};UI.push(b);return b}
 // last-drawn button wins (it is the one on top)
 function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){if(b.id!=='block'&&b.id!=='stage')AUD.SFX.click();b.fn();return true}}return false}
@@ -776,11 +777,11 @@ function drawCloset(){UI=[];softBg('#ffe0f0','#efe0ff');const land=W>H*1.15,bb=M
   if(SAVE.wear.trail&&SAVE.un.trail&&R()<0.15)sSpark(pr.x+10*pr.s,pr.y-20*pr.s,1);drawCat(30,0,{t:T,st:'idle',acc:catAcc(),s:1.1});X.restore();
   const x0=land?W*0.42:INL+12,x1=W-INR-12,cw=x1-x0;let y=land?head:pr.y+18;
   const tw=Math.min(180,(cw-12)/2),th=Math.max(52,PT(44));[['🐱 Doodle',0],['👧 Zoe',1]].forEach(([l,i])=>{const x=x0+cw/2-tw-6+i*(tw+12);pill(x,y,tw,th,l,closetTab===i?'#ff5c9e':'#d8b4e8',20);btn('tab'+i,x,y,tw,th,()=>{closetTab=i;sayT(i?'Zoe!':'Doodle!',2)})});y+=th+16;
-  if(closetTab===0){const s=Math.max(PT(46),Math.min(64,(cw-6*7)/8)),cols=Math.max(1,Math.floor((cw+6)/(s+6))),list=ITEMS.filter(it=>!it.sea||SAVE.un[it.k]||it.sea===SEASON.k).concat(ITEMS.filter(it=>it.sea&&!SAVE.un[it.k]&&it.sea!==SEASON.k));
+  if(closetTab===0){const s=Math.max(PT(46),Math.min(land?96:64,(cw-6*(land?4:7))/(land?5:8))),cols=Math.max(1,Math.floor((cw+6)/(s+6))),list=ITEMS.filter(it=>!it.sea||SAVE.un[it.k]||it.sea===SEASON.k).concat(ITEMS.filter(it=>it.sea&&!SAVE.un[it.k]&&it.sea!==SEASON.k));
     list.forEach((it,i)=>{const c=i%cols,r=(i/cols)|0,n=Math.min(cols,list.length-r*cols),x=x0+cw/2-(n*s+(n-1)*6)/2+c*(s+6),yy=y+r*(s+6),on=SAVE.wear[it.k],un=SAVE.un[it.k];X.fillStyle=on&&un?'#ff8fc8':'rgba(255,255,255,0.85)';rrect(x,yy,s,s,14);X.fill();
       if(un){X.save();X.translate(x+s/2,yy+s*0.62);const k=s/54;X.scale(k,k);itemIcon(it.k);X.restore()}else{X.globalAlpha=0.3;X.save();X.translate(x+s/2,yy+s*0.62);X.scale(s/54,s/54);itemIcon(it.k);X.restore();X.globalAlpha=1;txt('🔒',x+s-12,yy+12,13,'#999')}
       btn('it_'+it.k,x,yy,s,s,()=>{if(!un){AUD.SFX.boing();sayT(UNLOCK_HINT[it.k]||'Keep playing!',2);return}SAVE.wear[it.k]=on?0:1;save();AUD.SFX.sticker();AUD.SFX.meow(1);if(!on)sayT(it.n+'!',1)})})}
-  else{const rows=[['Shirt',TOPS,'top',TOPFISH],['Tutu',TUTUS,'tutu'],['Hair Bow',HBOWS,'bow'],['Kitty Ears',ZEARS,'ears']],lw0=land?86:70,ss=Math.max(PT(44),Math.min(50,(cw-lw0-8*7)/7)),above=lw0+7*(ss+8)>cw,lw=above?Math.max(0,(cw-7*(ss+8)+8)/2):lw0;
+  else{const rows=[['Shirt',TOPS,'top',TOPFISH],['Tutu',TUTUS,'tutu'],['Hair Bow',HBOWS,'bow'],['Kitty Ears',ZEARS,'ears']],lw0=land?86:70,ss=Math.max(PT(44),Math.min(land?66:50,(cw-lw0-8*7)/7)),above=lw0+7*(ss+8)>cw,lw=above?Math.max(0,(cw-7*(ss+8)+8)/2):lw0;
     for(const [lab,arr,key,need] of rows){if(above){txt(lab,x0+cw/2,y+4,14,'#ab47bc');y+=16}else txt(lab,x0+lw/2,y+ss/2,14,'#ab47bc');arr.forEach((c,i)=>{const x=x0+lw+i*(ss+8),lk=need&&SAVE.fish<need[i],on=(SAVE.zoe[key]||null)===c;X.fillStyle=on?'#7b3fa0':'#fff';rrect(x-3,y-3,ss+6,ss+6,14);X.fill();X.fillStyle=c||'#fff';rrect(x,y,ss,ss,11);X.fill();
       if(key==='ears'&&c){poly([x+ss*0.2,y+ss*0.75,x+ss*0.28,y+ss*0.2,x+ss*0.48,y+ss*0.6],'#fff0f6');poly([x+ss*0.52,y+ss*0.6,x+ss*0.72,y+ss*0.2,x+ss*0.8,y+ss*0.75],'#fff0f6')}
       if(!c)txt('✕',x+ss/2,y+ss/2,18,'#bbb');if(lk){X.fillStyle='rgba(255,255,255,0.7)';rrect(x,y,ss,ss,11);X.fill();txt('🐟'+need[i],x+ss/2,y+ss/2,12,'#7b3fa0')}
@@ -1373,7 +1374,7 @@ XS.fun={draw(){UI=[];softBg('#fff0f8','#e0f2ff');const L=XL();xHead('Fun Corner'
   const cols=L.land?5:3,n=FUN.length,rows=Math.ceil(n/cols),gap=14,top=TOP+L.bb+30,bot=H-Math.max(BOT,8)-16,ts=Math.min((W-INL-INR-30-gap*(cols-1))/cols,(bot-top-gap*(rows-1))/rows,L.land?170:160);
   FUN.forEach(([ic,lab,fn,c,sy],i)=>{const r=(i/cols)|0,inRow=Math.min(cols,n-r*cols),cc=i%cols,x=W/2-(inRow*ts+(inRow-1)*gap)/2+cc*(ts+gap),y=top+r*(ts+gap);
     bigTile(x,y,ts,ts,i===0&&giftReady()?'🎁':ic,lab,c,()=>{if(sy)sayT(sy,2);fn()},'fun_'+lab.split(' ')[0].toLowerCase(),i===0&&giftReady());
-    if(i>=6){const d=pdata(PLACES[i-1].k);if(d.sticker)star5(x+ts-18,y+18,12,'#ffd54f')}});
+    if(i>=6&&PLACES[i-1]){const d=pdata(PLACES[i-1].k);if(d.sticker)star5(x+ts-18,y+18,12,'#ffd54f')}});
   bigBack()}};
 // gift button on the map when today's surprise is waiting
 const _drawTitle=drawTitle;drawTitle=function(){_drawTitle();if(!giftReady())return;const x=INL+46,y=TOP+50,b=Math.abs(Math.sin(T*3))*6,r=Math.max(30,PT(30));
@@ -1442,7 +1443,7 @@ const HF={couch:{w:220,h:125,o:{}},bed:{w:220,h:120,o:{}},armchair:{w:110,h:120,
 const HE=[['🪴',90],['🖼️',80],['💡',80],['🧸',70],['🛋️',90],['🌈',90],['🕰️',70],['🪟',100]];
 function houseItems(){return Object.keys(HF).filter(k=>FURN[k]).map(k=>({t:k})).concat(HE.map(e=>({t:'e',e:e[0],sz:e[1]}))).concat(SAVE.x.toys.map(e=>({t:'e',e,sz:60})))}
 let HS=null;
-SCR.house={open(){HS={drag:null,pal:0};AUD.setTheme('home');sayT('Let\'s decorate! Tap something to put it in the house. Drag it to move it.',2)},close(){HS=null;save()},
+SCR.house={open(){HS={drag:null,pal:0};AUD.setTheme('home');sayT('Let\'s decorate! Tap a picture to put it in the house!',2)},close(){HS=null;save()},
   down(p,id){const R0=houseRoom(),it=houseHit(p,R0);if(it){HS.drag={id,it,ox:p.x-(R0.x+it.u*R0.w),oy:p.y-(R0.y+it.v*R0.h)};const a=SAVE.x.house.items;a.splice(a.indexOf(it),1);a.push(it);AUD.SFX.pat()}},
   move(p,id){const d=HS&&HS.drag;if(!d||d.id!==id)return;const R0=houseRoom();d.it.u=clamp((p.x-d.ox-R0.x)/R0.w,0.03,0.97);d.it.v=clamp((p.y-d.oy-R0.y)/R0.h,0.08,1);d.px=p.x;d.py=p.y},
   up(p,id){const d=HS&&HS.drag;if(!d||d.id!==id)return;HS.drag=null;const bn=houseBin();if(Math.hypot(p.x-bn.x,p.y-bn.y)<bn.r+20){const a=SAVE.x.house.items;a.splice(a.indexOf(d.it),1);AUD.SFX.plop();sayT('Bye bye!',1)}save()}};
@@ -1468,7 +1469,7 @@ XS.house={draw(){UI=[];const H0=SAVE.x.house,R0=houseRoom(),wp=WPS[H0.wp%WPS.len
     X.fillStyle='rgba(255,255,255,0.9)';rrect(INL+8,py-6,W-INL-INR-16,ps+12,24);X.fill();
     P.slice(pg*per,pg*per+per).forEach((it,i)=>{const x=INL+12+ps*0.6+i*(ps+8)+4,y=py;X.fillStyle='#fdeaf5';rrect(x,y,ps,ps,18);X.fill();
       if(it.t==='e')txt(it.e,x+ps/2,y+ps/2+2,ps*0.55,'#000');else{const f=HF[it.t],k=Math.min((ps-14)/f.w,(ps-14)/f.h);X.save();X.translate(x+ps/2,y+ps-8);X.scale(k,k);try{FURN[it.t].draw(Object.assign({x:-f.w/2},f.o))}catch(e){}X.restore()}
-      btn('pal'+i,x,y,ps,ps,()=>{if(SAVE.x.house.items.length>=30){sayT('The house is full! Drag something to the bin.',2);return}SAVE.x.house.items.push(Object.assign({u:rr(0.35,0.65),v:it.t==='e'&&(it.e==='🖼️'||it.e==='🪟'||it.e==='🕰️'||it.e==='🌈')?0.35:0.9},it));save();AUD.SFX.boing();sSpark(W/2,R0.y+R0.h*0.7,8)})});
+      btn('pal'+i,x,y,ps,ps,()=>{if(SAVE.x.house.items.length>=30){sayT('The house is full! Tap something, then tap the red X!',2);return}SAVE.x.house.items.push(Object.assign({u:rr(0.35,0.65),v:it.t==='e'&&(it.e==='🖼️'||it.e==='🪟'||it.e==='🕰️'||it.e==='🌈')?0.35:0.9},it));save();AUD.SFX.boing();sSpark(W/2,R0.y+R0.h*0.7,8)})});
     if(pages>1){const x=W-INR-12-ps*0.6;pill(x-4,py,ps*0.6,ps,'▶','#ff8fc8',28);btn('palnext',x-8,py-4,ps*0.6+8,ps+8,()=>{HS.pal=(HS.pal+1)%pages;AUD.SFX.click()})}
     bigBack()}};
 
@@ -1487,7 +1488,7 @@ XS.care={upd(dt){const P=PC;if(!P)return;P.happy=Math.max(0,P.happy-dt);if(P.rin
     if(P.food){P.food+=dt;if(P.food>2.5){P.food=0;if(!P.joy.f){P.joy.f=1;careDone('What a full tummy!')}}}},
   draw(){UI=[];softBg('#e0f7ff','#fff0f8');const c=careLay(),P=PC;if(!P){bigBack();return}const ps=petList();if(P.sel>=ps.length)P.sel=0;const pt=ps[P.sel];
     // pick a pet (row of portraits)
-    const n=ps.length,pr=c.pr,gap=12,x0=W/2-(n*pr*2+(n-1)*gap)/2+pr;ps.forEach((q,i)=>{const x=x0+i*(pr*2+gap),y=c.top+pr,on=i===P.sel;circ(x,y,pr+4,on?'#ff5c9e':'rgba(255,255,255,0.7)');circ(x,y,pr,'#fff');X.save();X.beginPath();X.arc(x,y,pr,0,TAU);X.clip();drawPet(q.k,x,y+pr*0.75,pr/52,'idle');X.restore();
+    const n=ps.length,gap=12,av=W-INL-INR-40,pr=Math.max(PT(36),Math.min(c.pr,(av-(n-1)*gap)/(2*n))),per=Math.max(1,Math.floor((av+gap)/(2*pr+gap)));ps.forEach((q,i)=>{const rw=(i/per)|0,nR=Math.min(per,n-rw*per),x=W/2-(nR*pr*2+(nR-1)*gap)/2+pr+(i%per)*(pr*2+gap),y=c.top+pr+rw*(pr*2+8),on=i===P.sel;circ(x,y,pr+4,on?'#ff5c9e':'rgba(255,255,255,0.7)');circ(x,y,pr,'#fff');X.save();X.beginPath();X.arc(x,y,pr,0,TAU);X.clip();drawPet(q.k,x,y+pr*0.75,pr/52,'idle');X.restore();
       btn('pet'+i,x-pr-4,y-pr-4,2*pr+8,2*pr+8,()=>{if(P.sel!==i){P.sel=i;P.joy={};P.bub=[];P.brush=0;P.food=0;P.rinse=0}AUD.SFX.meow(i%3);sayT(q.n+'!',2)})});
     // the pet, tub, bubbles, bowl
     const cx=c.cx,cy=c.cy,s=c.s;if(P.tool===1){X.fillStyle='#b3e5fc';rrect(cx-95*s,cy-30*s,190*s,44*s,20*s);X.fill();X.fillStyle='#fff';rrect(cx-100*s,cy-8*s,200*s,26*s,12*s);X.fill()}
@@ -1610,6 +1611,63 @@ function seekFound(s){s.found=1;s.ft=0;AUD.SFX.squeak();setTimeout(()=>AUD.SFX.m
   sayT('Hee hee! Peekaboo! You found '+nm+'!'+(left?'':' You found all the hiding kitties!'),3);if(!left)confetti(50)}
 const _update=update;update=function(dt){_update(dt);if(state==='play'&&SEEK.length){SEEK.t=(SEEK.t||0)+dt;for(const s of SEEK)if(s.found)s.ft+=dt}};
 if(DEBUG)window.__X={SCR,artFill,artMake,PAGES,CRAY,ART_N,SCg:()=>SC,uiHit:p=>UI.filter(b=>inR(p,b)).map(b=>b.id),AR:()=>AR,artRect,SEEK:()=>SEEK,PC:()=>PC,SL:()=>SL,GF:()=>GF};
+
+// ================= v1.5: My House delete fixes + kid polish (idle voice hints, tap sparkles) =================
+// --- My House: robust bin drop, tap-to-select red X bubble, broom "start over" with picture yes/no ---
+(function(){const H=SCR.house,o0=H.open;
+  H.open=function(){o0.call(this);HS.sel=null;HS.conf=0};
+  H.down=function(p,id){if(HS.conf)return;const R0=houseRoom(),it=houseHit(p,R0);if(it){HS.drag={id,it,ox:p.x-(R0.x+it.u*R0.w),oy:p.y-(R0.y+it.v*R0.h),sx:p.x,sy:p.y,px:p.x,py:p.y,moved:0};const a=SAVE.x.house.items;a.splice(a.indexOf(it),1);a.push(it);AUD.SFX.pat()}else if(HS.sel){HS.sel=null}};
+  H.move=function(p,id){const d=HS&&HS.drag;if(!d||d.id!==id)return;if(Math.hypot(p.x-d.sx,p.y-d.sy)>14)d.moved=1;if(!d.moved)return;const R0=houseRoom();d.it.u=clamp((p.x-d.ox-R0.x)/R0.w,0.03,0.97);d.it.v=clamp((p.y-d.oy-R0.y)/R0.h,0.08,1);d.px=p.x;d.py=p.y;HS.sel=null};
+  H.up=function(p,id){const d=HS&&HS.drag;if(!d||d.id!==id)return;HS.drag=null;
+    if(!d.moved){HS.sel=HS.sel===d.it?null:d.it;if(HS.sel)sayT('Tap the red X to take it away!',1);return}
+    // iPad can send pointercancel / odd coords on lift: use the last tracked finger spot too
+    const bn=houseBin(),near=q=>Math.hypot(q.x-bn.x,q.y-bn.y)<bn.r+44;if(near({x:d.px,y:d.py})||(p&&isFinite(p.x)&&near(p)))houseRemove(d.it);save()}})();
+function houseRemove(it){const a=SAVE.x.house.items,i=a.indexOf(it);if(i<0)return;const R0=houseRoom();a.splice(i,1);AUD.SFX.plop();AUD.SFX.whoosh();sSpark(R0.x+it.u*R0.w,R0.y+it.v*R0.h-30,16);if(HS)HS.sel=null;sayT(pick(['Poof!','Bye bye!','All gone!']),1);save()}
+houseBin=function(){const R0=houseRoom();return{x:R0.x+R0.w-70,y:R0.fy-10,r:48}};
+(function(){const d0=XS.house.draw;XS.house.draw=function(){d0();if(!HS)return;const R0=houseRoom(),S=Math.max(70/SC,64);
+  if(HS.drag&&HS.drag.moved){const b=houseBin(),hot=Math.hypot(HS.drag.px-b.x,HS.drag.py-b.y)<b.r+44;circ(b.x,b.y,(b.r+8)*(hot?1.2:1),hot?'#ff8a80':'rgba(255,255,255,0.9)');txt('🗑️',b.x,b.y+2,b.r*1.1,'#000')}
+  const it=HS.sel;if(it&&SAVE.x.house.items.includes(it)){const s=houseSize(it,R0),x=R0.x+it.u*R0.w+s.w/2-6,y=R0.y+it.v*R0.h-s.h+6,r=S/2*(1+Math.sin(T*6)*0.05);
+    X.save();X.setLineDash([10,8]);X.strokeStyle='#ff4f9a';X.lineWidth=4;rrect(x-s.w-8+6,y-8-6+6,s.w+16,s.h+16,14);X.stroke();X.restore();
+    circ(x,y,r+4,'#fff');circ(x,y,r,'#e53935');txt('✕',x,y+2,r*1.2,'#fff');btn('hdel',x-S/2,y-S/2,S,S,()=>houseRemove(it))}
+  // broom: start over
+  const bx=INL+12,by=H-Math.max(BOT,8)-R0.pal-10-S-16;X.fillStyle='#fff';rrect(bx,by,S,S,18);X.fill();txt('🧹',bx+S/2,by+S/2+2,S*0.6,'#000');btn('broom',bx,by,S,S,()=>{HS.conf=1;HS.sel=null;sayT('Clean up everything?',1)});
+  if(HS.conf){UI=[];X.fillStyle='rgba(60,20,80,0.55)';X.fillRect(0,0,W,H);const c=Math.min(H*0.3,W*0.2,190),cy=H*0.55;txt('🧹',W/2,H*0.25,c*0.7,'#000');
+    [['✅','#66bb6a',-1,()=>{SAVE.x.house.items=[];HS.conf=0;save();AUD.SFX.whoosh();sConf(60);sayT('All clean! Let\'s decorate again!',2)}],['❌','#ef5350',1,()=>{HS.conf=0;AUD.SFX.click();sayT('Okay! Keep it!',1)}]].forEach(([e,col,sd,fn])=>{const x=W/2+sd*c*0.8;circ(x,cy,c/2+6,'#fff');circ(x,cy,c/2,col);txt(e,x,cy+3,c*0.5,'#fff');btn('conf'+sd,x-c/2,cy-c/2,c,c,fn)})}}})();
+// --- idle voice hints: after ~8s with no touch, a gentle spoken nudge (max 3 per screen, ~12s apart) ---
+const IDLE_HINT={title:'Tap Zoe and Doodle to play!',map:'Tap a place to visit!',fun:'Tap a picture to play!',gift:'Tap the present!',sleep:'Tap a kitty to tuck them in!',house:'Tap a picture at the bottom to add it to the house!',
+  care:'Pick a tool, then rub your kitty!',art:'Tap a picture to color it!',fridge:'Tap a picture to see it big!',closet:'Tap something to dress up!',photo:'Tap the camera to take a picture!',cafe:'Tap a treat for the kitties!',book:'Look at all your stickers! Tap Back when you are done.',
+  kitties:'Tap a kitty!',menu:'Tap a big picture!',play:'Find the kitties! Tap them!'};
+let idleT=0,idleN=0,idleS='';addEventListener('pointerdown',()=>{idleT=0;idleN=0},{capture:true});
+(function(){const u0=update;update=function(dt){u0(dt);if(state!==idleS){idleS=state;idleT=0;idleN=0}if(overlay&&state==='play'){idleT=0;return}idleT+=dt;
+  const h=state==='art'&&AR&&AR.page>=0?(AR.tool===0?'Pick a color, then tap the picture!':'Draw with your finger!'):IDLE_HINT[state];
+  if(h&&idleN<3&&idleT>(idleN?12:8)){idleT=0;idleN++;sayT(h,1)}}})();
+// --- juicy feedback: every button tap sparkles where the finger is ---
+(function(){const t0=uiTap;uiTap=function(p){const r=t0(p);if(r)sSpark(p.x,p.y,6);return r}})();
+if(window.__X)window.__X.itemC=i=>{const R0=houseRoom(),it=SAVE.x.house.items[i],s=houseSize(it,R0);return{x:(R0.x+it.u*R0.w)*SC,y:(R0.y+it.v*R0.h-s.h/2)*SC}};if(window.__X)window.__X.binC=()=>{const b=houseBin();return{x:b.x*SC,y:b.y*SC}};
+if(window.__X)window.__X.tapG=(x,y)=>{const r=uiTap({x,y});return [r,SAVE.x.house.items.length,SAVE===window.__D.save]};
+// --- Kitty Dance Party: disco lights, everyone bops to the beat; tap a kitty to make it spin; star button = confetti jump ---
+let DP=null;
+FUN.push(['🪩','Dance Party',()=>openScreen('dance'),'#f8bbd0','Kitty dance party!']);
+SCR.dance={open(){DP={sp:{},jump:0,lights:0};AUD.setTheme('park');sayT('Dance party! Tap a kitty to make it dance!',2)},close(){DP=null;AUD.setTheme('cozy')}};
+function danceLay(){const L=XL(),P=petList().slice(0,7),n=P.length+1,fy=H*0.86,span=W-INL-INR-120,gap=span/Math.max(n,2),k=Math.min(1.15,(H-TOP-L.bb)/190);
+  return P.map((p,i)=>{const j=i<P.length/2?i:i+1;return{p,x:INL+60+gap*(j+0.5),y:fy,s:k}}).concat([{zoe:1,x:INL+60+gap*(Math.ceil(P.length/2)+0.5),y:fy,s:k}])}
+XS.dance={upd(dt){if(!DP)return;DP.jump=Math.max(0,DP.jump-dt);for(const k in DP.sp)DP.sp[k]=Math.max(0,DP.sp[k]-dt)},
+ draw(){UI=[];if(!DP){bigBack();return}const L=XL(),beat=T*2.2*Math.PI;
+  const g=X.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2a1050');g.addColorStop(1,'#6a1b9a');X.fillStyle=g;X.fillRect(0,0,W,H);
+  // light beams from the disco ball
+  const bx=W/2,by=TOP+30;X.save();X.globalCompositeOperation='lighter';['#ff4f9a','#4fc3f7','#ffd54f','#81c784','#b388ff'].forEach((c,i)=>{const a=Math.PI/2+Math.sin(T*0.9+i*1.3)*0.9;X.fillStyle=c+'33';X.beginPath();X.moveTo(bx,by);X.lineTo(bx+Math.cos(a-0.09)*H*1.4,by+Math.sin(a-0.09)*H*1.4);X.lineTo(bx+Math.cos(a+0.09)*H*1.4,by+Math.sin(a+0.09)*H*1.4);X.closePath();X.fill()});X.restore();
+  X.strokeStyle='#ccc';X.lineWidth=3;X.beginPath();X.moveTo(bx,0);X.lineTo(bx,by-26);X.stroke();circ(bx,by,30,'#cfd8dc');for(let i=0;i<14;i++){const a=i*0.9+T*1.5;circ(bx+Math.cos(a)*18,by+Math.sin(a*1.3)*18,5,i%2?'#ffffff':'#90a4ae')}
+  // checker dance floor
+  const fy=H*0.86-30;for(let x=0,i=0;x<W;x+=60,i++)for(let y=fy,j=0;y<H;y+=36,j++){const on=((i+j+Math.floor(T*2.2))%3)===0;X.fillStyle=on?['#ff8fc8','#80deea','#fff59d'][(i+j)%3]:'#4a148c';X.fillRect(x,y,60,36)}
+  for(const d of danceLay()){const id=d.zoe?'zoe':d.p.k,sp=DP.sp[id]||0,hop=Math.abs(Math.sin(beat+d.x*0.01))*16*d.s+(DP.jump>0?Math.sin(DP.jump/0.8*Math.PI)*60:0);
+    X.save();X.translate(d.x,d.y-hop);X.rotate(sp>0?(1-sp/0.9)*Math.PI*2:Math.sin(beat/2)*0.12);
+    if(d.zoe){X.scale(d.s*1.15,d.s*1.15);drawZoe(0,{t:T*2,face:1,happy:1,top:SAVE.zoe.top,tutu:SAVE.zoe.tutu,bow:SAVE.zoe.bow,ears:SAVE.zoe.ears})}else{const m=d.p.k==='doodle'?0.95:1.45;X.scale(m,m);drawPet(d.p.k,0,0,d.s,sp>0?'meow':'idle')};X.restore();
+    const S=Math.max(110*d.s,PT(72));btn('dk_'+id,d.x-S/2,d.y-S*1.4,S,S*1.5,()=>{DP.sp[id]=0.9;AUD.SFX.meow(Math.floor(R()*3));sHearts(d.x,d.y-90*d.s,5);sSpark(d.x,d.y-60*d.s,10);if(R()<0.6)sayT(d.zoe?pick(['Go Zoe!','Zoe can dance!']):pick([d.p.n+' is dancing!','Wiggle wiggle!','Spin, '+d.p.n+'!']),1)})}
+  const S=Math.max(96,PT(80)),sx=W-INR-S-16,sy=TOP+12;circ(sx+S/2,sy+S/2,S/2+(1+Math.sin(beat))*3,'#ffd54f');txt('⭐',sx+S/2,sy+S/2+3,S*0.55,'#000');btn('djump',sx,sy,S,S,()=>{DP.jump=0.8;sConf(50);AUD.SFX.boing();sayT(pick(['Everybody jump!','Yay!','Party time!']),1)});
+  bigBack()}};
+IDLE_HINT.dance='Tap a kitty to make it dance!';
+if(window.__X)window.__X.DP=()=>DP;
+if(window.__X)window.__X.KITTIES=KITTIES;
 
 // ================= boot (runs last, after every module's constants exist) =================
 seasonBoot();

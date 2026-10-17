@@ -32,7 +32,7 @@ const HF={couch:{w:220,h:125,o:{}},bed:{w:220,h:120,o:{}},armchair:{w:110,h:120,
 const HE=[['🪴',90],['🖼️',80],['💡',80],['🧸',70],['🛋️',90],['🌈',90],['🕰️',70],['🪟',100]];
 function houseItems(){return Object.keys(HF).filter(k=>FURN[k]).map(k=>({t:k})).concat(HE.map(e=>({t:'e',e:e[0],sz:e[1]}))).concat(SAVE.x.toys.map(e=>({t:'e',e,sz:60})))}
 let HS=null;
-SCR.house={open(){HS={drag:null,pal:0};AUD.setTheme('home');sayT('Let\'s decorate! Tap something to put it in the house. Drag it to move it.',2)},close(){HS=null;save()},
+SCR.house={open(){HS={drag:null,pal:0};AUD.setTheme('home');sayT('Let\'s decorate! Tap a picture to put it in the house!',2)},close(){HS=null;save()},
   down(p,id){const R0=houseRoom(),it=houseHit(p,R0);if(it){HS.drag={id,it,ox:p.x-(R0.x+it.u*R0.w),oy:p.y-(R0.y+it.v*R0.h)};const a=SAVE.x.house.items;a.splice(a.indexOf(it),1);a.push(it);AUD.SFX.pat()}},
   move(p,id){const d=HS&&HS.drag;if(!d||d.id!==id)return;const R0=houseRoom();d.it.u=clamp((p.x-d.ox-R0.x)/R0.w,0.03,0.97);d.it.v=clamp((p.y-d.oy-R0.y)/R0.h,0.08,1);d.px=p.x;d.py=p.y},
   up(p,id){const d=HS&&HS.drag;if(!d||d.id!==id)return;HS.drag=null;const bn=houseBin();if(Math.hypot(p.x-bn.x,p.y-bn.y)<bn.r+20){const a=SAVE.x.house.items;a.splice(a.indexOf(d.it),1);AUD.SFX.plop();sayT('Bye bye!',1)}save()}};
@@ -58,7 +58,7 @@ XS.house={draw(){UI=[];const H0=SAVE.x.house,R0=houseRoom(),wp=WPS[H0.wp%WPS.len
     X.fillStyle='rgba(255,255,255,0.9)';rrect(INL+8,py-6,W-INL-INR-16,ps+12,24);X.fill();
     P.slice(pg*per,pg*per+per).forEach((it,i)=>{const x=INL+12+ps*0.6+i*(ps+8)+4,y=py;X.fillStyle='#fdeaf5';rrect(x,y,ps,ps,18);X.fill();
       if(it.t==='e')txt(it.e,x+ps/2,y+ps/2+2,ps*0.55,'#000');else{const f=HF[it.t],k=Math.min((ps-14)/f.w,(ps-14)/f.h);X.save();X.translate(x+ps/2,y+ps-8);X.scale(k,k);try{FURN[it.t].draw(Object.assign({x:-f.w/2},f.o))}catch(e){}X.restore()}
-      btn('pal'+i,x,y,ps,ps,()=>{if(SAVE.x.house.items.length>=30){sayT('The house is full! Drag something to the bin.',2);return}SAVE.x.house.items.push(Object.assign({u:rr(0.35,0.65),v:it.t==='e'&&(it.e==='🖼️'||it.e==='🪟'||it.e==='🕰️'||it.e==='🌈')?0.35:0.9},it));save();AUD.SFX.boing();sSpark(W/2,R0.y+R0.h*0.7,8)})});
+      btn('pal'+i,x,y,ps,ps,()=>{if(SAVE.x.house.items.length>=30){sayT('The house is full! Tap something, then tap the red X!',2);return}SAVE.x.house.items.push(Object.assign({u:rr(0.35,0.65),v:it.t==='e'&&(it.e==='🖼️'||it.e==='🪟'||it.e==='🕰️'||it.e==='🌈')?0.35:0.9},it));save();AUD.SFX.boing();sSpark(W/2,R0.y+R0.h*0.7,8)})});
     if(pages>1){const x=W-INR-12-ps*0.6;pill(x-4,py,ps*0.6,ps,'▶','#ff8fc8',28);btn('palnext',x-8,py-4,ps*0.6+8,ps+8,()=>{HS.pal=(HS.pal+1)%pages;AUD.SFX.click()})}
     bigBack()}};
 
@@ -77,7 +77,7 @@ XS.care={upd(dt){const P=PC;if(!P)return;P.happy=Math.max(0,P.happy-dt);if(P.rin
     if(P.food){P.food+=dt;if(P.food>2.5){P.food=0;if(!P.joy.f){P.joy.f=1;careDone('What a full tummy!')}}}},
   draw(){UI=[];softBg('#e0f7ff','#fff0f8');const c=careLay(),P=PC;if(!P){bigBack();return}const ps=petList();if(P.sel>=ps.length)P.sel=0;const pt=ps[P.sel];
     // pick a pet (row of portraits)
-    const n=ps.length,pr=c.pr,gap=12,x0=W/2-(n*pr*2+(n-1)*gap)/2+pr;ps.forEach((q,i)=>{const x=x0+i*(pr*2+gap),y=c.top+pr,on=i===P.sel;circ(x,y,pr+4,on?'#ff5c9e':'rgba(255,255,255,0.7)');circ(x,y,pr,'#fff');X.save();X.beginPath();X.arc(x,y,pr,0,TAU);X.clip();drawPet(q.k,x,y+pr*0.75,pr/52,'idle');X.restore();
+    const n=ps.length,gap=12,av=W-INL-INR-40,pr=Math.max(PT(36),Math.min(c.pr,(av-(n-1)*gap)/(2*n))),per=Math.max(1,Math.floor((av+gap)/(2*pr+gap)));ps.forEach((q,i)=>{const rw=(i/per)|0,nR=Math.min(per,n-rw*per),x=W/2-(nR*pr*2+(nR-1)*gap)/2+pr+(i%per)*(pr*2+gap),y=c.top+pr+rw*(pr*2+8),on=i===P.sel;circ(x,y,pr+4,on?'#ff5c9e':'rgba(255,255,255,0.7)');circ(x,y,pr,'#fff');X.save();X.beginPath();X.arc(x,y,pr,0,TAU);X.clip();drawPet(q.k,x,y+pr*0.75,pr/52,'idle');X.restore();
       btn('pet'+i,x-pr-4,y-pr-4,2*pr+8,2*pr+8,()=>{if(P.sel!==i){P.sel=i;P.joy={};P.bub=[];P.brush=0;P.food=0;P.rinse=0}AUD.SFX.meow(i%3);sayT(q.n+'!',2)})});
     // the pet, tub, bubbles, bowl
     const cx=c.cx,cy=c.cy,s=c.s;if(P.tool===1){X.fillStyle='#b3e5fc';rrect(cx-95*s,cy-30*s,190*s,44*s,20*s);X.fill();X.fillStyle='#fff';rrect(cx-100*s,cy-8*s,200*s,26*s,12*s);X.fill()}

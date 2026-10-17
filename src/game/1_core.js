@@ -58,7 +58,8 @@ const nearB=(p,b,s)=>Math.hypot(p.x-b.x,p.y-b.y)<b.r+(s||10);
 function recount(){jumpHeld=0;for(const q of ptrs.values())if(q.role==='jump')jumpHeld++}
 // screens (mini-games, photo booth, cafe...) register handlers here: SCR[state]={down,move,up,key,back}
 const SCR={},XS={}; // XS: extra v1.4 screens {draw,upd}
-const PT=n=>n/SC; // PT(44) = 44 points in game units (touch-target minimum)
+const TOUCHMIN=()=>Math.min(SW,SH)>=700?72:0;
+const PT=n=>Math.max(n,TOUCHMIN())/SC; // v1.5: every PT() touch target is at least 72px on iPad
 cv.addEventListener('pointerdown',e=>{e.preventDefault();const p=toG(e);
   if(state!=='play'||overlay){if(uiTap(p))return;const S=SCR[state];if(S&&S.down&&state!=='play')S.down(p,e.pointerId);return}
   for(const b of HUDB)if(inR(p,b)){b.fn();return}
