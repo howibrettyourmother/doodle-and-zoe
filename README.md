@@ -11,6 +11,7 @@ Play: https://howibrettyourmother.github.io/doodle-and-zoe/ (tip: Share → Add 
 - Controls: one low, semi-transparent row pinned to the bottom corners (LEFT/RIGHT arrows, JUMP, PAW) with the floor drawn above it so the controls never cover Doodle or Zoe; floating joystick anywhere on the left half (multi-touch). Arrows/WASD + Space + X work on a keyboard.
 - Original music-box tunes; progress is saved on the device (older saves keep working).
 
+- **v1.6:** real local places: Upland Hills Farm (red barn, cow, hay), Raintree Park (playground), Stony Creek Beach (lake + wooded shore, kayaks); all reachable from big landmark buttons on the home map. New **Downtown Rochester**: walk Main Street (tap arrows / tap a shop) past 7 real shops, each with a little spoken mini-interaction and a visit stamp.
 - **v1.5:** My House delete (tap item → red ✕, drag to bin fixed on iPad, 🧹 start over with picture yes/no), Kitty Dance Party, spoken idle hints, 72px+ touch targets on iPad, tap sparkles.
 
 ## New in v1.3
