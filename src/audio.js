@@ -112,7 +112,17 @@ const AUD=(()=>{
     click:safe(()=>{const t=now();blip('square',900,1300,t,0.05,0.07)}),
     note:safe((m)=>{const t=now(),G=g(0,sfxBus);env(G,t,0.003,0.05,0.45,0.13);o('triangle',mtof(m),t,0.55,G);const G2=g(0,sfxBus);env(G2,t,0.002,0.01,0.25,0.05);o('sine',mtof(m+12),t,0.3,G2)}),
     munch:safe(()=>{const t=now();for(let i=0;i<4;i++){const s=t+i*0.17,G=g(0,sfxBus);env(G,s,0.004,0.02,0.07,0.14);n(s,0.1,f('bandpass',rr(500,900),1.2,G));blip('sine',rr(220,300),150,s,0.06,0.05)}}),
-    shutter:safe(()=>{const t=now();for(const d of [0,0.07]){const G=g(0,sfxBus);env(G,t+d,0.001,0.01,0.05,0.25);n(t+d,0.07,f('highpass',2500,0.7,G))}blip('sine',1500,2200,t+0.15,0.12,0.06)})
+    shutter:safe(()=>{const t=now();for(const d of [0,0.07]){const G=g(0,sfxBus);env(G,t+d,0.001,0.01,0.05,0.25);n(t+d,0.07,f('highpass',2500,0.7,G))}blip('sine',1500,2200,t+0.15,0.12,0.06)}),
+    // v1.7 music maker voices (pentatonic notes are picked by the caller, so it always sounds nice)
+    inst:safe((m,k)=>{const t=now(),G=g(0,sfxBus);if(k==='bell'){env(G,t,0.002,0.02,0.9,0.16);o('sine',mtof(m),t,1,G);const G2=g(0,sfxBus);env(G2,t,0.002,0.01,0.4,0.05);o('sine',mtof(m)*2.76,t,0.5,G2)}
+      else if(k==='pluck'){env(G,t,0.002,0.01,0.45,0.15);o('triangle',mtof(m),t,0.5,f('lowpass',2600,0.7,G))}
+      else if(k==='flute'){env(G,t,0.05,0.18,0.3,0.12);const x=o('sine',mtof(m),t,0.6,G);const L=C.createOscillator(),LG=C.createGain();L.frequency.value=5;LG.gain.value=mtof(m)*0.008;L.connect(LG);LG.connect(x.frequency);L.start(t);L.stop(t+0.6)}
+      else if(k==='drum'){env(G,t,0.002,0.02,0.25,0.3);const x=o('sine',mtof(m-24),t,0.3,G);x.frequency.exponentialRampToValueAtTime(mtof(m-36),t+0.25)}
+      else {env(G,t,0.003,0.05,0.5,0.13);o('triangle',mtof(m),t,0.6,G);const G2=g(0,sfxBus);env(G2,t,0.002,0.01,0.25,0.04);o('sine',mtof(m+12),t,0.3,G2)}}),
+    hoot:safe(()=>{const t=now();[[0,0.35],[0.45,0.25],[0.75,0.5]].forEach(([d,l])=>{const G=g(0,sfxBus);env(G,t+d,0.04,l*0.5,l*0.5,0.14);const x=o('sine',420,t+d,l,f('lowpass',900,0.7,G));x.frequency.linearRampToValueAtTime(360,t+d+l)})}),
+    splash:safe(()=>{const t=now(),G=g(0,sfxBus);env(G,t,0.003,0.03,0.3,0.22);n(t,0.35,f('bandpass',1400,0.8,G));blip('sine',500,1200,t,0.12,0.08)}),
+    crackle:safe(()=>{const t=now();for(let i=0;i<4;i++){const G=g(0,sfxBus),d=i*0.06+R()*0.04;env(G,t+d,0.001,0.005,0.03,0.12);n(t+d,0.05,f('highpass',2500,0.7,G))}}),
+    plane:safe(()=>{const t=now(),G=g(0,sfxBus);env(G,t,0.4,1.6,1,0.1);n(t,3,f('lowpass',500,0.7,G));const G2=g(0,sfxBus);env(G2,t,0.4,1.6,1,0.03);o('triangle',110,t,3,G2)}),
   };
   // ---------- one voice at a time, with ducking ----------
   let curEnd=0,curPrio=0,queue=[];

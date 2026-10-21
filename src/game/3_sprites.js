@@ -41,12 +41,16 @@ function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X
   X.beginPath();X.moveTo(hx+12,hy+5);X.lineTo(hx+24,hy+3);X.moveTo(hx+12,hy+7);X.lineTo(hx+24,hy+8);X.moveTo(hx-6,hy+5);X.lineTo(hx-16,hy+3);sl(0.9,'rgba(90,60,60,0.6)');
   if(st==='bat'){X.beginPath();X.moveTo(18,-26);X.lineTo(36,-34+Math.sin(t*20)*4);sl(8,OR);circ(36,-34+Math.sin(t*20)*4,5,WH)}
   if(A.glasses){heartP(hx-6,hy-1,7,'#ff5c9e');heartP(hx+10,hy-1,7,'#ff5c9e');X.beginPath();X.moveTo(hx-1,hy-3);X.lineTo(hx+5,hy-3);sl(1.6,'#ff5c9e')}
+  if(A.shades){X.fillStyle='#263238';rrect(hx-13,hy-5,11,8,3);X.fill();rrect(hx+4,hy-5,11,8,3);X.fill();X.beginPath();X.moveTo(hx-2,hy-2);X.lineTo(hx+4,hy-2);sl(1.8,'#263238');X.fillStyle='rgba(255,255,255,0.6)';X.fillRect(hx-11,hy-4,3,2);X.fillRect(hx+6,hy-4,3,2)}
+  if(A.boots&&st!=='sleep'&&st!=='flop'){for(const bx of [-22,-10,8,20]){X.fillStyle='#8d6e63';rrect(bx-6,-8,12,9,3);X.fill();X.fillStyle='#ffcc80';X.fillRect(bx-6,-9,12,3)}}
   accHead(A,hx,hy,1,t);X.restore()}
 function partyHat(x,y,s,rot){X.save();X.translate(x,y);X.rotate(rot||0);X.scale(s,s);poly([-9,0,9,0,0,-24],'#ff8fc8');X.beginPath();X.moveTo(-6,-6);X.lineTo(6,-8);X.moveTo(-3,-14);X.lineTo(4,-15);sl(2.4,'#fff59d');circ(0,-25,3.6,'#b388ff');X.restore()}
 function accHead(A,hx,hy,s,t){if(A.party){partyHat(hx+2,hy-14,1,0.15);return}
   if(A.horn){X.save();X.translate(hx+3,hy-15);X.rotate(0.25);poly([-5,0,5,0,0,-22],'#fff3b0');X.beginPath();X.moveTo(-4,-4);X.lineTo(4,-7);X.moveTo(-3,-10);X.lineTo(3,-13);X.moveTo(-2,-16);X.lineTo(2,-18);sl(1.6,'#ff8fc8');X.restore();circ(hx-6,hy-15,3,'#c5a3ff');circ(hx+12,hy-15,3,'#ffc1e3')}
   if(A.witch){X.save();X.translate(hx+1,hy-15);X.rotate(-0.12);ell(0,0,18,4.5,'#7e57c2');poly([-10,-1,10,-1,4,-26],'#9575cd');poly([4,-26,8,-24,14,-30],'#9575cd');X.fillStyle='#ff8fc8';X.fillRect(-10,-6,20,4);star5(-2,-14,3.4,'#fff59d');X.restore()}
   if(A.santa){X.save();X.translate(hx+1,hy-15);X.rotate(0.1);poly([-12,0,12,0,10,-14,-6,-20],'#ff6fa8');poly([-6,-20,10,-14,18,-6],'#ff6fa8');circ(19,-5,4,'#fff');X.fillStyle='#fff';rrect(-14,-4,28,7,3.5);X.fill();X.restore()}
+  if(A.sunhat){X.save();X.translate(hx+2,hy-14);ell(0,0,24,6,'#ffe082');ell(0,-6,13,10,'#ffd54f');X.fillStyle='#ff8fc8';X.fillRect(-13,-5,26,4);circ(10,-5,3.5,'#ff5c9e');X.restore()}
+  if(A.knit){X.save();X.translate(hx+2,hy-14);X.fillStyle='#4fc3f7';X.beginPath();X.arc(0,0,15,Math.PI,0);X.fill();X.fillStyle='#fff';rrect(-16,-3,32,7,3);X.fill();X.strokeStyle='#29b6f6';X.lineWidth=1.5;for(let i=-9;i<=9;i+=6){X.beginPath();X.moveTo(i,-4);X.lineTo(i,-13+Math.abs(i)*0.3);X.stroke()}circ(0,-17,6,'#fff');X.restore()}
   if(A.crown)crown(hx-2,hy-20,0.9);if(A.bow)bow(hx+10,hy-17,0.85,'#ff5c9e');if(A.flower){for(let i=0;i<5;i++){const a=i*TAU/5;circ(hx-10+Math.cos(a)*4,hy-16+Math.sin(a)*4,3.2,'#c5a3ff')}circ(hx-10,hy-16,2.4,'#fff59d')}}
 // Zoe: light brown ponytail, pink unicorn sweatshirt, light blue tutu, gray floppy bunny
 function drawZoe(x,o){const f=o.face||1,t=o.t||0,walk=o.walk,pet=o.pet>0,top=o.top||'#ff9cc8',tutu=o.tutu||'#bfe3ff',sk='#f7d5bf',hair='#a8754a';X.save();X.translate(x,0);X.scale(f,1);
