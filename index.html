@@ -2,8 +2,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Doodle &amp; Zoe"><meta name="application-name" content="Doodle &amp; Zoe"><meta name="theme-color" content="#ffc1e3"><meta name="theme-color" content="#29b6f6">
 <title>Doodle &amp; Zoe's Sparkle Adventure</title>
-<meta name="description" content="Play as Doodle the cozy orange kitty with Zoe! Explore five sparkly places, find hidden stars, help friends and dress up.">
-<meta property="og:type" content="website"><meta property="og:title" content="Doodle &amp; Zoe's Sparkle Adventure ✨🐱"><meta property="og:description" content="A gentle, sparkly kitty adventure for little kids. No enemies, just cuddles and stars.">
+<meta name="description" content="Play as Doodle the cozy orange kitty with Zoe! Explore town and Rochester, MI spots, take trips to Florida, Colorado and a campout, make music, decorate cookies, befriend animal visitors and dress up. Voice-guided, no reading needed.">
+<meta property="og:type" content="website"><meta property="og:title" content="Doodle &amp; Zoe's Sparkle Adventure ✨🐱"><meta property="og:description" content="A gentle, voice-guided kitty adventure for little kids: places, trips, music, cookies and animal friends. No enemies, just cuddles and stars.">
 <meta property="og:image" content="https://howibrettyourmother.github.io/doodle-and-zoe/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://howibrettyourmother.github.io/doodle-and-zoe/">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://howibrettyourmother.github.io/doodle-and-zoe/og.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -479,7 +479,7 @@ function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X
   // legs
   const legs=[[-18,0],[-8,Math.PI],[12,Math.PI*0.5],[20,Math.PI*1.5]];
   for(let i=0;i<4;i++){const [lx,p]=legs[i];let lift=walk?Math.max(0,Math.sin(ph+p))*6:air?3:0,dx=walk?Math.cos(ph+p)*4:0;if(bisc&&i>=2)lift=Math.max(0,Math.sin(t*9+i*Math.PI))*8;
-    X.beginPath();X.moveTo(lx,-18);X.lineTo(lx+dx,-4-lift);sl(9,i%2?ORD:OR);ell(lx+dx+1,-3-lift,5.5,4,WH)}
+    X.beginPath();X.moveTo(lx,-18);X.lineTo(lx+dx,-4-lift);sl(9,i%2?ORD:OR);if(A.boots){const bx=lx+dx+1,by=-3-lift;X.fillStyle='#8d6e63';rrect(bx-5.5,by-9,10,10,3);X.fill();ell(bx+1.5,by,7,4,'#6d4c41');X.fillStyle='#ffcc80';X.fillRect(bx-5.5,by-10,10,3)}else ell(lx+dx+1,-3-lift,5.5,4,WH)}
   // body
   ell(0,-24,31,19,OR);ell(8,-16,20,10,WH);for(let i=0;i<4;i++){X.beginPath();X.arc(-16+i*9,-38,8,Math.PI*1.2,Math.PI*1.8);sl(3.2,ORD)}
   if(A.sweater){ell(0,-25,29,17,'#f8a5c8');for(let i=0;i<3;i++){X.beginPath();X.moveTo(-22+i*4,-12-i*2);X.lineTo(22-i*4,-12-i*2);sl(1.6,'rgba(255,255,255,0.6)')}heartP(4,-24,7,'#fff');heartP(4,-24,4.5,'#ff5c9e')}
@@ -500,7 +500,6 @@ function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X
   if(st==='bat'){X.beginPath();X.moveTo(18,-26);X.lineTo(36,-34+Math.sin(t*20)*4);sl(8,OR);circ(36,-34+Math.sin(t*20)*4,5,WH)}
   if(A.glasses){heartP(hx-6,hy-1,7,'#ff5c9e');heartP(hx+10,hy-1,7,'#ff5c9e');X.beginPath();X.moveTo(hx-1,hy-3);X.lineTo(hx+5,hy-3);sl(1.6,'#ff5c9e')}
   if(A.shades){X.fillStyle='#263238';rrect(hx-13,hy-5,11,8,3);X.fill();rrect(hx+4,hy-5,11,8,3);X.fill();X.beginPath();X.moveTo(hx-2,hy-2);X.lineTo(hx+4,hy-2);sl(1.8,'#263238');X.fillStyle='rgba(255,255,255,0.6)';X.fillRect(hx-11,hy-4,3,2);X.fillRect(hx+6,hy-4,3,2)}
-  if(A.boots&&st!=='sleep'&&st!=='flop'){for(const bx of [-22,-10,8,20]){X.fillStyle='#8d6e63';rrect(bx-6,-8,12,9,3);X.fill();X.fillStyle='#ffcc80';X.fillRect(bx-6,-9,12,3)}}
   accHead(A,hx,hy,1,t);X.restore()}
 function partyHat(x,y,s,rot){X.save();X.translate(x,y);X.rotate(rot||0);X.scale(s,s);poly([-9,0,9,0,0,-24],'#ff8fc8');X.beginPath();X.moveTo(-6,-6);X.lineTo(6,-8);X.moveTo(-3,-14);X.lineTo(4,-15);sl(2.4,'#fff59d');circ(0,-25,3.6,'#b388ff');X.restore()}
 function accHead(A,hx,hy,s,t){if(A.party){partyHat(hx+2,hy-14,1,0.15);return}
@@ -699,7 +698,7 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
 }
 
 // ================= UI: map, menus, sticker book, closet, kitty collection, HUD, controls, render =================
-const VERSION='1.7 (Oct 21 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
+const VERSION='1.7.1 (Oct 21 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
 function btn(id,x,y,w,h,fn){const b={id,x,y,w,h,fn};UI.push(b);return b}
 // last-drawn button wins (it is the one on top)
 function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){if(b.id!=='block'&&b.id!=='stage')AUD.SFX.click();b.fn();return true}}return false}
@@ -1302,7 +1301,7 @@ const dayKey=d=>{d=d||new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'
 function giftReady(){return SAVE.x.gift.last!==dayKey()}
 function weekKeys(){const d=new Date(),wd=(d.getDay()+6)%7,out=[];for(let i=0;i<7;i++){const q=new Date(d.getFullYear(),d.getMonth(),d.getDate()-wd+i);out.push(dayKey(q))}return out}
 const XL=()=>({land:W>H*1.15,bb:Math.max(64,PT(46))});
-function xHead(title,col){const L=XL();txt(title,L.land?W/2:(INL+12+Math.max(200,PT(150))+W-INR)/2+20,TOP+12+L.bb/2,L.land?32:Math.min(26,W/14),col||'#c2185b',{st:'#fff',sw:5})}
+function xHead(title,col){const L=XL(),x0=INL+12+Math.max(200,PT(150))+10,x1=W-INR-8;let sz=L.land?32:Math.min(26,W/14);if(!L.land){X.font='800 '+sz+'px '+FONT;const w=X.measureText(title).width+sz*0.44;if(w>x1-x0)sz=Math.max(14,sz*(x1-x0)/w)}txt(title,L.land?W/2:(x0+x1)/2,TOP+12+L.bb/2,sz,col||'#c2185b',{st:'#fff',sw:5})}
 function bigTile(x,y,w,h,ic,lab,c,fn,id,glow){const s=1+(glow?Math.sin(T*5)*0.04:0);X.save();X.translate(x+w/2,y+h/2);X.scale(s,s);X.translate(-x-w/2,-y-h/2);
   X.fillStyle='rgba(120,60,140,0.15)';rrect(x+2,y+5,w,h,24);X.fill();X.fillStyle=c;rrect(x,y,w,h,24);X.fill();if(glow){X.strokeStyle='#fff';X.lineWidth=5;rrect(x+3,y+3,w-6,h-6,22);X.stroke()}
   txt(ic,x+w/2,y+h*0.43,Math.min(w,h)*0.42,'#000');txt(lab,x+w/2,y+h*0.84,Math.min(19,w/7),'#7b3fa0');X.restore();btn(id,x,y,w,h,fn)}
@@ -2267,6 +2266,36 @@ for(const hk of HUBK)IDLE_HINT['hub_'+hk]='Tap a picture!';
 // the in-play 🐾 menu and Fun Corner keep working; Fun Corner also lists the new activities
 FUN.push(['🎵','Music',()=>openScreen('music'),'#e1bee7','Music maker!'],['🍪','Cookies',()=>openScreen('cookies'),'#ffe0b2','Cookie decorating!'],['🌦️','Weather',()=>openScreen('weather'),'#b3e5fc','Weather play!'],['✈️','Trips',()=>openScreen('hub_trips'),'#b2ebf2','Trips!']);
 if(window.__X){Object.assign(window.__X,{tripGo,TRIPS,VV:()=>VV,SV:()=>SV,todaysVisitors,visitorPlace,HUBS,MU:()=>MU,CK:()=>CK,WX:()=>WX,CP:()=>CP,SB:()=>SB,FL:()=>FL})}
+
+// ================= v1.7.1 polish: trip kitty friends, trip sticker page, visitors on Main Street =================
+KITTIES.push(
+ {k:'coco',p:'fl1',n:'Coconut Kitty',x:1440,y:-38,s:0.64,c:'#fff3e0',d:'#ffcc80',w:'#ffffff',bow:'#26c6da',eye:'#00897b',ear:'#ffc1d6',names:[['Coconut','🥥'],['Sunny','☀️'],['Mango','🥭'],['Palm','🌴']]},
+ {k:'flora',p:'fl2',n:'Flamingo Kitty',x:1440,y:-38,s:0.62,c:'#ffd6e7',d:'#f8a5c2',w:'#fff5f9',lash:1,eye:'#ec407a',ear:'#ff8fb3',names:[['Flamingo','🦩'],['Shelly','🐚'],['Coral','🪸'],['Peaches','🍑']]},
+ {k:'pine',p:'colo',n:'Mountain Kitty',x:1440,y:-38,s:0.7,c:'#a1887f',d:'#795548',w:'#efebe9',fluff:1,eye:'#7cb342',ear:'#ffc1d6',tip:'#efebe9',names:[['Maple','🍁'],['Pinecone','🌲'],['Snowcap','🏔️'],['Bear','🐻']]});
+// ---------- sticker book page 2: trips (Florida x2, Colorado, campout) ----------
+let BKP=0;{const _o=SCR.book.open;SCR.book.open=function(){BKP=0;_o&&_o.apply(this,arguments)}}
+const _drawBook71=drawBook;drawBook=function(){if(BKP===0){_drawBook71()}else{UI=[];softBg('#e1f5fe','#ffe0f0');const land=W>H*1.15;txt('My Trip Stickers',W/2,TOP+(land?52:110),land?34:30,'#0277bd');
+    const ts=TRIPS,n=ts.length,cols=land?4:2,r=land?Math.min(70,W/12,H/8):Math.min(56,W/6),cw=land?W/(cols+0.4):W/2.4;
+    ts.forEach((tr,i)=>{const c=i%cols,rw=(i/cols)|0,x=W/2+(c-(Math.min(cols,n-rw*cols)-1)/2)*cw,y=TOP+(land?H*0.42:240)+rw*(r*2+90),got=tr.k==='camp'?!!SAVE.x.souv.camp:pdata(tr.k).sticker;
+      sticker(tr.k,x,y,r,got);if(!got){X.globalAlpha=0.35;placeIcon(tr.k,x,y-4,r/30);X.globalAlpha=1}txt(tr.n,x,y+r+18,16,'#6a1b9a');
+      if(tr.k!=='camp'){const d=pdata(tr.k);txt('★'+d.stars.length+'/5 '+(d.task?'✓ helped':'○ help'),x,y+r+38,13,'#ab47bc')}else txt(got?'✓ goodnight!':'○ campout',x,y+r+38,13,'#ab47bc');
+      btn('bk_'+tr.k,x-r,y-r,2*r,2*r,()=>{AUD.SFX.boing();v7say(got?'A '+tr.n+' sticker!':'Go on a trip to '+tr.n+' to get this sticker!',2)})});
+    bigBack()}
+  const ar=V7R(),y=H-Math.max(BOT,8)-ar-14;
+  if(BKP===0)v7btn('bk_next',W-INR-20-ar,y,ar,'#b3e5fc','✈️',()=>{BKP=1;AUD.SFX.rustle();v7say('Trip stickers!',2)},1);
+  else v7btn('bk_prev',INL+20+ar,y,ar,'#e1bee7','◀',()=>{BKP=0;AUD.SFX.rustle();v7say('My sticker book!',1)})};
+// sticker() needs a background colour for the trip keys
+{const _st=sticker;sticker=function(k,x,y,r,got){if(['fl1','fl2','colo','camp'].includes(k)&&got){X.save();X.fillStyle='rgba(120,60,140,0.2)';X.beginPath();X.arc(x+2,y+4,r,0,TAU);X.fill();circ(x,y,r,'#fff');circ(x,y,r-5,{fl1:'#b2ebf2',fl2:'#ffe0e8',colo:'#dcedc8',camp:'#d1c4e9'}[k]);placeIcon(k,x,y-4,r/30);star5(x+r*0.62,y-r*0.62,r*0.25,'#ffd54f');X.restore();return}return _st(k,x,y,r,got)}}
+// ---------- visitors stroll along Main Street too ----------
+let DV=[];
+{const _o=SCR.downtown.open,_c=SCR.downtown.close;SCR.downtown.open=function(){_o.apply(this,arguments);const tv=todaysVisitors(),di=PLACES.length;let here=tv.filter(j=>hsh(dayNum()*977+j*131+Math.floor(Date.now()/120000))%(di+1)===di);if(!here.length)here=[pick(tv)];
+  DV=here.slice(0,2).map((j,i)=>({j,x:300+i*600,tx:rr(200,DT_LEN-200),face:1,hop:R()*6,f:0}))};SCR.downtown.close=function(){DV=[];_c.apply(this,arguments)}}
+{const U=XS.downtown.upd,D=XS.downtown.draw;XS.downtown.upd=function(dt){U(dt);if(!DT)return;for(const v of DV){v.hop+=dt;let tx=v.tx;if(v.f>0){v.f-=dt;tx=DT.x-DT.face*90}const d=tx-v.x;if(Math.abs(d)>6){v.x+=Math.sign(d)*Math.min(Math.abs(d),(v.f>0?260:60)*dt);v.face=Math.sign(d);v.mv=1}else{v.mv=0;if(v.f<=0&&R()<dt*0.4)v.tx=clamp(v.x+rr(-500,500),80,DT_LEN-80)}}};
+  XS.downtown.draw=function(){D();if(!DT||DT.shop>=0)return;const G=dtLay().G;for(const v of DV){const A=VIS[v.j],sx=v.x-DT.cam;if(sx<-60||sx>W+60)continue;const h=v.mv?Math.abs(Math.sin(v.hop*9))*10:Math.abs(Math.sin(v.hop*2))*3,fr=!SAVE.x.vis[A[0]];
+    ell(sx,G+2,22,5,'rgba(80,40,90,0.15)');if(fr){X.globalAlpha=0.35+0.2*Math.sin(T*4);circ(sx,G-26,34,'#fff59d');X.globalAlpha=1}X.save();X.translate(sx,G-26-h);X.scale(-v.face,1);txt(A[1],0,0,48,'#000');X.restore();
+    const r=Math.max(PT(72)/2,34);btn('dv_'+A[0],sx-r,G-26-r,2*r,2*r,()=>{const x=SAVE.x.vis,first=!x[A[0]];x[A[0]]={n:((x[A[0]]&&x[A[0]].n)||0)+1,at:Date.now()};save();v.f=25;sHearts(sx,G-60,8);AUD.SFX.heart();AUD.SFX.squeak();
+      if(first){sConf(40);v7say('You made a new friend on Main Street! '+A[2].replace(/^a /,'A ').replace(/^an /,'An ')+'!',3)}else v7say(pick(['Hi again, ','Hello, '])+A[2].replace(/^an? /,'little ')+'!',2)})}}}
+if(window.__X)window.__X.DV=()=>DV;
 
 // ================= boot (runs last, after every module's constants exist) =================
 seasonBoot();

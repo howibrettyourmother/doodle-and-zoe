@@ -21,7 +21,7 @@ function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X
   // legs
   const legs=[[-18,0],[-8,Math.PI],[12,Math.PI*0.5],[20,Math.PI*1.5]];
   for(let i=0;i<4;i++){const [lx,p]=legs[i];let lift=walk?Math.max(0,Math.sin(ph+p))*6:air?3:0,dx=walk?Math.cos(ph+p)*4:0;if(bisc&&i>=2)lift=Math.max(0,Math.sin(t*9+i*Math.PI))*8;
-    X.beginPath();X.moveTo(lx,-18);X.lineTo(lx+dx,-4-lift);sl(9,i%2?ORD:OR);ell(lx+dx+1,-3-lift,5.5,4,WH)}
+    X.beginPath();X.moveTo(lx,-18);X.lineTo(lx+dx,-4-lift);sl(9,i%2?ORD:OR);if(A.boots){const bx=lx+dx+1,by=-3-lift;X.fillStyle='#8d6e63';rrect(bx-5.5,by-9,10,10,3);X.fill();ell(bx+1.5,by,7,4,'#6d4c41');X.fillStyle='#ffcc80';X.fillRect(bx-5.5,by-10,10,3)}else ell(lx+dx+1,-3-lift,5.5,4,WH)}
   // body
   ell(0,-24,31,19,OR);ell(8,-16,20,10,WH);for(let i=0;i<4;i++){X.beginPath();X.arc(-16+i*9,-38,8,Math.PI*1.2,Math.PI*1.8);sl(3.2,ORD)}
   if(A.sweater){ell(0,-25,29,17,'#f8a5c8');for(let i=0;i<3;i++){X.beginPath();X.moveTo(-22+i*4,-12-i*2);X.lineTo(22-i*4,-12-i*2);sl(1.6,'rgba(255,255,255,0.6)')}heartP(4,-24,7,'#fff');heartP(4,-24,4.5,'#ff5c9e')}
@@ -42,7 +42,6 @@ function drawCat(x,y,o){const f=o.face||1,st=o.st||'idle',t=o.t||0,A=o.acc||{};X
   if(st==='bat'){X.beginPath();X.moveTo(18,-26);X.lineTo(36,-34+Math.sin(t*20)*4);sl(8,OR);circ(36,-34+Math.sin(t*20)*4,5,WH)}
   if(A.glasses){heartP(hx-6,hy-1,7,'#ff5c9e');heartP(hx+10,hy-1,7,'#ff5c9e');X.beginPath();X.moveTo(hx-1,hy-3);X.lineTo(hx+5,hy-3);sl(1.6,'#ff5c9e')}
   if(A.shades){X.fillStyle='#263238';rrect(hx-13,hy-5,11,8,3);X.fill();rrect(hx+4,hy-5,11,8,3);X.fill();X.beginPath();X.moveTo(hx-2,hy-2);X.lineTo(hx+4,hy-2);sl(1.8,'#263238');X.fillStyle='rgba(255,255,255,0.6)';X.fillRect(hx-11,hy-4,3,2);X.fillRect(hx+6,hy-4,3,2)}
-  if(A.boots&&st!=='sleep'&&st!=='flop'){for(const bx of [-22,-10,8,20]){X.fillStyle='#8d6e63';rrect(bx-6,-8,12,9,3);X.fill();X.fillStyle='#ffcc80';X.fillRect(bx-6,-9,12,3)}}
   accHead(A,hx,hy,1,t);X.restore()}
 function partyHat(x,y,s,rot){X.save();X.translate(x,y);X.rotate(rot||0);X.scale(s,s);poly([-9,0,9,0,0,-24],'#ff8fc8');X.beginPath();X.moveTo(-6,-6);X.lineTo(6,-8);X.moveTo(-3,-14);X.lineTo(4,-15);sl(2.4,'#fff59d');circ(0,-25,3.6,'#b388ff');X.restore()}
 function accHead(A,hx,hy,s,t){if(A.party){partyHat(hx+2,hy-14,1,0.15);return}

@@ -6,7 +6,7 @@ const dayKey=d=>{d=d||new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'
 function giftReady(){return SAVE.x.gift.last!==dayKey()}
 function weekKeys(){const d=new Date(),wd=(d.getDay()+6)%7,out=[];for(let i=0;i<7;i++){const q=new Date(d.getFullYear(),d.getMonth(),d.getDate()-wd+i);out.push(dayKey(q))}return out}
 const XL=()=>({land:W>H*1.15,bb:Math.max(64,PT(46))});
-function xHead(title,col){const L=XL();txt(title,L.land?W/2:(INL+12+Math.max(200,PT(150))+W-INR)/2+20,TOP+12+L.bb/2,L.land?32:Math.min(26,W/14),col||'#c2185b',{st:'#fff',sw:5})}
+function xHead(title,col){const L=XL(),x0=INL+12+Math.max(200,PT(150))+10,x1=W-INR-8;let sz=L.land?32:Math.min(26,W/14);if(!L.land){X.font='800 '+sz+'px '+FONT;const w=X.measureText(title).width+sz*0.44;if(w>x1-x0)sz=Math.max(14,sz*(x1-x0)/w)}txt(title,L.land?W/2:(x0+x1)/2,TOP+12+L.bb/2,sz,col||'#c2185b',{st:'#fff',sw:5})}
 function bigTile(x,y,w,h,ic,lab,c,fn,id,glow){const s=1+(glow?Math.sin(T*5)*0.04:0);X.save();X.translate(x+w/2,y+h/2);X.scale(s,s);X.translate(-x-w/2,-y-h/2);
   X.fillStyle='rgba(120,60,140,0.15)';rrect(x+2,y+5,w,h,24);X.fill();X.fillStyle=c;rrect(x,y,w,h,24);X.fill();if(glow){X.strokeStyle='#fff';X.lineWidth=5;rrect(x+3,y+3,w-6,h-6,22);X.stroke()}
   txt(ic,x+w/2,y+h*0.43,Math.min(w,h)*0.42,'#000');txt(lab,x+w/2,y+h*0.84,Math.min(19,w/7),'#7b3fa0');X.restore();btn(id,x,y,w,h,fn)}
