@@ -10,4 +10,4 @@ font=base64.b64encode(open(f'{D}/baloo.woff','rb').read()).decode()
 game=''.join(open(f'{D}/game/'+n).read()+'\n' for n in sorted(os.listdir(f'{D}/game')) if n.endswith('.js'))
 js='const CLIPS='+json.dumps(clips,separators=(',',':'))+';\nconst SILENT_MP3="data:audio/mpeg;base64,'+silent+'";\n'+open(f'{D}/audio.js').read()+'\n'+"(document.fonts&&document.fonts.load?document.fonts.load('800 20px Baloo2Z'):Promise.resolve()).catch(()=>{}).then(()=>{\n\"use strict\";\n"+game+'\n});'
 t=open(f'{D}/template.html').read().replace('/*__AUDIO__*/',js).replace('/*__FONT__*/',font)
-open(f'{D}/../index.html','w').write(t);print(len(t),'bytes',len(clips),'clips')
+os.makedirs(f'{D}/../play',exist_ok=True);open(f'{D}/../play/index.html','w').write(t);print(len(t),'bytes',len(clips),'clips')
