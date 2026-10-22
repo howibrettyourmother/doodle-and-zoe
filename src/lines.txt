@@ -6,7 +6,7 @@ allstars|You found all the stars!|amy|1.25
 sticker|You earned a sticker!|amy|1.25
 newitem|Ooh! Something new in the closet!|amy|1.25
 fish|Yum! A fish treat!|amy|1.25
-pet|Purr purr. Doodle loves you!|amy|1.28
+pet|Doodle loves you!|amy|1.28
 nap|Shhh. Doodle is napping.|amy|1.25
 oops|Uh oh, Doodle!|amy|1.3
 closet|Dress up time!|amy|1.28
@@ -37,3 +37,11 @@ teach2ty|You found our bunny! Thank you, Zoe!|kristin|1.08
 mom2hi|Oh no! I lost my sparkly earring in the sand!|lessac|1.08
 mom2ty|My earring! Thank you, Zoe!|lessac|1.08
 p9|Downtown Rochester!|amy|1.25
+meow1|(recording)|rec|1
+meow2|(recording)|rec|1
+meow3|(recording)|rec|1
+meow4|(recording)|rec|1
+meow5|(recording)|rec|1
+purr|(recording)|rec|1
+a_duck|(recording)|rec|1
+a_owl|(recording)|rec|1

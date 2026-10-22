@@ -178,5 +178,9 @@ const AUD=(()=>{
       if(s16%2===0)arp(ch[(s16/2)%3]+12+(s16>=8?12:0),t,0.012);
       if(th.dr!=='none')drums(th.dr,s16,bar,t);step++;nextT+=sx}}
   function setMuted(m){muted=m;localStorage.setItem('dz_muted',m?'1':'0');if(C)master.gain.setTargetAtTime(m?0:0.9,now(),0.03)}
+    /*real-rec*/function rec(k,d,v){const b=clips[k];if(!b||!ok())return false;const t=now(),G=g(0,sfxBus);const L=d?Math.min(d,b.duration):b.duration;G.gain.setValueAtTime(v||0.9,t);G.gain.setValueAtTime(v||0.9,t+Math.max(0,L-0.25));G.gain.linearRampToValueAtTime(0.0001,t+L);const s=C.createBufferSource();s.buffer=b;s.connect(G);s.start(t);s.stop(t+L+0.05);return true}
+  {const sm=SFX.meow,sp=SFX.purr,sq=SFX.quack,sh=SFX.hoot,MW=['meow1','meow2','meow3','meow4','meow5'];
+   SFX.meow=k=>{try{if(!rec(MW[k==null?(R()*5)|0:k%5]))sm(k)}catch(e){}};SFX.purr=d=>{try{if(!rec('purr',(d||1.2)+0.6,0.8))sp(d)}catch(e){}};
+   SFX.quack=()=>{try{if(!rec('a_duck',1.4))sq()}catch(e){}};SFX.hoot=()=>{try{if(!rec('a_owl'))sh()}catch(e){}}}
   return{unlock,SFX,say,setTheme,setMuted,get muted(){return muted},get unlocked(){return unlocked&&!!C},get running(){return !!C&&C.state==='running'},get clipCount(){return Object.keys(clips).length},get theme(){return theme},stats,get speaking(){return C&&now()<curEnd}};
 })();
