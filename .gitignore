@@ -10,3 +10,4 @@
 !favicon-32.png
 __pycache__/
 dev/
+!hub/*.png

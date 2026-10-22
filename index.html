@@ -7,27 +7,27 @@
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 html,body{margin:0;height:100%;overflow:hidden;background:#ff9ccf url(hub/bg.jpg) center/cover no-repeat;font-family:system-ui,sans-serif}
-#app{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;gap:3vmin;
- padding:max(2vmin,env(safe-area-inset-top)) max(3vmin,env(safe-area-inset-right)) max(2vmin,env(safe-area-inset-bottom)) max(3vmin,env(safe-area-inset-left))}
+#app{position:fixed;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;
+ padding:2vmin 3vmin;padding:max(2vmin,env(safe-area-inset-top)) max(3vmin,env(safe-area-inset-right)) max(2vmin,env(safe-area-inset-bottom)) max(3vmin,env(safe-area-inset-left))}
 #host{flex:0 0 auto;width:24vmin;height:24vmin;border-radius:50%;border:1.2vmin solid #fff;background:#fff center/cover;
- box-shadow:0 1vmin 3vmin #0004;animation:bob 2.4s ease-in-out infinite;cursor:pointer;position:relative}
+ box-shadow:0 1vmin 3vmin #0004;animation:bob 2.4s ease-in-out infinite;cursor:pointer;position:relative;margin-right:3vmin}
 #host.talk{animation:talk .25s ease-in-out 6}
 .hb #host{display:block}.nh #host{display:none}
-#grid{display:grid;gap:3vmin;grid-template-columns:repeat(var(--c),1fr);max-width:100%}
+#grid{display:grid;grid-gap:3vmin;gap:3vmin;grid-template-columns:repeat(var(--c),1fr);max-width:100%}
 .t{width:var(--s);height:var(--s);border-radius:5vmin;background:#fff center/cover no-repeat;border:1.4vmin solid #fff;
  box-shadow:0 1.2vmin 0 #0002,0 1.5vmin 3vmin #0004;cursor:pointer;transition:transform .15s;position:relative}
 .t:active{transform:scale(.94)}
 .t.go{animation:pop .7s ease-out forwards}
 .alex .t{border-color:#7a4a22;border-radius:3vmin;box-shadow:0 1.2vmin 0 #4a2a10,0 1.5vmin 3vmin #0006}
-.alex .t::after{content:"";position:absolute;inset:-.6vmin;border-radius:2.6vmin;border:.5vmin dashed #e9c47a;pointer-events:none}
+.alex .t::after{content:"";position:absolute;top:-.6vmin;right:-.6vmin;bottom:-.6vmin;left:-.6vmin;border-radius:2.6vmin;border:.5vmin dashed #e9c47a;pointer-events:none}
 .zoe .t{border-color:#fff;outline:.8vmin solid #ffb6dd}
-#sign{flex:0 0 auto;font-size:15vmin;filter:drop-shadow(0 1vmin 1vmin #0005);animation:bob 2.4s ease-in-out infinite;cursor:pointer}
+#sign{flex:0 0 auto;font-size:15vmin;filter:drop-shadow(0 1vmin 1vmin #0005);animation:bob 2.4s ease-in-out infinite;cursor:pointer;margin-right:3vmin}
 @keyframes bob{50%{transform:translateY(-1.5vmin) rotate(-3deg)}}
 @keyframes talk{50%{transform:scale(1.08) rotate(4deg)}}
 @keyframes pop{30%{transform:scale(1.12) rotate(-3deg)}100%{transform:scale(1.05)}}
 #ok{position:fixed;right:max(1.5vmin,env(safe-area-inset-right));bottom:max(1vmin,env(safe-area-inset-bottom));font-size:3vmin;opacity:.75}
-@media (orientation:portrait){#app{flex-direction:column}#host,#sign{width:20vmin;height:20vmin}}
-#bd{position:fixed;inset:0;z-index:99;background:#ffe3f3e6;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;overflow:hidden;transition:opacity .6s}
+@media (orientation:portrait){#app{flex-direction:column}#host,#sign{width:20vmin;height:20vmin;margin:0 0 3vmin 0}}
+#bd{position:fixed;top:0;right:0;bottom:0;left:0;z-index:99;background:#ffe3f3e6;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;overflow:hidden;transition:opacity .6s}
 #bd .k{font-size:38vmin;animation:bob 1.6s ease-in-out infinite}#bd .p{font-size:12vmin;animation:talk .8s ease-in-out infinite}
 #bd i{position:absolute;top:-10vmin;font-style:normal;font-size:6vmin;animation:fall linear infinite}
 @keyframes fall{to{transform:translateY(120vh) rotate(720deg)}}
