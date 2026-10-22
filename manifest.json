@@ -2,7 +2,7 @@
  "name": "Zoe's Games",
  "short_name": "Zoe's Games",
  "start_url": "./",
- "scope": "./",
+ "scope": "/",
  "display": "fullscreen",
  "orientation": "landscape",
  "background_color": "#ff9ccf",
