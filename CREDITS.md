@@ -14,3 +14,17 @@ All animal sounds are real recordings released as **CC0 1.0 (public domain dedic
 | a_owl | "Tawny Owl #3" (#3459), https://bigsoundbank.com/sound-3459 | Joseph SARDIN, BigSoundBank | CC0 |
 
 BigSoundBank license: https://bigsoundbank.com/droits.html (CC0). Wikimedia files: https://commons.wikimedia.org
+
+## Hub intro soundtracks (hub/zi_*.mp3)
+There is one pre-mixed track per intro theme: stars, rainbow, castle, fireworks, unicorn, Z-O-E, and birthday. Each is normalized to about -18 LUFS with true peak under -1.5 dBTP and played with WebAudio after "Tap to start!". Tapping fades it out. The "Hi Zoe!" line plays only after the track ends. If nobody taps, the intro stays silent.
+
+**Music:** "Sparkle Hop" is an original theme composed for this hub. It was written programmatically as MIDI (kids-hubs/music/compose.py) and rendered with the FluidR3_GM SoundFont (MIT license) through FluidSynth. Every theme uses the same glockenspiel hook with a different arrangement (celesta, glockenspiel/flute, trumpet + timpani, pizzicato + brass, harp/flute + woodblock gallop, xylophone, trumpet party).
+
+Letter "pops" and star "pings" are synthesized.
+
+| Sound | Source | License |
+|---|---|---|
+| Sparkle sweeps (wind chimes) | https://commons.wikimedia.org/wiki/File:Windchimes.ogg (Esc861) | Public domain |
+| Firework pops | https://commons.wikimedia.org/wiki/File:Fireworks_piece.ogg | Public domain |
+| Unicorn whinny (horse) | https://commons.wikimedia.org/wiki/File:Wiehern.ogg | Public domain |
+| Unicorn gallop | https://commons.wikimedia.org/wiki/File:Six_Horses_Galloping_By.ogg (Freesound community) | CC0 |
