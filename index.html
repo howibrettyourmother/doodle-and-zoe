@@ -88,7 +88,7 @@ addEventListener('resize',sizeF);addEventListener('orientationchange',function()
 addEventListener('message',function(e){if(e.origin===location.origin&&e.data==='hubClose')closeGame()});
 if(self!==top){try{parent.postMessage('hubClose',location.origin)}catch(e){}}
 
-var T=[{"href": "play/", "img": "hub/doodle-and-zoe.png", "clip": "hub/z_dz.mp3"}, {"href": "/zoes-princess-castle/", "img": "hub/zoes-princess-castle.png", "clip": "hub/z_pc.mp3"}, {"href": "/zoes-unicorn-adventure/", "img": "hub/zoes-unicorn-adventure.png", "clip": "hub/z_ua.mp3"}, {"href": "/wilson-water-pirates/", "img": "hub/wilson-water-pirates.png", "clip": "hub/z_wp.mp3"}],KID="zoe",HASHOST=1;
+var T=[{"href": "play/", "img": "hub/doodle-and-zoe.png", "clip": "hub/z_dz.mp3"}, {"href": "/zoes-princess-castle/", "img": "hub/zoes-princess-castle.png", "clip": "hub/z_pc.mp3"}, {"href": "/zoes-unicorn-adventure/", "img": "hub/zoes-unicorn-adventure.png", "clip": "hub/z_ua.mp3"}, {"href": "/wilson-water-pirates/", "img": "hub/wilson-water-pirates.png", "clip": "hub/z_wp.mp3"}, {"href": "/the-bee-game/", "img": "hub/the-bee-game.png", "clip": "hub/z_bg.mp3"}],KID="zoe",HASHOST=1;
 document.body.classList.add(HASHOST?'hb':'nh');
 document.getElementById(HASHOST?'sign':'host').remove();
 var g=document.getElementById('grid'),cur=null,busy=false;
