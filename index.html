@@ -173,6 +173,6 @@ function start(snd){if(st)return;st=snd?2:1;zg.style.display='none';o.className=
  else TM.push(setTimeout(end,rm?2500:5600))}
 o.addEventListener('pointerdown',function(e){e.stopPropagation()});
 var last=0;o.addEventListener('click',function(){var t=Date.now();if(t-last<350)return;last=t;if(!st)start(true);else{if(st===1){WA.unlock();st=2}end()}});
-TM.push(setTimeout(function(){start(false)},4000));window.__ziStart=start})();
+/*no silent auto-start (iOS needs the tap for audio)*/window.__ziStart=start})();
 if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js').then(function(){return navigator.serviceWorker.ready}).then(function(){document.getElementById('ok').textContent='✈️✓'}).catch(function(){})}
 </script></body></html>
