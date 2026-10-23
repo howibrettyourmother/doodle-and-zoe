@@ -21,9 +21,14 @@ for s in lits:
 words=set()
 for t in texts: words.update(norm(t).split())
 for w in sorted(words): texts.append(w)
+# Animal sounds are NEVER spoken by Piper (it garbles them, e.g. 'meow' -> 'ni hao'): strip them; audio.js appends the real recording after the words.
+ANI=r"meows?|mews?|purrs?|quacks?|woofs?|ribbits?|hoots?|hoo|oinks?|moos?|baa|neighs?"
+def strip_ani(t):
+  if not re.search(r"(?i)\b(?:"+ANI+r")\b",t): return t
+  return re.sub(r"\s+([!?.,])",r"\1",re.sub(r"(?i)\b(?:"+ANI+r")\b[!?.,]*",' ',t)).strip(' ,')
 bank={}
 for t in texts:
-  k=norm(t)
+  t=strip_ani(t);k=norm(t)
   if not k or k.isdigit() or k in bank: continue
   bank[k]=(hashlib.md5(k.encode()).hexdigest()[:10],t)
 open(f'{D}/phrases.tsv','w').write(''.join(f'{i}|{t}\n' for k,(i,t) in bank.items()))

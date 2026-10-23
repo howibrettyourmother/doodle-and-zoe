@@ -12,6 +12,8 @@ All animal sounds are real recordings released as **CC0 1.0 (public domain dedic
 | purr | "Cat Purr" (#0436), https://bigsoundbank.com/sound-0436 | Joseph SARDIN, BigSoundBank | CC0 |
 | a_duck | Ducks (#0276), https://bigsoundbank.com/sound-0276 | Joseph SARDIN, BigSoundBank | CC0 |
 | a_owl | "Tawny Owl #3" (#3459), https://bigsoundbank.com/sound-3459 | Joseph SARDIN, BigSoundBank | CC0 |
+| a_dog | Sled dog (#2955), https://bigsoundbank.com/sound-2955 | Joseph SARDIN, BigSoundBank | CC0 |
+| a_frog | "One frog" (#0819), https://bigsoundbank.com/sound-0819 | Joseph SARDIN, BigSoundBank | CC0 |
 
 BigSoundBank license: https://bigsoundbank.com/droits.html (CC0). Wikimedia files: https://commons.wikimedia.org
 
@@ -28,3 +30,5 @@ Letter "pops" and star "pings" are synthesized.
 | Firework pops | https://commons.wikimedia.org/wiki/File:Fireworks_piece.ogg | Public domain |
 | Unicorn whinny (horse) | https://commons.wikimedia.org/wiki/File:Wiehern.ogg | Public domain |
 | Unicorn gallop | https://commons.wikimedia.org/wiki/File:Six_Horses_Galloping_By.ogg (Freesound community) | CC0 |
+
+Animal sounds are never spoken by the TTS voice: lines/phrases contain only the words, and the real recording above (meow1-5, purr, a_duck, a_dog, a_frog, a_owl) plays right after the speech (no overlap). The hub greeting z_hi uses meow1.

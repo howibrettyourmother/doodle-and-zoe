@@ -138,15 +138,18 @@ const AUD=(()=>{
   // ---------- free text -> recorded Piper phrase clips (play/v/<id>.mp3, lazy-loaded; never speechSynthesis) ----------
   const vbuf={},tKeys=[];let tTimer=0,tN=0;
   function vwords(s){s=String(s).replace(/\u2019/g,"'").toLowerCase().replace(/[^a-z0-9' ]+/g,' ').replace(/(^| )'|'( |$)/g,' ');return s.split(' ').filter(function(x){return x})}
-  function plan(text){const w=vwords(text),out=[];let i=0;const B=typeof PHR!=='undefined'?PHR:{};
+  const ANS={meow:'m',meows:'m',mew:'m',mews:'m',purr:'purr',purrs:'purr',quack:'a_duck',quacks:'a_duck',woof:'a_dog',woofs:'a_dog',ribbit:'a_frog',ribbits:'a_frog',hoot:'a_owl',hoots:'a_owl',hoo:'a_owl'};
+  function plan(text){const w0=vwords(text),w=[],sx=[];w0.forEach(function(x){const a=ANS[x];if(a){if(sx.indexOf(a)<0)sx.push(a)}else w.push(x)});const out=[];let i=0;const B=typeof PHR!=='undefined'?PHR:{};
     while(i<w.length){if(/^\d+$/.test(w[i])){if(clips['n'+w[i]]||+w[i]<=30)out.push('n'+w[i]);i++;continue}let j=Math.min(w.length,i+40),hit=null;
       for(;j>i;j--){const k=w.slice(i,j).join(' ');if(B[k]){hit=B[k];break}}
-      if(hit){out.push('v:'+hit);i=j}else{stats.miss=stats.miss||[];if(stats.miss.length<50)stats.miss.push(w[i]);i++}}return out}
+      if(hit){out.push('v:'+hit);i=j}else{stats.miss=stats.miss||[];if(stats.miss.length<50)stats.miss.push(w[i]);i++}}sx.forEach(function(a){out.push('s:'+(a==='m'?'meow'+(1+Math.floor(Math.random()*5)):a))});return out}
   function loadV(id){if(vbuf[id])return vbuf[id];vbuf[id]=fetch('v/'+id+'.mp3').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(ab){return new Promise(function(res,rej){const p=C.decodeAudioData(ab,res,rej);p&&p.catch&&p.catch(rej)})}).catch(function(){delete vbuf[id];return null});return vbuf[id]}
   function sayText(text,prio){prio=prio||1;if(!ok())return false;const p=plan(text);if(!p.length)return false;const key='t:'+p.join('+'),my=++tN;
     const fire=function(tries){if(C&&now()<curEnd-0.05&&prio<3){if(prio>=2&&tries<40&&my===tN){clearTimeout(tTimer);tTimer=setTimeout(function(){fire(tries+1)},100)}return}say(key,prio)};
     if(clips[key]){fire(0);return true}
-    Promise.all(p.map(function(k){return k.charAt(0)==='n'?Promise.resolve(clips[k]||null):loadV(k.slice(2))})).then(function(bs){bs=bs.filter(function(b){return b});if(!bs.length||!C)return;
+    Promise.all(p.map(function(k){return k.charAt(0)==='n'?Promise.resolve(clips[k]||null):k.charAt(0)==='s'?Promise.resolve(clips[k.slice(2)]?{sfx:clips[k.slice(2)]}:null):loadV(k.slice(2))})).then(function(bs){bs=bs.filter(function(b){return b});
+      /* real animal recordings go AFTER the words (0.15 s gap, capped 1.8 s, faded) - never overlapping speech */
+      bs=bs.map(function(b){if(!b.sfx)return b;const r=b.sfx,sr=C.sampleRate,n=Math.min(r.length,Math.round(1.8*r.sampleRate)),lead=Math.round(0.1*sr),m=Math.round(n*sr/r.sampleRate),o=C.createBuffer(1,lead+m,sr),d=o.getChannelData(0),s=r.getChannelData(0),f=Math.round(0.25*sr);for(let q=0;q<m;q++){let v=s[Math.min(n-1,Math.floor(q*r.sampleRate/sr))]*0.9;if(q>m-f)v*=(m-q)/f;d[lead+q]=v}return o});if(!bs.length||!C)return;
       const sr=C.sampleRate,gap=Math.round(sr*0.05);let len=0;bs.forEach(function(b){len+=b.length+gap});const out=C.createBuffer(1,len,sr),d=out.getChannelData(0);let o=0;
       bs.forEach(function(b){d.set(b.getChannelData(0),o);o+=b.length+gap});clips[key]=out;tKeys.push(key);if(tKeys.length>80)delete clips[tKeys.shift()];
       stats.text=(stats.text||0)+1;if(my===tN||prio>=2)fire(0)}).catch(function(){});return true}
