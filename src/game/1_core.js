@@ -86,21 +86,10 @@ addEventListener('keyup',e=>{keys[e.code]=0});
 const SPOKEN=[];
 // ---------- read-aloud voice (Web Speech API). iOS only allows speech after a user gesture, so the first touch speaks a silent
 // utterance to unlock it. Prefers a cheerful en-US voice with a slightly higher pitch. Fails silently when unavailable. ----------
-const SPEAK=(()=>{const ss=window.speechSynthesis,U=window.SpeechSynthesisUtterance;let on=LS.get('voice','1')!=='0',voice=null,unlocked=false,lastT='',lastAt=0,timer=0;
-  const NOVELTY=/bad news|bahh|bells|boing|bubbles|cellos|wobble|deranged|good news|hysterical|jester|organ|superstar|trinoids|whisper|zarvox|albert|fred|junior|ralph|grandpa|grandma|rocko|eddy|reed|sandy|shelley|flo\b/i;
-  const LIKE=[/samantha/i,/ava/i,/allison/i,/susan/i,/zoe/i,/nicky/i,/joelle/i,/google us english/i,/aria/i,/jenny/i,/female/i,/karen/i,/moira/i,/tessa/i];
-  function pickVoice(){try{const vs=ss.getVoices()||[];let best=null,bs=-1;for(const v of vs){if(!/^en/i.test(v.lang)||NOVELTY.test(v.name))continue;let sc=/en[-_]US/i.test(v.lang)?10:3;
-      const li=LIKE.findIndex(r=>r.test(v.name));if(li>=0)sc+=20-li;if(/enhanced|premium/i.test(v.name))sc+=4;if(/compact/i.test(v.name))sc-=1;if(sc>bs){bs=sc;best=v}}voice=best}catch(e){}}
-  if(ss&&U){pickVoice();try{ss.addEventListener?ss.addEventListener('voiceschanged',pickVoice):(ss.onvoiceschanged=pickVoice)}catch(e){}
-    const unlock=()=>{if(unlocked)return;unlocked=true;try{const u=new U(' ');u.volume=0;ss.speak(u)}catch(e){}if(!voice)pickVoice()};
-    ['touchend','click','keydown','pointerup'].forEach(ev=>addEventListener(ev,unlock,{capture:true,passive:true}));
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)try{ss.cancel()}catch(e){}})}
-  // prio 1: skip if already talking; prio 2+: interrupt. Waits for a recorded voice clip to finish so voices never overlap.
-  function say(text,prio,tries){prio=prio||1;tries=tries||0;if(!ss||!U||!on||!unlocked||(typeof AUD!=='undefined'&&AUD.muted))return false;
-    const t=performance.now();if(text===lastT&&t-lastAt<1500)return false;
-    if(typeof AUD!=='undefined'&&AUD.speaking&&tries<40){clearTimeout(timer);timer=setTimeout(()=>say(text,prio,tries+1),100);return true}
-    try{if(ss.speaking||ss.pending){if(prio<2)return false;ss.cancel()}lastT=text;lastAt=t;const u=new U(text);u.lang='en-US';if(voice)u.voice=voice;u.pitch=1.35;u.rate=0.95;u.volume=1;
-      setTimeout(()=>{try{ss.speak(u)}catch(e){}},ss.speaking?80:0);if(SPOKEN.length<200)SPOKEN.push(text)}catch(e){return false}return true}
-  function setOn(v){on=!!v;LS.set('voice',on?'1':'0');if(!on&&ss)try{ss.cancel()}catch(e){}}
-  return{say,setOn,get on(){return on},get ok(){return !!(ss&&U)},get voice(){return voice&&voice.name},get unlocked(){return unlocked}}})();
+// Read-aloud voice: recorded Piper clips only (AUD.sayText stitches pre-generated phrase clips); never browser speechSynthesis.
+const SPEAK=(()=>{let on=LS.get('voice','1')!=='0',lastT='',lastAt=0;
+  function say(text,prio){prio=prio||1;if(!on||typeof AUD==='undefined'||!AUD.unlocked||AUD.muted)return false;
+    const t=performance.now();if(text===lastT&&t-lastAt<1500)return false;lastT=text;lastAt=t;if(SPOKEN.length<200)SPOKEN.push(text);return AUD.sayText(text,prio)}
+  function setOn(v){on=!!v;LS.set('voice',on?'1':'0')}
+  return{say,setOn,get on(){return on},get ok(){return true},get voice(){return 'piper-amy'},get unlocked(){return typeof AUD!=='undefined'&&AUD.unlocked}}})();
 const sayT=(s,p)=>SPEAK.say(s,p);

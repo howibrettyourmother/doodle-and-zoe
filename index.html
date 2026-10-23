@@ -18,6 +18,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#ff9ccf url(hub/bg.jpg
  box-shadow:0 1.2vmin 0 #0002,0 1.5vmin 3vmin #0004;cursor:pointer;transition:transform .15s;position:relative}
 .t:active{transform:scale(.94)}
 .t.go{animation:pop .7s ease-out forwards}
+.t.soon{opacity:.92}.t.soon.go{animation:pop .5s ease-out}
 .alex .t{border-color:#7a4a22;border-radius:3vmin;box-shadow:0 1.2vmin 0 #4a2a10,0 1.5vmin 3vmin #0006}
 .alex .t::after{content:"";position:absolute;top:-.6vmin;right:-.6vmin;bottom:-.6vmin;left:-.6vmin;border-radius:2.6vmin;border:.5vmin dashed #e9c47a;pointer-events:none}
 .zoe .t{border-color:#fff;outline:.8vmin solid #ffb6dd}
@@ -101,6 +102,7 @@ function lay(){var w=innerWidth,h=innerHeight,n=T.length,port=h>w;
  g.style.setProperty('--c',c);g.style.setProperty('--s',s+'px')}
 T.forEach(function(t,i){var d=document.createElement('div');d.className='t';d.style.backgroundImage='url('+t.img+')';
  d.setAttribute('role','link');d.setAttribute('aria-label',t.href);
+ if(t.soon){d.className+=' soon';d.addEventListener('click',function(){d.classList.remove('go');void d.offsetWidth;d.classList.add('go')});g.appendChild(d);return}
  d.addEventListener('click',function(){if(busy)return;busy=true;d.classList.add('go');talk();var a=play(t.clip);
   try{localStorage.kidsHub=KID}catch(e){}
   var gone=false;function go(){if(gone)return;gone=true;openGame(t.href)}

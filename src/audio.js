@@ -135,6 +135,22 @@ const AUD=(()=>{
     const s=C.createBufferSource();s.buffer=b;s.connect(voiceBus);s.start(t+0.02);curSrc=s;curEnd=t+0.02+b.duration+0.2;curPrio=prio;stats.voice++;stats.last=k;stats.said.push(k);
     musicDuck.gain.cancelScheduledValues(t);musicDuck.gain.setTargetAtTime(0.28,t,0.04);musicDuck.gain.setTargetAtTime(1,curEnd,0.2);
     sfxBus.gain.cancelScheduledValues(t);sfxBus.gain.setTargetAtTime(0.38,t,0.04);sfxBus.gain.setTargetAtTime(0.62,curEnd,0.2);return true}
+  // ---------- free text -> recorded Piper phrase clips (play/v/<id>.mp3, lazy-loaded; never speechSynthesis) ----------
+  const vbuf={},tKeys=[];let tTimer=0,tN=0;
+  function vwords(s){s=String(s).replace(/\u2019/g,"'").toLowerCase().replace(/[^a-z0-9' ]+/g,' ').replace(/(^| )'|'( |$)/g,' ');return s.split(' ').filter(function(x){return x})}
+  function plan(text){const w=vwords(text),out=[];let i=0;const B=typeof PHR!=='undefined'?PHR:{};
+    while(i<w.length){if(/^\d+$/.test(w[i])){if(clips['n'+w[i]]||+w[i]<=30)out.push('n'+w[i]);i++;continue}let j=Math.min(w.length,i+40),hit=null;
+      for(;j>i;j--){const k=w.slice(i,j).join(' ');if(B[k]){hit=B[k];break}}
+      if(hit){out.push('v:'+hit);i=j}else{stats.miss=stats.miss||[];if(stats.miss.length<50)stats.miss.push(w[i]);i++}}return out}
+  function loadV(id){if(vbuf[id])return vbuf[id];vbuf[id]=fetch('v/'+id+'.mp3').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(ab){return new Promise(function(res,rej){const p=C.decodeAudioData(ab,res,rej);p&&p.catch&&p.catch(rej)})}).catch(function(){delete vbuf[id];return null});return vbuf[id]}
+  function sayText(text,prio){prio=prio||1;if(!ok())return false;const p=plan(text);if(!p.length)return false;const key='t:'+p.join('+'),my=++tN;
+    const fire=function(tries){if(C&&now()<curEnd-0.05&&prio<3){if(prio>=2&&tries<40&&my===tN){clearTimeout(tTimer);tTimer=setTimeout(function(){fire(tries+1)},100)}return}say(key,prio)};
+    if(clips[key]){fire(0);return true}
+    Promise.all(p.map(function(k){return k.charAt(0)==='n'?Promise.resolve(clips[k]||null):loadV(k.slice(2))})).then(function(bs){bs=bs.filter(function(b){return b});if(!bs.length||!C)return;
+      const sr=C.sampleRate,gap=Math.round(sr*0.05);let len=0;bs.forEach(function(b){len+=b.length+gap});const out=C.createBuffer(1,len,sr),d=out.getChannelData(0);let o=0;
+      bs.forEach(function(b){d.set(b.getChannelData(0),o);o+=b.length+gap});clips[key]=out;tKeys.push(key);if(tKeys.length>80)delete clips[tKeys.shift()];
+      stats.text=(stats.text||0)+1;if(my===tN||prio>=2)fire(0)}).catch(function(){});return true}
+  function prefetch(text){try{plan(text).forEach(function(k){if(k.charAt(0)==='v')loadV(k.slice(2))})}catch(e){}}
   setInterval(()=>{if(queue.length&&C&&now()>=curEnd){const q=queue.shift();say(q.k,q.prio,true)}},60);
   // ---------- music: ORIGINAL chiptune themes (8 bars of 8th notes each; written for this game) ----------
   const NN={c:0,'c#':1,d:2,'d#':3,e:4,f:5,'f#':6,g:7,'g#':8,a:9,'a#':10,b:11};
@@ -186,5 +202,5 @@ const AUD=(()=>{
   {const sm=SFX.meow,sp=SFX.purr,sq=SFX.quack,sh=SFX.hoot,MW=['meow1','meow2','meow3','meow4','meow5'];
    SFX.meow=k=>{try{if(!rec(MW[k==null?(R()*5)|0:k%5]))sm(k)}catch(e){}};SFX.purr=d=>{try{if(!rec('purr',(d||1.2)+0.6,0.8))sp(d)}catch(e){}};
    SFX.quack=()=>{try{if(!rec('a_duck',1.4))sq()}catch(e){}};SFX.hoot=()=>{try{if(!rec('a_owl'))sh()}catch(e){}}}
-  return{unlock,SFX,say,num,setTheme,setMuted,get muted(){return muted},get unlocked(){return unlocked&&!!C},get running(){return !!C&&C.state==='running'},get clipCount(){return Object.keys(clips).length},get theme(){return theme},stats,get speaking(){return C&&now()<curEnd}};
+  return{unlock,SFX,say,num,sayText,prefetch,plan,setTheme,setMuted,get muted(){return muted},get unlocked(){return unlocked&&!!C},get running(){return !!C&&C.state==='running'},get clipCount(){return Object.keys(clips).length},get theme(){return theme},stats,get speaking(){return C&&now()<curEnd}};
 })();
