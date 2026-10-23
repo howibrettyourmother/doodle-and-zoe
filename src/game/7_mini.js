@@ -28,7 +28,7 @@ let MG=null;const MGS={};
 function startMini(k){openScreen('mini');MG={k,t:0,ph:'intro',score:0,o:{},fish:0,got:[]};MGS[k].init(MG.o);AUD.setTheme(k==='dance'?'home':'park');AUD.SFX.chime();sayT(MGINFO[k].say,3)}
 function endMini(){const m=MG;m.ph='end';m.t=0;m.fish=clamp(3+Math.floor(m.score/3),3,12);SAVE.fish+=m.fish;const pv=SAVE.mg[m.k]||{n:0,best:0};SAVE.mg[m.k]={n:pv.n+1,best:Math.max(pv.best,m.score)};save();
   m.got=checkUnlocks();AUD.SFX.sticker();AUD.setTheme('win');sConf(50);setTimeout(()=>{if(MG===m)sayT(pick(PRAISE),3)},250);if(m.got.length)setTimeout(()=>{if(MG===m)say('newitem',2)},2600)}
-function mgScore(n,x,y){MG.score+=n||1;sSpark(x,y,10);if(MG.score%5===0)sayT(pick(CHEER),1)}
+function mgScore(n,x,y){MG.score+=n||1;sSpark(x,y,10);if(!AUD.num(MG.score)&&MG.score%5===0)sayT(pick(CHEER),1)}
 function updMini(dt){const m=MG;if(!m)return;m.t+=dt;if(m.ph==='intro'){if(m.t>2.4){m.ph='play';m.t=0}return}
   if(m.ph==='play'){MGS[m.k].update(dt,m.o);if(m.t>=MGDUR)endMini()}else if(R()<dt*2)sConf(4)}
 function mgTop(){return TOP+Math.max(64,PT(46))+40}// below the back button + timer
