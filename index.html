@@ -175,4 +175,8 @@ o.addEventListener('pointerdown',function(e){e.stopPropagation()});
 var last=0;o.addEventListener('click',function(){var t=Date.now();if(t-last<350)return;last=t;if(!st)start(true);else{if(st===1){WA.unlock();st=2}end()}});
 /*no silent auto-start (iOS needs the tap for audio)*/window.__ziStart=start})();
 if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js').then(function(){return navigator.serviceWorker.ready}).then(function(){document.getElementById('ok').textContent='✈️✓'}).catch(function(){})}
-</script></body></html>
+</script><script>/*sw-reload*/(function(){if(!('serviceWorker' in navigator))return;var sw=navigator.serviceWorker,had=!!sw.controller,done=false;
+sw.addEventListener('controllerchange',function(){if(!had){had=true;return}if(done)return;done=true;try{if(sessionStorage.swReloaded&&Date.now()-sessionStorage.swReloaded<10000)return;sessionStorage.swReloaded=Date.now()}catch(e){}location.reload()});
+function up(){if(sw.getRegistration)sw.getRegistration().then(function(g){if(g)g.update()}).catch(function(){})}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')up()});})();</script>
+</body></html>
