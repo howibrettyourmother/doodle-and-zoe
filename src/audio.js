@@ -128,6 +128,14 @@ const AUD=(()=>{
   let curEnd=0,curPrio=0,queue=[],curSrc=null;
   // counting: each tap speaks its number NOW, cutting any voice line still playing (never overlaps, never skipped)
   function num(n){if(!ok())return false;const b=clips['n'+n];if(!b)return false;try{if(curSrc)curSrc.stop()}catch(e){}queue.length=0;curEnd=0;stats.num=(stats.num||0)+1;return say0('n'+n,3)}
+  // counting rule (Brett, 2026-10-24): speak numbers only while counting a small set (<=20); never repeat a number already said this round;
+  // taps <0.35 s apart are shown, not spoken, and the final total is said once after the burst; numbers cut each other (never stack)
+  const CR={said:new Set(),lastT:-9,pend:0,tm:0,max:20};
+  function count(n,reset){if(reset||n<=1)CR.said.clear();const t=performance.now()/1000,fast=t-CR.lastT<0.35;CR.lastT=t;clearTimeout(CR.tm);
+    if(!(n>=1&&n<=CR.max))return false;
+    if(fast){CR.pend=n;CR.tm=setTimeout(()=>{const p=CR.pend;CR.pend=0;if(p&&!CR.said.has(p)&&num(p))CR.said.add(p)},450);stats.countFast=(stats.countFast||0)+1;return true}
+    if(CR.said.has(n))return true;const ok=num(n);if(ok)CR.said.add(n);return ok}
+  count.reset=()=>{CR.said.clear();CR.pend=0;clearTimeout(CR.tm)};
   /*vguard*/let _vk='',_vt=0,_sx=[];function sfxOK(){const n=Date.now();_sx=_sx.filter(x=>n-x<350);if(_sx.length>=3)return false;_sx.push(n);return true}
   function say(k,prio,fromQ){const n=Date.now();if(k===_vk&&n-_vt<4000)return false;if((prio||1)<3&&C&&now()<curEnd-0.05)return false;const r=say0(k,prio);queue.length=0;if(r){_vk=k;_vt=n}return r}
   function say0(k,prio,fromQ){prio=prio||1;if(!ok())return false;const b=clips[k];if(!b)return false;const t=now();
@@ -205,5 +213,5 @@ const AUD=(()=>{
   {const sm=SFX.meow,sp=SFX.purr,sq=SFX.quack,sh=SFX.hoot,MW=['meow1','meow2','meow3','meow4','meow5'];
    SFX.meow=k=>{try{if(!rec(MW[k==null?(R()*5)|0:k%5]))sm(k)}catch(e){}};SFX.purr=d=>{try{if(!rec('purr',(d||1.2)+0.6,0.8))sp(d)}catch(e){}};
    SFX.quack=()=>{try{if(!rec('a_duck',1.4))sq()}catch(e){}};SFX.hoot=()=>{try{if(!rec('a_owl'))sh()}catch(e){}}}
-  return{unlock,SFX,say,num,sayText,prefetch,plan,setTheme,setMuted,get muted(){return muted},get unlocked(){return unlocked&&!!C},get running(){return !!C&&C.state==='running'},get clipCount(){return Object.keys(clips).length},get theme(){return theme},stats,get speaking(){return C&&now()<curEnd}};
+  return{unlock,SFX,say,num,count,sayText,prefetch,plan,setTheme,setMuted,get muted(){return muted},get unlocked(){return unlocked&&!!C},get running(){return !!C&&C.state==='running'},get clipCount(){return Object.keys(clips).length},get theme(){return theme},stats,get speaking(){return C&&now()<curEnd}};
 })();
