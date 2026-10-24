@@ -53,7 +53,7 @@ function paw(){if(kitPaw()||spotPaw())return;const c=nearEx('cup',70);if(c&&!c.s
 function sleep(){setSt('sleep');cat.vx=0;AUD.SFX.purr(2);if(R()<0.6)say('nap',2)}
 function pounce(lf){if(lf.st>0)return;lf.st=1.5;AUD.SFX.rustle();burst(lf.x,-12,26,['#ffb74d','#ff8a65','#ffd54f','#f48fb1'],220,6);setSt('air');cat.vy=Math.min(cat.vy,-380);cat.ground=null;
   if(task.st==='hidden'&&Math.abs(task.x-lf.x)<40){task.st='free';sparkles(task.x,-20,12);AUD.SFX.chime();bubble(task.x,-60,'Peep!','duckling')}}
-function collectStar(s){s.got=1;const d=pdata(pl.k);if(!d.stars.includes(s.j))d.stars.push(s.j);save();AUD.SFX.chime();sparkles(s.x,s.y,18);hearts(s.x,s.y,3);float('★ '+d.stars.length+'/5',s.x,s.y-30,'#fff59d');
+function collectStar(s){s.got=1;const d=pdata(pl.k);if(!d.stars.includes(s.j))d.stars.push(s.j);save();AUD.SFX.chime();sparkles(s.x,s.y,18);hearts(s.x,s.y,3);float('★ '+d.stars.length+'/5',s.x,s.y-30,'#fff59d');AUD.num(d.stars.length);
   if(!AUD.num(d.stars.length))say(d.stars.length>=5?'allstars':'star',3);else if(d.stars.length>=5)setTimeout(()=>say('allstars',3),650);checkDone()}
 function deliver(){task.st='done';const d=pdata(pl.k);d.task=1;save();say(pl.task.ty,3);AUD.SFX.sticker();hearts(giver.x,-140,10);sparkles(giver.x,-100,16);bubble(giver.x,-170,pl.task.thanks,'npc');giver.wave=3;cat.carry=null;zoe.happy=2;setTimeout(checkDone,1800)}
 function checkDone(){const d=pdata(pl.k);if(d.sticker||d.stars.length<5||!d.task)return;d.sticker=1;const it=UNLOCK[pl.k];SAVE.un[it]=1;SAVE.wear[it]=1;save();
@@ -101,7 +101,8 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
   if(z.petCD<=0&&z.pet<=0&&c.st==='idle'&&c.idle>1.2&&Math.abs(z.x-c.x)<90&&c.y>-70)petCat();
   // collectibles
   for(const s of stars)if(!s.got&&Math.hypot(s.x-c.x,s.y-(c.y-26))<34)collectStar(s);
-  for(const f of fish)if(!f.got&&Math.hypot(f.x-c.x,f.y-(c.y-24))<30){f.got=1;SAVE.fish++;save();AUD.SFX.treat();sparkles(f.x,f.y,6);float('+1 🐟',f.x,f.y-20,'#ffc1e3');if(SAVE.fish%6===1)say('fish',1);
+  for(const f of fish)if(!f.got&&Math.hypot(f.x-c.x,f.y-(c.y-24))<30){f.got=1;SAVE.fish++;save();AUD.SFX.treat();sparkles(f.x,f.y,6);{const t=performance.now();if(t-(window._fcT||0)>1800)window._fcN=0;window._fcT=t;window._fcN=(window._fcN||0)%10+1;float(String(window._fcN),f.x,f.y-46,'#fff59d');AUD.num(window._fcN)}// count each fish: one, two, three...
+  float('+1 🐟',f.x,f.y-20,'#ffc1e3');
     const k=TOPFISH.indexOf(SAVE.fish);if(k>0){float('New outfit color for Zoe!',c.x,c.y-80,'#fff59d');AUD.SFX.sticker()}if(SAVE.fish===30){SAVE.un.collar=1;save();float('Bell Collar unlocked!',c.x,c.y-100,'#fff59d')}}
   // task item
   if(task.st==='free'&&Math.hypot(task.x-c.x,task.y-(c.y-20))<38){task.st='carried';cat.carry=task.k;AUD.SFX.chime();sparkles(task.x,task.y,10);float('Bring it back!',c.x,c.y-80,'#fff59d')}
