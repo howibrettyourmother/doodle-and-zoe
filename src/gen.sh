@@ -5,6 +5,7 @@ mkdir -p /tmp/dz && cd /tmp/dz
 while IFS='|' read -r k t v pr rec; do
   [ -z "$k" ] && continue
   [ "$v" = rec ] && continue
+  [ "$v" = kv ] && continue  # kv = shared Kokoro kids-voice pack clip, already in src/clips
   [ -f $k.mp3 ] && [ "$FORCE" != 1 ] && continue
   if [ -n "$rec" ]; then /workspace/kids-hubs/animix.sh $k.mp3 "$t" $v ${pr:-1.18} $rec; continue; fi  # words + real animal recording
   pr=${pr:-1.18}
