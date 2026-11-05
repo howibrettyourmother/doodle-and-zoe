@@ -28,6 +28,8 @@ iv.call(W,function(){if(!hid)ctxs.forEach(function(c){if(c.__agWant&&c.state==='
 AG.hide=hide;AG.show=show})();</script>
 
 
+
+
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>Zoe's Games</title><meta name="theme-color" content="#ff9ccf">
 <link rel="preload" href="hub/bg.jpg" as="image"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="favicon-32.png">
@@ -127,7 +129,7 @@ addEventListener('resize',sizeF);addEventListener('orientationchange',function()
 addEventListener('message',function(e){if(e.origin===location.origin&&e.data==='hubClose')closeGame()});
 if(self!==top){try{parent.postMessage('hubClose',location.origin)}catch(e){}}
 
-var T=[{"href": "play/?kid=zoe", "img": "hub/doodle-and-zoe.png", "clip": "hub/z_dz.mp3"}, {"href": "/zoes-princess-castle/?kid=zoe", "img": "hub/zoes-princess-castle.png", "clip": "hub/z_pc.mp3"}, {"href": "/zoes-princess-castle/?s=abc&kid=zoe", "img": "hub/zoe-abc123.png", "clip": "hub/z_abc.mp3"}, {"href": "/zoes-unicorn-adventure/?kid=zoe", "img": "hub/zoes-unicorn-adventure.png", "clip": "hub/z_ua.mp3"}, {"href": "/wilson-water-pirates/?kid=zoe", "img": "hub/wilson-water-pirates.png", "clip": "hub/z_wp.mp3"}, {"href": "/dino-stampede-smash/?mode=zoe&kid=zoe", "img": "hub/dino-stampede-smash-zoe.png", "clip": "hub/z_ds.mp3"}],KID="zoe",HASHOST=1;
+var T=[{"href": "play/?kid=zoe", "img": "hub/doodle-and-zoe.png", "clip": "hub/z_dz.mp3"}, {"href": "/zoes-princess-castle/?kid=zoe", "img": "hub/zoes-princess-castle.png", "clip": "hub/z_pc.mp3"}, {"href": "/zoes-princess-castle/?s=abc&kid=zoe", "img": "hub/zoe-abc123.png", "clip": "hub/z_abc.mp3"}, {"href": "/zoes-unicorn-adventure/?kid=zoe", "img": "hub/zoes-unicorn-adventure.png", "clip": "hub/z_ua.mp3"}, {"href": "/the-bee-game/?kid=zoe", "img": "hub/the-bee-game.png", "clip": "hub/z_bg.mp3"}, {"href": "/wilson-water-pirates/?kid=zoe", "img": "hub/wilson-water-pirates.png", "clip": "hub/z_wp.mp3"}, {"href": "/dino-stampede-smash/?mode=zoe&kid=zoe", "img": "hub/dino-stampede-smash-zoe.png", "clip": "hub/z_ds.mp3"}],KID="zoe",HASHOST=1;
 document.body.classList.add(HASHOST?'hb':'nh');
 document.getElementById(HASHOST?'sign':'host').remove();
 var g=document.getElementById('grid'),cur=null,busy=false;
