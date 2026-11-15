@@ -1,5 +1,5 @@
 // ================= Photo Booth: pose Doodle, Zoe and the kitties, add a backdrop, frame and stickers, then save to Photos =================
-const PBG=['hearts','stars','park','rainbow'],PFR=['none','hearts','gold','flowers','paws'],PSTK=['heart','star','rainbow','crown','flower','bow'],POSES=['idle','meow','flop','sleep','purr'];
+const PBG=['hearts','stars','park','rainbow'],PFR=['none','hearts','gold','flowers','paws'],PSTK=['heart','star','rainbow','crown','flower','bow'],POSES=['idle','loaf','bigloaf','judgy','pawface','treesnooze','limp','sticker','meow','flop','sleep','purr'];
 let PH=null;
 function photoOpen(){const items=[{t:'zoe',x:78,y:262,s:1.25,face:1},{t:'cat',x:170,y:262,s:1.25,face:1,pose:0}];parade().forEach((K,i)=>items.push({t:'kit',k:K.k,x:40+i*55,y:292,s:0.95,face:i%2?-1:1}));
   PH={bg:SEASON.k&&SEASON.k!=='spring'&&SEASON.k!=='summer'?4:0,fr:1,items,drag:null,snap:0,flash:0,prev:null,blob:null,file:null,pend:false,msg:''};AUD.setTheme('cozy');sayT('Photo booth! Make a cute picture!',3)}

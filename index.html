@@ -68,6 +68,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;bac
 @keyframes talk{50%{transform:scale(1.08) rotate(4deg)}}
 @keyframes pop{30%{transform:scale(1.12) rotate(-3deg)}100%{transform:scale(1.05)}}
 #ok{position:fixed;right:max(1.5vmin,env(safe-area-inset-right));bottom:max(1vmin,env(safe-area-inset-bottom));font-size:3vmin;opacity:.75}
+#realdoodle{flex:0 0 auto;width:16vmin;margin:0 2.5vmin 3vmin 0;padding:0.8vmin 0.8vmin 3.4vmin;background:#fffdf7;border-radius:0.8vmin;box-shadow:0 0.7vmin 1.8vmin #0004;transform:rotate(-7deg);z-index:6;cursor:pointer;position:relative}
+#realdoodle img{display:block;width:100%;height:14vmin;object-fit:cover;border-radius:0.3vmin;background:#eee}
+#realdoodle figcaption{position:absolute;left:0;right:0;bottom:0.4vmin;text-align:center;font:700 2.1vmin Baloo2Z,system-ui,sans-serif;color:#8a4a28;letter-spacing:.02em}
+@media (max-width:700px){#realdoodle{width:20vmin}#realdoodle img{height:17vmin}}
+
 @media (orientation:portrait){#app{flex-direction:column;padding:max(4vmin,env(safe-area-inset-top)) max(16vmin,env(safe-area-inset-right)) max(14vmin,env(safe-area-inset-bottom)) max(3vmin,env(safe-area-inset-left))}#host,#sign{width:20vmin;height:20vmin;margin:0 0 3vmin 0}}
 #bd{position:fixed;top:0;right:0;bottom:0;left:0;z-index:99;background:#ffe3f3e6;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;overflow:hidden;transition:opacity .6s}
 #bd .k{font-size:38vmin;animation:bob 1.6s ease-in-out infinite}#bd .p{font-size:12vmin;animation:talk .8s ease-in-out infinite}
@@ -123,7 +128,9 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;bac
 #intro.rm .fw,#intro.rm .tw,#intro.rm .fall2,#intro.rm .uni,#intro.rm .tap{display:none}
 @media (orientation:portrait){#intro .msg{font-size:13vw}.th-birthday #intro .msg,#intro.th-birthday .msg{font-size:9vw}#intro .cnt{font-size:9vw}}
 </style></head><body class="zoe"><div id="app">
-<div id="host" style="background-image:url(hub/host.png)"></div><div id="sign">🧭</div><div id="grid"></div></div><div id="ok"></div>
+<div id="host" style="background-image:url(hub/host.png)"></div>
+<figure id="realdoodle" title="Real Doodle"><img src="hub/real-doodle/judgy-loaf.jpg" alt="Real Doodle the cat"><figcaption>Real Doodle</figcaption></figure>
+<div id="sign">🧭</div><div id="grid"></div></div><div id="ok"></div>
 <script>
 /*framed-games*/var fw=null;
 function sizeF(){if(!fw)return;fw.style.width=innerWidth+'px';fw.style.height=innerHeight+'px';var f=fw.firstChild;f.style.width=innerWidth+'px';f.style.height=innerHeight+'px'}
@@ -457,4 +464,12 @@ window.__kx={week:week,render:render,openCase:openCase,state:function(){return{b
 @keyframes htsTw{0%,100%{transform:scale(.8) rotate(-10deg);opacity:.75}50%{transform:scale(1.15) rotate(10deg);opacity:1}}
 @media (prefers-reduced-motion:reduce){#hts::before,#hts::after{-webkit-animation:none;animation:none}}
 </style>
-</body></html>
+<script>
+/* real-doodle polaroid: cat-only photos, tap to cycle. never show people. */
+(function(){
+  var pics=["hub/real-doodle/judgy-loaf.jpg","hub/real-doodle/couch-loaf.jpg","hub/real-doodle/big-loaf.jpg","hub/real-doodle/paw-face.jpg","hub/real-doodle/tree-snooze.jpg"];
+  var i=0,el=document.getElementById("realdoodle");
+  if(!el)return;
+  el.addEventListener("click",function(e){e.stopPropagation();i=(i+1)%pics.length;var img=el.querySelector("img");if(img)img.src=pics[i]});
+})();
+</script></body></html>

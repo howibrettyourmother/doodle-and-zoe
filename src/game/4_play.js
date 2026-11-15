@@ -68,10 +68,13 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
   let ix=0,iy=0;{if(Math.abs(joy.dx)>0.15)ix=joy.dx;iy=joy.dy;ix+=arrowDir();ix+=(keys.ArrowRight||keys.KeyD?1:0)-(keys.ArrowLeft||keys.KeyA?1:0);if(keys.ArrowDown||keys.KeyS)iy=1;ix=clamp(ix,-1,1)}
   if(tapQ){const p=tapQ;tapQ=null;const wx=p.x+camX,wy=p.y-GY();if(Math.abs(wx-zoe.x)<40&&wy>-140&&wy<10){if(Math.abs(zoe.x-c.x)<110)petCat();else{zoe.happy=1.5;AUD.SFX.squeak();bubble(zoe.x,-125,'Come here, Doodle!','zoe')}}else if(Math.hypot(wx-c.x,wy-(c.y-30))<50){setSt('meow');AUD.SFX.meow()}else jumpQ=1}
   if(jumpQ){c.buf=0.16;jumpQ=0}if(pawQ){pawQ=0;paw()}
-  const busy=c.st==='sleep'||c.st==='bisc'||c.st==='flop'||c.st==='purr'||c.st==='meow'||c.st==='bat';
-  if(busy&&(Math.abs(ix)>0.2||c.buf>0)){if(c.st==='sleep'||c.st==='bisc'||c.st==='flop'||c.st==='purr')setSt('idle')}
+  const cozy=['sleep','bisc','flop','purr','loaf','bigloaf','judgy','pawface','treesnooze','limp','sticker'];
+  const busy=cozy.indexOf(c.st)>=0||c.st==='meow'||c.st==='bat';
+  if(busy&&(Math.abs(ix)>0.2||c.buf>0)){if(cozy.indexOf(c.st)>=0)setSt('idle')}
   if((c.st==='meow'||c.st==='bat')&&c.sT>0.55)setSt('idle');if(c.st==='flop'&&c.sT>3.5)setSt('idle');if(c.st==='purr'&&c.sT>2.2)setSt('idle');
-  const still=c.st==='sleep'||c.st==='bisc'||c.st==='flop'||c.st==='purr';
+  if((c.st==='loaf'||c.st==='bigloaf'||c.st==='judgy'||c.st==='sticker')&&c.sT>5)setSt('idle');
+  if((c.st==='pawface'||c.st==='treesnooze'||c.st==='limp')&&c.sT>4.8)setSt('idle');
+  const still=cozy.indexOf(c.st)>=0;
   // horizontal: snappy with light inertia
   const onG=c.ground!=null,tv=still?0:ix*270;c.vx+=(tv-c.vx)*Math.min(1,dt*(onG?14:7));if(Math.abs(ix)>0.15)c.face=ix>0?1:-1;
   // jump: buffered, coyote time, one extra air jump (forgiving)
@@ -87,9 +90,10 @@ function update(dt){T+=dt;stT+=dt;if(banner){banner.t+=dt;if(banner.t>2.6)banner
   if(!still&&c.st!=='meow'&&c.st!=='bat'){const ns=!c.ground?'air':Math.abs(c.vx)>25?'walk':'idle';if(ns!==c.st)setSt(ns)}
   c.idle=(c.st==='idle')?c.idle+dt:0;
   // auto cozy behaviors when standing still
-  if(c.st==='idle'&&c.ground){if(c.idle>2.2&&nearEx('nap',30))sleep();else if(c.idle>1.4&&nearEx('blanket',30)){setSt('bisc');AUD.SFX.purr(1.4)}}
+  if(c.st==='idle'&&c.ground){if(c.idle>2.2&&nearEx('nap',30))sleep();else if(c.idle>1.4&&nearEx('blanket',30)){setSt('bisc');AUD.SFX.purr(1.4)}
+    else if(c.idle>3.2&&R()<dt*0.4){const ps=(typeof SEASON!=='undefined'&&SEASON.k==='win')?['loaf','bigloaf','judgy','pawface','treesnooze','sticker']:['loaf','bigloaf','judgy','pawface','sticker'];setSt(ps[Math.floor(R()*ps.length)])}}
   if(c.st==='bisc'&&((c.sT*9/Math.PI)|0)!==(((c.sT-dt)*9/Math.PI)|0))AUD.SFX.pat();
-  if(c.st==='sleep'&&R()<dt*1.2)floats.push({s:'z',x:c.x+20,y:c.y-40,t:0,c:'#b39ddb',z:1});
+  if((c.st==='sleep'||c.st==='treesnooze'||c.st==='pawface')&&R()<dt*1.2)floats.push({s:'z',x:c.x+20,y:c.y-40,t:0,c:'#b39ddb',z:1});
   // camera
   // camera: lead Doodle a little, but also keep Zoe in frame when she lags behind (Doodle always wins if they are too far apart)
   let tx=c.x-W*0.42+c.face*40;if(zoe)tx=clamp(tx,zoe.x-W+50,zoe.x-50);tx=clamp(tx,c.x-W+70,c.x-70);
