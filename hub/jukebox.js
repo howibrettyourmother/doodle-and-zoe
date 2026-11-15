@@ -2,11 +2,11 @@
 (function(){
   if(window.__JB)return;
   var songs=[
-    {title:"Zoe's Games", art:"hub/host.png", src:"/doodle-and-zoe/hub/theme.mp3", kind:"song"},
+    {title:"Zoe's Games", art:"hub/host.png", src:"/doodle-and-zoe/hub/videos/zoe-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-games-poster.jpg", kind:"video"},
     {title:"Doodle's Song", art:"hub/doodles-song.jpg", src:"/doodle-and-zoe/hub/doodle-the-loaf-720p.mp4", kind:"video"},
-    {title:"Alex's Games", art:"/alex-games/icon-192.png", src:"/alex-games/hub/theme.mp3", kind:"song"},
-    {title:"Excavator Blowout", art:"/alex-games/hub/alex-excavator-blowout.jpg", src:"/alex-excavator-blowout/music/theme_full.mp3", kind:"song"},
-    {title:"Doodle & Zoe", art:"hub/doodle-and-zoe.jpg", src:"/doodle-and-zoe/music/intro.m4a", kind:"song"},
+    {title:"Alex's Games", art:"/alex-games/icon-192.png", src:"/doodle-and-zoe/hub/videos/alex-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/alex-games-poster.jpg", kind:"video"},
+    {title:"Excavator Blowout", art:"/alex-games/hub/alex-excavator-blowout.jpg", src:"/doodle-and-zoe/hub/videos/excavator-blowout-720p.mp4", poster:"/doodle-and-zoe/hub/videos/excavator-blowout-poster.jpg", kind:"video"},
+    {title:"Doodle & Zoe", art:"hub/doodle-and-zoe.jpg", src:"/doodle-and-zoe/hub/videos/doodle-and-zoe-720p.mp4", poster:"/doodle-and-zoe/hub/videos/doodle-and-zoe-poster.jpg", kind:"video"},
     {title:"Princess Castle", art:"hub/zoes-princess-castle.jpg", src:"/zoes-princess-castle/music/intro.m4a", kind:"song"},
     {title:"Unicorn Adventure", art:"hub/zoes-unicorn-adventure.jpg", src:"/zoes-unicorn-adventure/music/intro.m4a", kind:"song"},
     {title:"The Bee Game", art:"hub/the-bee-game.jpg", src:"/the-bee-game/music/intro.m4a", kind:"song"},
@@ -44,7 +44,7 @@
     on=false; paint();
   }
   function isVideo(idx){return !!(all[idx]&&all[idx].kind==='video')}
-  function openVideo(){if(window.__LOAF&&__LOAF.playNow)__LOAF.playNow();else if(window.__LOAF)__LOAF.open()}
+  function openVideo(){var it=all[i];if(window.__LOAF&&__LOAF.playNow)__LOAF.playNow({src:it.src,poster:it.poster||it.art,title:it.title});else if(window.__LOAF)__LOAF.open()}
   function playItem(idx, auto){
     if(isVideo(idx)){i=idx;stop();paint();openVideo();return}
     load(idx, auto);
