@@ -14,6 +14,9 @@
   var ZOE_SONG_SRC='/doodle-and-zoe/hub/videos/silly-face-zoe-720p.mp4';
   var ZOE_SONG_POSTER='/doodle-and-zoe/hub/videos/silly-face-zoe-poster.jpg';
   var ZOE_SONG_TITLE='Silly Face Zoe';
+  var ALEX_SONG_SRC='/doodle-and-zoe/hub/videos/go-alex-go-720p.mp4';
+  var ALEX_SONG_POSTER='/doodle-and-zoe/hub/videos/go-alex-go-poster.jpg';
+  var ALEX_SONG_TITLE='Go, Alex, Go!';
   var curSrc=DEFAULT_SRC, curPoster=DEFAULT_POSTER, curTitle=DEFAULT_TITLE;
   var box, vid, tap, ended, loading;
 
@@ -168,6 +171,7 @@
     hookTile(document.getElementById('doodleSong'), {src:DEFAULT_SRC, poster:DEFAULT_POSTER, title:DEFAULT_TITLE});
     hookTile(document.getElementById('danceSong'), {src:DANCE_SRC, poster:DANCE_POSTER, title:DANCE_TITLE});
     hookTile(document.getElementById('zoeSong'), {src:ZOE_SONG_SRC, poster:ZOE_SONG_POSTER, title:ZOE_SONG_TITLE});
+    hookTile(document.getElementById('alexSong'), {src:ALEX_SONG_SRC, poster:ALEX_SONG_POSTER, title:ALEX_SONG_TITLE});
   }
 
   window.__LOAF={open:playNow,close:close,replay:playNow,playNow:playNow};
