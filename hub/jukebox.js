@@ -3,7 +3,7 @@
   if(window.__JB)return;
   var songs=[
     {title:"Zoe's Games", art:"hub/host.png", src:"/doodle-and-zoe/hub/theme.mp3", kind:"song"},
-    {title:"Doodle's Song", art:"hub/doodles-song.jpg", src:"/doodle-and-zoe/hub/doodle-the-loaf.mp3", kind:"song"},
+    {title:"Doodle's Song", art:"hub/doodles-song.jpg", src:"/doodle-and-zoe/hub/doodle-the-loaf-720p.mp4", kind:"video"},
     {title:"Alex's Games", art:"/alex-games/icon-192.png", src:"/alex-games/hub/theme.mp3", kind:"song"},
     {title:"Excavator Blowout", art:"/alex-games/hub/alex-excavator-blowout.jpg", src:"/alex-excavator-blowout/music/theme_full.mp3", kind:"song"},
     {title:"Doodle & Zoe", art:"hub/doodle-and-zoe.jpg", src:"/doodle-and-zoe/music/intro.m4a", kind:"song"},
@@ -43,7 +43,15 @@
     if(a){try{a.pause();a.src='';a.removeAttribute('src');a.load()}catch(e){}a=null}
     on=false; paint();
   }
+  function isVideo(idx){return !!(all[idx]&&all[idx].kind==='video')}
+  function openVideo(){if(window.__LOAF&&__LOAF.playNow)__LOAF.playNow();else if(window.__LOAF)__LOAF.open()}
+  function playItem(idx, auto){
+    if(isVideo(idx)){i=idx;stop();paint();openVideo();return}
+    load(idx, auto);
+  }
   function load(idx, auto){
+    if(isVideo(idx)){playItem(idx,auto);return}
+
     if(idx<0||idx>=all.length)return;
     i=idx; stop();
     fadeHub();
@@ -58,12 +66,17 @@
     paint();
   }
   function toggle(){
+    if(isVideo(i)){playItem(i,true);return}
     if(!a){ load(i, true); return; }
     if(a.paused){ fadeHub(); var p=a.play(); if(p&&p.then)p.catch(function(){}); }
     else a.pause();
   }
-  function next(){ load((i+1)%all.length, true); }
-  function prev(){ load((i-1+all.length)%all.length, true); }
+  function next(auto){
+    var n=(i+1)%all.length, hops=0;
+    if(auto){while(isVideo(n)&&hops<all.length){n=(n+1)%all.length;hops++} load(n,true); return}
+    playItem(n,true);
+  }
+  function prev(){ playItem((i-1+all.length)%all.length, true); }
 
   function paint(){
     if(!box)return;
@@ -118,7 +131,7 @@
     document.getElementById('jbPrev').addEventListener('click', function(e){ e.stopPropagation(); prev(); });
     box.addEventListener('click', function(e){
       var c=e.target.closest('.card'); if(!c||!box.contains(c))return;
-      e.stopPropagation(); load(+c.getAttribute('data-i'), true);
+      e.stopPropagation(); playItem(+c.getAttribute('data-i'), true);
     });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&box.classList.contains('on')) close(); });
     document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='hidden') try{if(a)a.pause()}catch(e){} });
@@ -135,7 +148,7 @@
     if(box)box.classList.remove('on');
   }
 
-  window.__JB={open:open,close:close,play:function(n){mount();open();if(n!=null)load(n,true)}};
+  window.__JB={open:open,close:close,stop:stop,play:function(n){mount();open();if(n!=null)playItem(n,true)}};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded', mount);
   else mount();
 })();
