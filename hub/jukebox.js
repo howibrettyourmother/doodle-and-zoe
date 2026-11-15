@@ -4,6 +4,7 @@
   var songs=[
     {title:"Zoe's Games", art:"hub/host.png", src:"/doodle-and-zoe/hub/videos/zoe-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-games-poster.jpg", kind:"video"},
     {title:"Doodle's Song", art:"hub/doodles-song.jpg", src:"/doodle-and-zoe/hub/doodle-the-loaf-720p.mp4", kind:"video"},
+    {title:"The Doodle Dance", art:"hub/doodle-dance.jpg", src:"/doodle-and-zoe/hub/videos/doodle-dance-720p.mp4", poster:"/doodle-and-zoe/hub/videos/doodle-dance-poster.jpg", kind:"video"},
     {title:"Alex's Games", art:"/alex-games/icon-192.png", src:"/doodle-and-zoe/hub/videos/alex-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/alex-games-poster.jpg", kind:"video"},
     {title:"Excavator Blowout", art:"/alex-games/hub/alex-excavator-blowout.jpg", src:"/doodle-and-zoe/hub/videos/excavator-blowout-720p.mp4", poster:"/doodle-and-zoe/hub/videos/excavator-blowout-poster.jpg", kind:"video"},
     {title:"Doodle & Zoe", art:"hub/doodle-and-zoe.jpg", src:"/doodle-and-zoe/hub/videos/doodle-and-zoe-720p.mp4", poster:"/doodle-and-zoe/hub/videos/doodle-and-zoe-poster.jpg", kind:"video"},
