@@ -54,7 +54,7 @@ drawTitle=function(){UI=[];softBg('#ffd6ec','#e4d4ff');const H0=homeLayout(),lan
   FAVS.forEach((f,i)=>{const x=W/2+(i-(n-1)/2)*sp,y=H0.fy,glow=f.k==='surprise'&&giftReady();
     v7btn('fav_'+f.k,x,y,H0.fr,f.c,f.k==='play'?(bx,by,r)=>{X.save();X.translate(bx,by+r*0.55);X.scale(r/52,r/52);drawCat(0,0,{t:T,st:'idle',acc:catAcc()});X.restore()}:(f.k==='surprise'&&!giftReady()?'✨':f.e),()=>{if(f.say)v7say(f.say,2);f.fn()},glow||(f.k==='play'&&Math.sin(T*1.5)>0.9));
     txt(f.n,x,y+H0.fr+12,13,'#6a1b9a')});
-  txt('v'+VERSION,INL+8,TOP+10,10,'rgba(123,63,160,0.5)',{a:'left'});const s=tB();muteBtn(UI,W-INR-s-10,TOP+10);voiceBtn(UI,W-INR-s-10,TOP+18+s);
+  /* version label hidden (kid UI) */const s=tB();muteBtn(UI,W-INR-s-10,TOP+10);voiceBtn(UI,W-INR-s-10,TOP+18+s);
   if(giftReady()&&stT>1.2&&stT<1.26&&!XS._giftSaid){XS._giftSaid=1;v7say('Doodle left you a surprise! Tap the present!',1)}
   if(stT>0.4&&stT<0.45&&AUD.unlocked)v7say('Where do you want to go? Pick a picture!',1)};
 IDLE_HINT.title='Pick a big picture! Town, Trips, Play, or My Stuff!';IDLE_HINT.map=IDLE_HINT.title;

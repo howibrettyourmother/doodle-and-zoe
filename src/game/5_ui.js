@@ -68,7 +68,7 @@ function drawTitle(){UI=[];softBg('#ffd6ec','#e4d4ff');const L=mapLayout(),land=
   const NB=items.length,b=Math.min(L.b,land?L.b:(W-INL-INR-6*(NB+1))/NB),gap=land?Math.min(36,(W-NB*b)/(NB+1)):Math.max(6,(W-INL-INR-NB*b)/(NB+1)),tw=NB*b+(NB-1)*gap,x0=land?Math.max(INL+10,Math.min(W/2-tw/2,W*0.78-tw)):W/2-tw/2;
   items.forEach(([ic,lab,fn],i)=>{const x=x0+i*(b+gap),y=L.rowY,bb=1+Math.sin(T*2+i)*0.03;X.fillStyle='rgba(120,60,140,0.18)';X.beginPath();X.arc(x+b/2+1,y+b/2+4,b/2,0,TAU);X.fill();circ(x+b/2,y+b/2,b/2*bb*(lab==='Fun'&&giftReady()?1+Math.sin(T*6)*0.06:1),['#ba68c8','#f06292','#ff8fc8','#ffb74d','#9575cd','#4fc3f7'][i]);
     txt(ic,x+b/2,y+b/2+2,b*0.48,'#000');txt(lab,x+b/2,y+b+12,13,'#6a1b9a');btn('m_'+lab.toLowerCase(),x-gap/2,y-4,b+gap,b+24,fn)});
-  txt('v'+VERSION,INL+8,TOP+10,10,'rgba(123,63,160,0.5)',{a:'left'});const s=tB();muteBtn(UI,W-INR-s-10,TOP+10);voiceBtn(UI,W-INR-s-10,TOP+18+s);
+  /* version label hidden (kid UI) */const s=tB();muteBtn(UI,W-INR-s-10,TOP+10);voiceBtn(UI,W-INR-s-10,TOP+18+s);
   if(stT>0.4&&stT<0.45&&AUD.unlocked)say('map',1)}
 // ---------- sticker book ----------
 function drawBook(){UI=[];softBg('#f3e5ff','#ffe0f0');const land=W>H*1.15;txt('My Sticker Book',W/2,TOP+(land?52:110),land?34:30,'#7b3fa0');const NP=PLACES.length,cols=land?(NP>5?4:5):(NP>6?3:3),r=land?Math.min(NP>5?56:70,W/14,H/(NP>5?11:9)):Math.min(NP>6?40:50,W/9),cw=land?W/(cols+0.6):W/3.2;
