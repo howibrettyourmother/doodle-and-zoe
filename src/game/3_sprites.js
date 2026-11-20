@@ -129,22 +129,30 @@ function accHead(A,hx,hy,s,t){if(A.party){partyHat(hx+2,hy-14,1,0.15);return}
   if(A.knit){X.save();X.translate(hx+2,hy-14);X.fillStyle='#4fc3f7';X.beginPath();X.arc(0,0,15,Math.PI,0);X.fill();X.fillStyle='#fff';rrect(-16,-3,32,7,3);X.fill();X.strokeStyle='#29b6f6';X.lineWidth=1.5;for(let i=-9;i<=9;i+=6){X.beginPath();X.moveTo(i,-4);X.lineTo(i,-13+Math.abs(i)*0.3);X.stroke()}circ(0,-17,6,'#fff');X.restore()}
   if(A.crown)crown(hx-2,hy-20,0.9);if(A.bow)bow(hx+10,hy-17,0.85,'#ff5c9e');if(A.flower){for(let i=0;i<5;i++){const a=i*TAU/5;circ(hx-10+Math.cos(a)*4,hy-16+Math.sin(a)*4,3.2,'#c5a3ff')}circ(hx-10,hy-16,2.4,'#fff59d')}}
 // Zoe: light brown ponytail, pink unicorn sweatshirt, light blue tutu, gray floppy bunny
-function drawZoe(x,o){const f=o.face||1,t=o.t||0,walk=o.walk,pet=o.pet>0,top=o.top||'#ff9cc8',tutu=o.tutu||'#bfe3ff',sk='#f7d5bf',hair='#a8754a';X.save();X.translate(x,0);X.scale(f,1);
+// Zoe: curly medium-brown hair, large pink bow, sparkly pink tulle dress, pink ballet flats, gray floppy bunny
+function drawZoe(x,o){const f=o.face||1,t=o.t||0,walk=o.walk,pet=o.pet>0,top=o.top||'#ff9cc8',tutu=o.tutu||'#ffb3d9',sk='#f7d5bf',hair='#7a4a28',bowC=o.bow;X.save();X.translate(x,0);X.scale(f,1);
   ell(0,2,26,5,'rgba(80,40,90,0.15)');const b=walk?Math.abs(Math.sin(t*9))*3:0,cr=pet?14:0;X.translate(0,-b+cr);
   const lg=walk?Math.sin(t*9)*7:0;X.beginPath();X.moveTo(-5,-36);X.lineTo(-5+lg,-4-cr);X.moveTo(5,-36);X.lineTo(5-lg,-4-cr);sl(6,sk);ell(-5+lg+2,-3-cr,6,3.5,'#ff8fc8');ell(5-lg+2,-3-cr,6,3.5,'#ff8fc8');
-  for(let i=0;i<6;i++)ell(-18+i*7.2,-38,9,8,i%2?tutu:'rgba(255,255,255,0.85)');ell(0,-42,20,7,tutu);
-  X.fillStyle=top;rrect(-15,-76,30,38,10);X.fill();circ(1,-58,7,'#fff');poly([4,-64,9,-74,7,-62],'#ffd54f');circ(-3,-60,3,'#c5a3ff');circ(-4,-55,3,'#80deea');circ(3,-58,1.2,'#333');
-  // bunny (gray, floppy ears) hugged on the far arm
+  // sparkly knee-length tulle skirt
+  for(let i=0;i<7;i++)ell(-20+i*6.6,-40,10,11,i%2?tutu:'rgba(255,255,255,0.75)');
+  ell(0,-46,22,8,tutu);
+  // bodice + flutter sleeves
+  X.fillStyle=top;rrect(-13,-78,26,36,12);X.fill();
+  ell(-16,-70,8,6,top);ell(16,-70,8,6,top);
+  for(let i=0;i<5;i++)circ(-10+i*5,-50-(i%2)*3,1.2,'rgba(255,255,255,0.85)');
+  // bunny hugged on the far arm
   X.save();X.translate(-12,-52);ell(0,6,9,11,'#c9c4c6');circ(0,-8,8,'#d5d0d2');ell(-6,-4,3,9,'#bdb6b8',0.6);ell(6,-6,3,10,'#bdb6b8',-0.4);circ(-2,-9,1.2,'#333');circ(3,-9,1.2,'#333');circ(0.5,-6,1.6,'#a1887f');X.restore();
   X.beginPath();X.moveTo(-12,-70);X.quadraticCurveTo(-20,-56,-8,-48);sl(6,top);
   const ar=pet?0.9:walk?Math.sin(t*9)*0.4:0.15;X.save();X.translate(12,-70);X.rotate(ar);X.beginPath();X.moveTo(0,0);X.lineTo(4,22);sl(6,top);circ(4,25,4,sk);X.restore();
-  // head + ponytail
-  const pt=Math.sin(t*(walk?9:2))*4;X.beginPath();X.moveTo(-10,-100);X.quadraticCurveTo(-26,-96,-24+pt*0.5,-80);sl(9,hair);circ(-11,-100,3.5,'#ff8fc8');
-  circ(0,-94,16,sk);X.fillStyle=hair;X.beginPath();X.arc(0,-96,17,Math.PI*1.02,TAU*1.0);X.fill();X.beginPath();X.ellipse(5,-104,12,6,-0.2,0,TAU);X.fill();
-  if(o.happy>0){X.beginPath();X.arc(-2,-94,2.6,Math.PI*1.1,Math.PI*1.9);sl(2,'#4a3030');X.beginPath();X.arc(8,-94,2.6,Math.PI*1.1,Math.PI*1.9);sl(2,'#4a3030')}else{circ(-2,-94,2.4,'#4a3030');circ(8,-94,2.4,'#4a3030');circ(-1.3,-95,0.9,'#fff');circ(8.7,-95,0.9,'#fff')}
-  ell(-6,-88,3.4,2,'rgba(255,130,160,0.5)');ell(12,-88,3.4,2,'rgba(255,130,160,0.5)');X.beginPath();X.arc(4,-88,4,0.3,Math.PI-0.3);sl(1.8,'#c2185b');
-  if(o.ears){poly([-15,-104,-12,-122,-3,-111],o.ears);poly([-12.5,-107,-11,-117,-6,-111],'#fff0f6');poly([3,-111,12,-122,15,-104],o.ears);poly([6,-111,11,-117,12.5,-107],'#fff0f6')}
-  if(o.bow)bow(-8,-110,0.7,o.bow);if(o.party)partyHat(4,-110,1,0.2);X.restore()}
+  // curly hair + head
+  const hy=-94;
+  for(const [cx,cy,r] of [[-16,hy+8,8],[-20,hy+18,7],[-18,hy+28,7],[16,hy+8,8],[20,hy+18,7],[18,hy+28,7],[-12,hy+34,6],[12,hy+34,6],[-8,hy-8,7],[8,hy-10,7],[0,hy-12,8],[-22,hy+8,6],[22,hy+8,6]])circ(cx,cy,r,hair);
+  circ(0,hy,16,sk);
+  for(const [cx,cy,r] of [[-14,hy-8,6],[0,hy-12,7],[14,hy-8,6],[-10,hy-14,5],[10,hy-14,5]])circ(cx,cy,r,hair);
+  if(o.happy>0){X.beginPath();X.arc(-2,hy,2.6,Math.PI*1.1,Math.PI*1.9);sl(2,'#4a3030');X.beginPath();X.arc(8,hy,2.6,Math.PI*1.1,Math.PI*1.9);sl(2,'#4a3030')}else{circ(-2,hy,2.4,'#4a3030');circ(8,hy,2.4,'#4a3030');circ(-1.3,hy-1,0.9,'#fff');circ(8.7,hy-1,0.9,'#fff')}
+  ell(-6,hy+6,3.4,2,'rgba(255,130,160,0.5)');ell(12,hy+6,3.4,2,'rgba(255,130,160,0.5)');X.beginPath();X.arc(4,hy+6,4,0.3,Math.PI-0.3);sl(1.8,'#c2185b');
+  if(o.ears){poly([-15,hy-10,-12,hy-28,-3,hy-17],o.ears);poly([-12.5,hy-13,-11,hy-23,-6,hy-17],'#fff0f6');poly([3,hy-17,12,hy-28,15,hy-10],o.ears);poly([6,hy-17,11,hy-23,12.5,hy-13],'#fff0f6')}
+  if(bowC)bow(0,hy-18,0.95,bowC);if(o.party)partyHat(4,hy-16,1,0.2);X.restore()}
 // ---------- kitty friends: small side-view cats, drawn once per pose into the sprite cache ----------
 function drawKit(K,pose,fr,o){o=o||{};X.save();X.scale(K.s,K.s);const B=K.c,D=K.d,Wb=K.w,sit=pose==='sit',ph=fr?1:0;
   ell(0,1,24,4.5,'rgba(80,40,90,0.15)');
