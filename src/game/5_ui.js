@@ -1,8 +1,8 @@
 // ================= UI: map, menus, sticker book, closet, kitty collection, HUD, controls, render =================
-const VERSION='1.7.1 (Oct 21 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
+const VERSION='1.7.2 (Nov 22 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
 function btn(id,x,y,w,h,fn){const b={id,x,y,w,h,fn};UI.push(b);return b}
 // last-drawn button wins (it is the one on top)
-function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){if(b.id!=='block'&&b.id!=='stage')AUD.SFX.click();b.fn();return true}}return false}
+function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){if(b.id==='stage')continue;if(b.id!=='block')AUD.SFX.click();b.fn();return true}}return false}
 // ---------- screen navigation: every screen has a big Back button and Esc goes back; Back always returns to play (or the map) ----------
 const SCREEN_SAY={menu:'What do you want to do?',closet:null,book:null};
 function openScreen(s){const S0=SCR[state];if(state==='play'||state==='title')retTo=(state==='play'&&cat)?'play':'title';else if(S0&&S0.close)S0.close();

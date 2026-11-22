@@ -2,7 +2,7 @@
 const PBG=['hearts','stars','park','rainbow'],PFR=['none','hearts','gold','flowers','paws'],PSTK=['heart','star','rainbow','crown','flower','bow'],POSES=['idle','loaf','bigloaf','judgy','pawface','treesnooze','limp','sticker','meow','flop','sleep','purr'];
 let PH=null;
 function photoOpen(){const items=[{t:'zoe',x:78,y:262,s:1.25,face:1},{t:'cat',x:170,y:262,s:1.25,face:1,pose:0}];parade().forEach((K,i)=>items.push({t:'kit',k:K.k,x:40+i*55,y:292,s:0.95,face:i%2?-1:1}));
-  PH={bg:SEASON.k&&SEASON.k!=='spring'&&SEASON.k!=='summer'?4:0,fr:1,items,drag:null,snap:0,flash:0,prev:null,blob:null,file:null,pend:false,msg:''};AUD.setTheme('cozy');sayT('Photo booth! Make a cute picture!',3)}
+  PH={bg:SEASON.k&&SEASON.k!=='spring'&&SEASON.k!=='summer'?4:0,fr:1,items,drag:null,sel:null,z:1,pinch:null,snap:0,flash:0,prev:null,blob:null,file:null,pend:false,msg:''};try{if(cv&&cv.style)cv.style.touchAction='none'}catch(e){}AUD.setTheme('cozy');sayT('Photo booth! Make a cute picture. Drag anything to move it!',3)}
 const pbgList=()=>SEASON.k&&SEASON.k!=='spring'&&SEASON.k!=='summer'?PBG.concat([SEASON.k]):PBG;
 const pstkList=()=>PSTK.concat([SEASON.k==='hal'?'pumpkin':SEASON.k==='win'?'snowflake':SEASON.k==='bday'?'cake':'paw']);
 function drawStk(k,s){X.save();X.scale(s,s);
@@ -24,7 +24,7 @@ function drawFrame(k){if(k==='none')return;X.lineWidth=14;X.strokeStyle=k==='gol
   else if(k==='gold')for(let i=0;i<8;i++){star5(14+i*39,12,6,'#fff59d');star5(14+i*39,288,6,'#fff59d')}
   else if(k==='flowers')for(let i=0;i<7;i++)for(const y of [10,290]){for(let j=0;j<5;j++){const a=j*TAU/5;circ(20+i*44+Math.cos(a)*5,y+Math.sin(a)*5,4,i%2?'#ff8fc8':'#c5a3ff')}circ(20+i*44,y,3,'#fff59d')}
   else if(k==='paws')for(let i=0;i<7;i++)for(const y of [10,290]){const x=22+i*43;circ(x,y+2,4.5,'#ff8fc8');for(let j=0;j<3;j++)circ(x-5+j*5,y-4,2.2,'#ff8fc8')}}
-function drawPhoto(hq){drawBackdrop(pbgList()[PH.bg]);const its=PH.items.filter(i=>i.t!=='stk').sort((a,b)=>a.y-b.y).concat(PH.items.filter(i=>i.t==='stk'));
+function drawPhoto(hq){drawBackdrop(pbgList()[PH.bg]);const its=photoDrawOrder();
   for(const it of its){X.save();X.translate(it.x,it.y);
     if(it.t==='zoe'){X.scale(it.s*it.face,it.s);drawZoe(0,{t:hq?0.5:T,face:1,happy:1,top:SAVE.zoe.top,tutu:SAVE.zoe.tutu,bow:SAVE.zoe.bow,ears:SAVE.zoe.ears,party:SEASON.bday})}
     else if(it.t==='cat'){drawCat(0,0,{t:hq?0.5:T,face:it.face,st:POSES[it.pose],acc:catAcc(),s:it.s})}
@@ -37,6 +37,7 @@ function photoLayout(){const land=W>H*1.15,bb=Math.max(64,PT(46)),ts=Math.max(PT
 function drawPhotoScreen(){UI=[];const P=PH,L=photoLayout();softBg('#ffe0f0','#efe0ff');
   X.save();X.fillStyle='rgba(120,60,140,0.2)';rrect(L.px+3,L.py+6,L.ps,L.ps,18);X.fill();X.beginPath();rrect(L.px,L.py,L.ps,L.ps,18);X.clip();X.translate(L.px,L.py);X.scale(L.ps/300,L.ps/300);drawPhoto(false);X.restore();
   btn('stage',L.px,L.py,L.ps,L.ps,()=>{});
+  photoDecorate(L);
   // tool rows: backdrop, frame, stickers (+ clear)
   const rows=[['bg',pbgList().length,(i,s)=>{X.save();X.beginPath();rrect(-s/2,-s/2,s,s,12);X.clip();X.translate(-s/2,-s/2);X.scale(s/300,s/300);drawBackdrop(pbgList()[i]);X.restore()}],
     ['fr',PFR.length,(i,s)=>{X.fillStyle='#fff';rrect(-s/2,-s/2,s,s,12);X.fill();X.save();X.translate(-s/2,-s/2);X.scale(s/300,s/300);if(i===0){txt('✕',150,150,140,'#ccc')}else drawFrame(PFR[i]);X.restore()}],
@@ -53,17 +54,43 @@ function drawPhotoScreen(){UI=[];const P=PH,L=photoLayout();softBg('#ffe0f0','#e
   if(P.prev)drawPhotoPreview()}
 function photoTool(k,i){const P=PH;AUD.SFX.click();if(k==='bg'){P.bg=i;sayT(['Hearts!','Starry night!','The park!','Rainbow!','Party time!'][Math.min(i,4)],1)}else if(k==='fr'){P.fr=i}
   else if(i>=pstkList().length){P.items=P.items.filter(q=>q.t!=='stk');AUD.SFX.whoosh()}else{const n=P.items.filter(q=>q.t==='stk').length;if(n>=12)P.items.splice(P.items.findIndex(q=>q.t==='stk'),1);P.items.push({t:'stk',k:pstkList()[i],x:rr(50,250),y:rr(40,140),s:1.2});AUD.SFX.pop()}}
+function photoDrawOrder(){const z=it=>it.z||0;return PH.items.filter(i=>i.t!=='stk').sort((a,b)=>z(a)-z(b)||a.y-b.y).concat(PH.items.filter(i=>i.t==='stk').sort((a,b)=>z(a)-z(b)))}
+function photoItemBox(it){const s=it.s||1,stk=it.t==='stk',kit=it.t==='kit',hero=it.t==='zoe'||it.t==='alex'||it.t==='hero';
+  const hw=Math.max(stk?28*s:kit?36*s:hero?42*s:46*s,30),hh=Math.max(stk?28*s:kit?52*s:hero?96*s:58*s,30),cx=it.x,cy=stk?it.y:it.y-hh*0.55;
+  return{cx,cy,hw,hh,x0:cx-hw,x1:cx+hw,y0:cy-hh,y1:cy+hh}}
+function photoHitAt(items,x,y){for(let i=items.length-1;i>=0;i--){const b=photoItemBox(items[i]);if(x>=b.x0&&x<=b.x1&&y>=b.y0&&y<=b.y1)return items[i]}return null}
+function photoClamp(it,x,y){it.x=clamp(x,12,288);it.y=clamp(y,18,300);return it}
+function photoCanDelete(it){return!!(it&&(it.t==='stk'||it.t==='kit'))}
+function photoFront(it){if(!PH||!it)return;const i=PH.items.indexOf(it);if(i>=0){PH.items.splice(i,1);PH.items.push(it)}it.z=(PH.z=(PH.z||0)+1)}
+function photoDelete(it){if(!PH||!it)return;const i=PH.items.indexOf(it);if(i>=0)PH.items.splice(i,1);if(PH.sel===it)PH.sel=null;AUD.SFX.whoosh()}
+function photoResize(it,m){if(!it)return;it.s=clamp(Math.round(it.s*m*100)/100,0.5,2.6);AUD.SFX.pop()}
+function photoTrashRect(L){L=L||photoLayout();const s=Math.max(56,PT(48));return{x:L.px+L.ps-s-8,y:L.py+L.ps-s-8,w:s,h:s}}
+function photoOverTrash(p,L){const t=photoTrashRect(L||photoLayout());return p.x>=t.x&&p.x<=t.x+t.w&&p.y>=t.y&&p.y<=t.y+t.h}
+function photoDecorate(L){const P=PH;if(!P||P.prev)return;
+  if(P.sel){const b=photoItemBox(P.sel),sc=L.ps/300,x=L.px+b.cx*sc,y=L.py+b.cy*sc;X.save();X.strokeStyle='#ffd54f';X.lineWidth=3;X.setLineDash([7,5]);rrect(x-b.hw*sc-6,y-b.hh*sc-6,b.hw*2*sc+12,b.hh*2*sc+12,14);X.stroke();X.restore()}
+  const t=photoTrashRect(L),over=P.drag&&photoCanDelete(P.drag.it)&&photoOverTrash({x:P.drag.px,y:P.drag.py},L);
+  X.fillStyle=over?'#e53935':'rgba(0,0,0,0.45)';rrect(t.x,t.y,t.w,t.h,14);X.fill();txt('🗑️',t.x+t.w/2,t.y+t.h/2+1,26,'#fff');
+  if(P.sel){const bs=Math.max(52,PT(44)),rx=L.px+8,ry=L.py+L.ps-bs-8;X.fillStyle='rgba(255,255,255,0.92)';rrect(rx-4,ry-4,bs*2+16,bs+8,14);X.fill();pill(rx,ry,bs,bs,'−','#546e7a',28);btn('psm',rx,ry,bs,bs,()=>photoResize(P.sel,0.85));pill(rx+bs+8,ry,bs,bs,'+','#43a047',28);btn('plg',rx+bs+8,ry,bs,bs,()=>photoResize(P.sel,1.18))}
+  if(L.py>TOP+70)txt('Drag to move  ·  pinch or +/− to resize  ·  🗑️ to delete',L.px+L.ps/2,L.py-16,13,'#6a1b9a')}
+function photoCap(id,on){try{if(!cv||id==null)return;if(on&&cv.setPointerCapture)cv.setPointerCapture(id);else if(!on&&cv.releasePointerCapture)cv.releasePointerCapture(id)}catch(e){}}
 function photoHit(p){const L=photoLayout(),k=300/L.ps,x=(p.x-L.px)*k,y=(p.y-L.py)*k;if(x<0||y<0||x>300||y>300)return null;
-  for(let i=PH.items.length-1;i>=0;i--){const it=PH.items[i],h=it.t==='stk'?24*it.s:it.t==='kit'?60*it.s:it.t==='zoe'?110*it.s:60*it.s,w=it.t==='stk'?26*it.s:it.t==='kit'?30*it.s:it.t==='zoe'?24*it.s:42*it.s;
-    const cy=it.t==='stk'?it.y:it.y-h/2;if(Math.abs(x-it.x)<w+8&&Math.abs(y-cy)<h/2+(it.t==='stk'?it.s*24:8))return{it,x,y,ox:it.x-x,oy:it.y-y}}return{it:null,x,y}}
+  const it=photoHitAt(PH.items,x,y);return it?{it,x,y,ox:it.x-x,oy:it.y-y}:{it:null,x,y}}
 SCR.photo={open:photoOpen,close(){PH=null},
-  down(p,id){if(!PH||PH.prev)return;const h=photoHit(p);if(h&&h.it){PH.drag={id,it:h.it,ox:h.ox,oy:h.oy,mv:0,sx:p.x,sy:p.y};const i=PH.items.indexOf(h.it);if(h.it.t==='stk'){PH.items.splice(i,1);PH.items.push(h.it)}}},
-  move(p,id){const d=PH&&PH.drag;if(!d||d.id!==id)return;const L=photoLayout(),k=300/L.ps;if(Math.hypot(p.x-d.sx,p.y-d.sy)>8)d.mv=1;if(!d.mv)return;d.it.x=clamp((p.x-L.px)*k+d.ox,10,290);d.it.y=clamp((p.y-L.py)*k+d.oy,30,300)},
-  up(p,id){const d=PH&&PH.drag;if(!d||d.id!==id)return;PH.drag=null;if(d.mv)return;const it=d.it;
-    if(it.t==='cat'){it.pose=(it.pose+1)%POSES.length;AUD.SFX.meow(it.pose%3);if(POSES[it.pose]==='purr')AUD.SFX.purr(1)}else if(it.t==='zoe'){it.face=-it.face;AUD.SFX.squeak()}else if(it.t==='kit'){it.face=-it.face;AUD.SFX.meow(2)}else{it.s=it.s>1.6?0.9:it.s+0.35;AUD.SFX.pop()}},
+  down(p,id){if(!PH||PH.prev)return;
+    if(PH.drag&&PH.drag.id!==id&&PH.sel){const d0=Math.hypot(p.x-PH.drag.sx,p.y-PH.drag.sy);PH.pinch={a:PH.drag.id,b:id,ax:PH.drag.sx,ay:PH.drag.sy,bx:p.x,by:p.y,d0:Math.max(10,d0),s0:PH.sel.s||1};photoCap(id,1);return}
+    const h=photoHit(p);if(h&&h.it){PH.sel=h.it;photoFront(h.it);PH.drag={id,it:h.it,ox:h.ox,oy:h.oy,mv:0,sx:p.x,sy:p.y,px:p.x,py:p.y,hold:0};photoCap(id,1)}else if(h)PH.sel=null},
+  move(p,id){if(!PH)return;
+    if(PH.pinch){const P=PH.pinch;if(id===P.a){P.ax=p.x;P.ay=p.y}else if(id===P.b){P.bx=p.x;P.by=p.y}else return;const d=Math.hypot(P.bx-P.ax,P.by-P.ay);if(PH.sel)PH.sel.s=clamp(P.s0*(d/P.d0),0.5,2.6);if(PH.drag)PH.drag.mv=1;return}
+    const d=PH.drag;if(!d||d.id!==id)return;d.px=p.x;d.py=p.y;if(Math.hypot(p.x-d.sx,p.y-d.sy)>6)d.mv=1;if(!d.mv)return;const L=photoLayout(),k=300/L.ps;photoClamp(d.it,(p.x-L.px)*k+d.ox,(p.y-L.py)*k+d.oy)},
+  up(p,id){if(!PH)return;photoCap(id,0);
+    if(PH.pinch&&(id===PH.pinch.a||id===PH.pinch.b)){PH.pinch=null;if(PH.drag&&PH.drag.id===id)PH.drag=null;return}
+    const d=PH.drag;if(!d||d.id!==id)return;PH.drag=null;
+    if(d.mv){if(photoCanDelete(d.it)&&photoOverTrash(p||{x:d.px,y:d.py}))photoDelete(d.it);return}
+    const it=d.it;if(it.t==='cat'){it.pose=(it.pose+1)%POSES.length;AUD.SFX.meow(it.pose%3);if(POSES[it.pose]==='purr')AUD.SFX.purr(1)}else if(it.t==='zoe'||it.t==='alex'||it.t==='hero'){it.face=-it.face;AUD.SFX.squeak()}else if(it.t==='kit'){it.face=-it.face;AUD.SFX.meow(2)}else{AUD.SFX.pop()}},
+  key(code){if(!PH||PH.prev||!PH.sel)return;if(code==='Equal'||code==='NumpadAdd'||code==='ArrowUp')photoResize(PH.sel,1.18);if(code==='Minus'||code==='NumpadSubtract'||code==='ArrowDown')photoResize(PH.sel,0.85);if((code==='Backspace'||code==='Delete')&&photoCanDelete(PH.sel))photoDelete(PH.sel)},
   back(){if(PH&&PH.prev){PH.prev=null;return true}return false}};
 function photoSnap(){const P=PH;if(P.snap>0||P.prev)return;P.snap=1.1;sayT('Say cheese!',3);AUD.SFX.chime()}
-function updPhoto(dt){const P=PH;if(!P)return;if(P.flash>0)P.flash-=dt*2.5;if(P.snap>0){P.snap-=dt;if(P.snap<=0){P.snap=0;photoTake()}}}
+function updPhoto(dt){const P=PH;if(!P)return;if(P.flash>0)P.flash-=dt*2.5;if(P.snap>0){P.snap-=dt;if(P.snap<=0){P.snap=0;photoTake()}}if(P.drag&&!P.drag.mv&&!P.pinch){P.drag.hold=(P.drag.hold||0)+dt;if(P.drag.hold>0.7&&photoCanDelete(P.drag.it)){photoDelete(P.drag.it);photoCap(P.drag.id,0);P.drag=null}}}
 function photoTake(){const P=PH,N=900,c=document.createElement('canvas');c.width=N;c.height=N;const x=c.getContext('2d'),keep=X;X=x;try{X.scale(N/300,N/300);drawPhoto(true);X.font='800 9px '+FONT;X.globalAlpha=0.6;txt("Doodle & Zoe ✨ "+new Date().toLocaleDateString(),150,284,8,'#7b3fa0',{st:'#fff',sw:2})}catch(e){console.warn(e)}finally{X=keep}
   P.flash=1;AUD.SFX.shutter();P.prev=c;P.blob=null;P.file=null;P.msg='';sSpark(W/2,H/2,16);setTimeout(()=>sayT('Great picture, Zoe!',2),500);
   try{c.toBlob(b=>{if(!b||PH!==P)return;P.blob=b;try{P.file=new File([b],'doodle-and-zoe-'+Date.now()+'.png',{type:'image/png'})}catch(e){P.file=null}},'image/png')}catch(e){P.msg='x'}}
