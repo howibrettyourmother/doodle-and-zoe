@@ -6,7 +6,7 @@
 #jukebox.on{display:flex}
 #jukebox .side{flex:0 0 28%;max-width:34vw;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2vmin 2vmin 2vmin 2.5vmin;gap:1.6vmin}
 #jukebox .stage{position:relative;width:26vmin;height:26vmin}
-#jukebox .doodle{width:100%;height:100%;border-radius:50%;background:#fff url(host.png) center/cover no-repeat;border:.9vmin solid #fff;box-shadow:0 0 0 .5vmin #ffd0ea,0 1.2vmin 3vmin #c74d8a66}
+#jukebox .doodle{width:100%;height:100%;border-radius:50%;background:#fff url(cgi-doodle-bow.jpg) center/cover no-repeat;border:.9vmin solid #fff;box-shadow:0 0 0 .5vmin #ffd0ea,0 1.2vmin 3vmin #c74d8a66}
 #jukebox.playing .doodle{animation:jb-dance .42s ease-in-out infinite alternate}
 @keyframes jb-dance{0%{transform:translateY(0) rotate(-10deg) scale(1)}100%{transform:translateY(-2.2vmin) rotate(10deg) scale(1.07)}}
 #jukebox .spark{position:absolute;font-size:4.5vmin;opacity:0}
