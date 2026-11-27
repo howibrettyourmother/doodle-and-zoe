@@ -2,6 +2,7 @@
 (function(){
   if(window.__JB)return;
   var songs=[
+    {title:"Zoe Bean", art:"hub/zoe-bean.jpg", src:"/doodle-and-zoe/hub/videos/zoe-bean-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-bean-poster.jpg", kind:"video"},
     {title:"Zoe's Games", art:"hub/cgi-doodle-bow.jpg", src:"/doodle-and-zoe/hub/videos/zoe-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-games-poster.jpg", kind:"video"},
     {title:"Doodle's Song", art:"hub/doodles-song.jpg", src:"/doodle-and-zoe/hub/doodle-the-loaf-720p.mp4", kind:"video"},
     {title:"The Doodle Dance", art:"hub/doodle-dance.jpg", src:"/doodle-and-zoe/hub/videos/doodle-dance-720p.mp4", poster:"/doodle-and-zoe/hub/videos/doodle-dance-poster.jpg", kind:"video"},
