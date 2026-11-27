@@ -43,3 +43,6 @@ Animal sounds are never spoken by the TTS voice: lines/phrases contain only the 
   - squeak: "Rubber duck toy squeaking.wav" by panmaterac (freesound 201285, CC0).
   - honk: "Honk! (Vintage Bicycle Horn)" by Breviceps (freesound 468441, CC0).
   - Music Maker bell, piano and kick: glockenspiel by cabled_mess (freesound 348924), piano C5 by pinkyfinger (freesound 68441), and kick by DWSD (freesound 171104). All CC0, via Silly Beat Band.
+
+## Hub intro (Nov 27, 2026)
+The opening cinematic is a short skippable sizzle built from existing game and song art (Zoe Bean plus Babysitter, Toots, and other tiles), mixed with a free edge-tts boy-voice Doodle greeting. The first open each day (America/New_York) plays the full ~12s version; later opens play a ~4s logo + greeting. On May 16 (Zoe's birthday) — or `?intro=birthday` — it uses a party version. The NEW! strip is filled from tiles marked `new` plus the Zoe Bean song art. Tap anywhere skips; the first tap unlocks iOS audio.

@@ -1,0 +1,106 @@
+/* Hub sizzle intro — 20261127. Full ~12s first visit each ET day, short ~4s after. */
+#intro.hx{position:fixed;inset:0;z-index:99;overflow:hidden;cursor:pointer;background:#0a0618;
+  transition:opacity .4s;-webkit-transition:opacity .4s;font-family:system-ui,-apple-system,sans-serif;
+  color:#fff;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none}
+#intro.hx.zoe{background:radial-gradient(circle at 50% 40%,#ffb3de 0%,#d36ad8 42%,#5a2a9a 100%)}
+#intro.hx.alex{background:radial-gradient(circle at 50% 30%,#2a4a8c 0%,#0b1233 55%,#07060f 100%)}
+#intro.hx.bday{background:radial-gradient(circle at 50% 40%,#fff3c4 0%,#ff9ad5 45%,#c2185b 100%)}
+#intro.hx .hx-bg,#intro.hx .hx-shot,#intro.hx .hx-logo,#intro.hx .hx-new,#intro.hx .hx-tap,
+#intro.hx .hx-spark,#intro.hx .hx-city,#intro.hx .hx-confetti{position:absolute}
+#intro.hx .hx-bg{inset:-4%;background-size:cover;background-position:center;opacity:.28;filter:blur(8px) saturate(1.1);
+  transform:scale(1.08);-webkit-transform:scale(1.08)}
+#intro.hx.alex .hx-bg{opacity:.22}
+#intro.hx.play:not(.short) .hx-bg{animation:hxken 12s linear both;-webkit-animation:hxken 12s linear both}
+@keyframes hxken{to{transform:scale(1.18)}}@-webkit-keyframes hxken{to{-webkit-transform:scale(1.18)}}
+
+/* Detroit skyline (CSS only) */
+#intro.hx .hx-city{left:0;right:0;bottom:0;height:28%;pointer-events:none;opacity:0;
+  background:
+    linear-gradient(#0000 40%,#07060fe6 100%),
+    repeating-linear-gradient(90deg,#0000 0 18px,#ffd24a33 18px 20px) 0 60%/100% 40% no-repeat,
+    linear-gradient(180deg,#1a2744 0%,#0a1020 100%);
+  clip-path:polygon(0 100%,0 62%,4% 62%,4% 38%,8% 38%,8% 54%,11% 54%,11% 22%,13% 18%,15% 22%,15% 54%,18% 54%,18% 44%,22% 44%,22% 58%,26% 58%,26% 30%,29% 24%,32% 30%,32% 50%,36% 50%,36% 40%,40% 28%,42% 22%,44% 28%,48% 50%,52% 46%,56% 58%,60% 36%,63% 20%,66% 36%,70% 58%,74% 48%,78% 58%,82% 42%,86% 30%,90% 42%,94% 60%,100% 60%,100% 100%)}
+#intro.hx.alex.play:not(.short) .hx-city{animation:hxcity 5.4s ease both;-webkit-animation:hxcity 5.4s ease both}
+@keyframes hxcity{0%{opacity:0;transform:translateY(8%)}12%{opacity:.95}70%{opacity:.95}100%{opacity:0;transform:translateY(2%)}}
+@-webkit-keyframes hxcity{0%{opacity:0;-webkit-transform:translateY(8%)}12%{opacity:.95}70%{opacity:.95}100%{opacity:0;-webkit-transform:translateY(2%)}}
+
+/* shot cards */
+#intro.hx .hx-shots{position:absolute;inset:0}
+#intro.hx .hx-shot{inset:0;opacity:0;visibility:hidden;background:#111 center/cover no-repeat;transform:scale(1.16);
+  -webkit-transform:scale(1.16)}
+#intro.hx .hx-shot b{position:absolute;left:0;right:0;bottom:11%;text-align:center;font:900 8vmin/1 system-ui,sans-serif;
+  letter-spacing:.04em;color:#fff;text-transform:uppercase;text-shadow:0 .6vmin 0 #000,0 0 3vmin #000a;
+  -webkit-text-stroke:.35vmin #000}
+#intro.hx.zoe .hx-shot b{-webkit-text-stroke:.35vmin #c2185b;text-shadow:0 .6vmin 0 #9b1f63,0 0 3vmin #fff8}
+#intro.hx.play:not(.short) .hx-shot{animation:hxcut 1.28s ease both;animation-delay:var(--d,0s);
+  -webkit-animation:hxcut 1.28s ease both;-webkit-animation-delay:var(--d,0s)}
+@keyframes hxcut{0%{opacity:0;visibility:visible;transform:scale(1.2)}7%{opacity:1;transform:scale(1.14)}
+  82%{opacity:1;transform:scale(1)}100%{opacity:0;visibility:visible;transform:scale(1)}}
+@-webkit-keyframes hxcut{0%{opacity:0;visibility:visible;-webkit-transform:scale(1.2)}7%{opacity:1;-webkit-transform:scale(1.14)}
+  82%{opacity:1;-webkit-transform:scale(1)}100%{opacity:0;visibility:visible;-webkit-transform:scale(1)}}
+
+/* logo reveal */
+#intro.hx .hx-logo{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;z-index:3}
+#intro.hx .hx-doodle{position:relative;width:28vmin;height:28vmin;border-radius:50%;border:.9vmin solid #fff;
+  background:#fff center/cover;box-shadow:0 0 0 .7vmin #ffd24a,0 0 6vmin 1.5vmin #fff7;margin-bottom:3vmin;
+  flex:0 0 auto}
+#intro.hx.zoe .hx-doodle{box-shadow:0 0 0 .7vmin #ff8fc8,0 0 7vmin 2vmin #fff8}
+#intro.hx .hx-word,#intro.hx .hx-word2{position:relative;text-align:center;width:100%;margin:0;padding:0 4vmin;
+  font:900 14vmin/0.9 system-ui,-apple-system,sans-serif;letter-spacing:.04em;color:#fff;
+  -webkit-text-stroke:.55vmin #1a0a00;text-shadow:0 1.1vmin 0 #1a0a00,0 0 4vmin #ffd24a88}
+#intro.hx .hx-word{font-size:9vmin;letter-spacing:.18em;opacity:.95}
+#intro.hx .hx-word2{font-size:18vmin;letter-spacing:.06em}
+#intro.hx.zoe .hx-word,#intro.hx.zoe .hx-word2{-webkit-text-stroke:.5vmin #c2185b;text-shadow:0 1vmin 0 #9b1f63,0 0 4vmin #fff8}
+#intro.hx.alex .hx-word2{color:#ffd24a;-webkit-text-stroke:.6vmin #3a1400}
+#intro.hx.play .hx-logo{animation:hxslam .55s cubic-bezier(.5,0,.5,1.35) 5.35s both;-webkit-animation:hxslam .55s cubic-bezier(.5,0,.5,1.35) 5.35s both}
+#intro.hx.play.short .hx-logo,#intro.hx.play.hx-rm .hx-logo{animation-delay:0.05s;-webkit-animation-delay:0.05s}
+@keyframes hxslam{0%{opacity:0;transform:scale(3)}70%{opacity:1;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
+@-webkit-keyframes hxslam{0%{opacity:0;-webkit-transform:scale(3)}70%{opacity:1;-webkit-transform:scale(.94)}100%{opacity:1;-webkit-transform:scale(1)}}
+#intro.hx.play .hx-doodle{animation:hxburst .6s cubic-bezier(.2,1.6,.4,1) 5.45s both;-webkit-animation:hxburst .6s cubic-bezier(.2,1.6,.4,1) 5.45s both}
+#intro.hx.play.short .hx-doodle,#intro.hx.play.hx-rm .hx-doodle{animation-delay:0.12s;-webkit-animation-delay:0.12s}
+@keyframes hxburst{0%{transform:scale(0) rotate(-40deg)}100%{transform:none}}
+@-webkit-keyframes hxburst{0%{-webkit-transform:scale(0) rotate(-40deg)}100%{-webkit-transform:none}}
+
+/* NEW! spotlight, filled from tile + jukebox data */
+#intro.hx .hx-new{left:0;right:0;bottom:11%;z-index:4;display:flex;align-items:center;justify-content:center;gap:2vmin;
+  opacity:0;padding:0 4vmin;flex-wrap:nowrap}
+#intro.hx .hx-newtag{position:relative;flex:0 0 auto;background:#ff2d55;color:#fff;font:900 3.4vmin/1 system-ui,sans-serif;
+  padding:1.1vmin 1.8vmin;border-radius:1.2vmin;letter-spacing:.06em;box-shadow:0 .5vmin 0 #9b0030,0 .6vmin 2vmin #0006;
+  transform:rotate(-6deg)}
+#intro.hx .hx-newcard{position:relative;width:14vmin;height:10vmin;border-radius:1.6vmin;background:#fff center/cover;
+  box-shadow:0 .5vmin 0 #0005,0 1vmin 2.4vmin #0006;border:.4vmin solid #fff;flex:0 0 auto}
+#intro.hx .hx-newname{position:relative;font:800 2.6vmin/1.2 system-ui,sans-serif;color:#fff;text-shadow:0 .3vmin 0 #000,0 0 1.4vmin #0008;
+  white-space:normal;max-width:58vmin;overflow:visible}
+#intro.hx.play .hx-new{animation:hxup .45s ease 7.15s both;-webkit-animation:hxup .45s ease 7.15s both}
+#intro.hx.play.short .hx-new,#intro.hx.play.hx-rm .hx-new{animation-delay:.7s;-webkit-animation-delay:.7s}
+@keyframes hxup{0%{opacity:0;transform:translateY(6vmin)}100%{opacity:1;transform:none}}
+@-webkit-keyframes hxup{0%{opacity:0;-webkit-transform:translateY(6vmin)}100%{opacity:1;-webkit-transform:none}}
+#intro.hx .hx-new.empty{display:none}
+
+/* skip hint + sparks */
+#intro.hx .hx-tap{right:3vmin;bottom:3vmin;z-index:5;font:800 3.6vmin/1 system-ui,sans-serif;color:#fff;
+  background:rgba(0,0,0,.4);padding:1vmin 2.2vmin;border-radius:4vmin;letter-spacing:.02em}
+#intro.hx .hx-spark{inset:0;pointer-events:none;z-index:2;overflow:hidden}
+#intro.hx .hx-spark i{position:absolute;width:.9vmin;height:.9vmin;border-radius:50%;background:#fff;opacity:0;
+  box-shadow:0 0 1.4vmin #fff}
+#intro.hx.play .hx-spark i{animation:hxtw 1.6s ease-in-out infinite;animation-delay:var(--d,0s);
+  -webkit-animation:hxtw 1.6s ease-in-out infinite;-webkit-animation-delay:var(--d,0s)}
+@keyframes hxtw{50%{opacity:1;transform:scale(1.6)}}@-webkit-keyframes hxtw{50%{opacity:1;-webkit-transform:scale(1.6)}}
+#intro.hx .hx-confetti{inset:0;pointer-events:none;z-index:2;overflow:hidden}
+#intro.hx .hx-confetti i{position:absolute;top:-8%;font-style:normal;font-size:5.5vmin;animation:hxfall linear infinite;
+  animation-duration:var(--dur,3.2s);animation-delay:var(--d,0s);-webkit-animation:hxfall linear infinite;
+  -webkit-animation-duration:var(--dur,3.2s);-webkit-animation-delay:var(--d,0s)}
+@keyframes hxfall{to{transform:translateY(120vh) rotate(520deg)}}
+@-webkit-keyframes hxfall{to{-webkit-transform:translateY(120vh) rotate(520deg)}}
+
+/* reduced motion: static logo */
+#intro.hx.hx-rm .hx-shot,#intro.hx.hx-rm .hx-city,#intro.hx.hx-rm .hx-spark,#intro.hx.hx-rm .hx-confetti,
+#intro.hx.hx-rm .hx-bg{display:none}
+#intro.hx.hx-rm .hx-logo,#intro.hx.hx-rm .hx-new{opacity:1;animation:none!important;-webkit-animation:none!important;transform:none}
+
+@media (orientation:portrait){
+  #intro.hx .hx-word{font-size:10vw}#intro.hx .hx-word2{font-size:18vw}
+  #intro.hx .hx-doodle{width:32vw;height:32vw}
+  #intro.hx .hx-shot b{font-size:9vw}#intro.hx .hx-newcard{width:18vw;height:13vw}
+}

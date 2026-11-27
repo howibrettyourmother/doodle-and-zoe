@@ -127,7 +127,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;bac
 #intro.rm *{animation:none!important;-webkit-animation:none!important;opacity:1!important;transform:none!important;-webkit-transform:none!important}
 #intro.rm .fw,#intro.rm .tw,#intro.rm .fall2,#intro.rm .uni,#intro.rm .tap{display:none}
 @media (orientation:portrait){#intro .msg{font-size:13vw}.th-birthday #intro .msg,#intro.th-birthday .msg{font-size:9vw}#intro .cnt{font-size:9vw}}
-</style><link rel="stylesheet" href="hub/jukebox.css?v=20261127toots"><link rel="stylesheet" href="hub/doodle-song.css?v=20261119sillyv3"></head><body class="zoe"><div id="app">
+</style><link rel="stylesheet" href="hub/jukebox.css?v=20261127toots"><link rel="stylesheet" href="hub/intro.css?v=20261127sizzle"><link rel="stylesheet" href="hub/doodle-song.css?v=20261119sillyv3"></head><body class="zoe"><div id="app">
 <div id="host" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div>
 <figure id="realdoodle" title="Real Doodle"><img src="hub/real-doodle/judgy-loaf.jpg" alt="Real Doodle the cat"><figcaption>Real Doodle</figcaption></figure>
 <div id="sign">🧭</div><div id="grid"></div></div><div id="ok"></div>
@@ -145,7 +145,7 @@ addEventListener('resize',sizeF);addEventListener('orientationchange',function()
 addEventListener('message',function(e){if(e.origin===location.origin&&e.data==='hubClose')closeGame()});
 if(self!==top){try{parent.postMessage('hubClose',location.origin)}catch(e){}}
 
-var T=[{"href": "play/?kid=zoe", "img": "hub/doodle-and-zoe-v2.jpg", "clip": "hub/z_dz.mp3"}, {"href": "/zoe-babysitter/?kid=zoe", "img": "hub/zoe-babysitter.jpg", "clip": "hub/z_zbs.mp3"}, {"href": "/alex-games/toots/?kid=zoe", "img": "hub/toots-zoe.jpg", "clip": "hub/z_toots.mp3"}, {"href": "/silly-beat-band/?kid=zoe", "img": "hub/silly-beat-band.jpg", "clip": "hub/z_sb.mp3"}, {"href": "/zoes-mermaid-lagoon/?kid=zoe", "img": "hub/zoes-mermaid-lagoon-v2.jpg", "clip": "hub/z_ml.mp3"}, {"href": "/zoes-princess-castle/?kid=zoe", "img": "hub/zoes-princess-castle.jpg", "clip": "hub/z_pc.mp3"}, {"href": "/zoes-princess-castle/?s=abc&kid=zoe", "img": "hub/zoe-abc123-v2.jpg", "clip": "hub/z_abc.mp3"}, {"href": "/zoes-unicorn-adventure/?kid=zoe", "img": "hub/zoes-unicorn-adventure-v2.jpg", "clip": "hub/z_ua.mp3"}, {"href": "/the-bee-game/?kid=zoe", "img": "hub/the-bee-game.jpg", "clip": "hub/z_bg.mp3"}, {"href": "/wilson-water-pirates/?kid=zoe", "img": "hub/wilson-water-pirates-v2.jpg", "clip": "hub/z_wp.mp3"}, {"href": "/dino-stampede-smash/?mode=zoe&kid=zoe", "img": "hub/dino-stampede-smash-zoe.jpg", "clip": "hub/z_ds.mp3"}],KID="zoe",HASHOST=1;
+var T=[{"href": "play/?kid=zoe", "img": "hub/doodle-and-zoe-v2.jpg", "clip": "hub/z_dz.mp3"}, {"href": "/zoe-babysitter/?kid=zoe", "img": "hub/zoe-babysitter.jpg", "clip": "hub/z_zbs.mp3", "new": true}, {"href": "/alex-games/toots/?kid=zoe", "img": "hub/toots-zoe.jpg", "clip": "hub/z_toots.mp3", "new": true}, {"href": "/silly-beat-band/?kid=zoe", "img": "hub/silly-beat-band.jpg", "clip": "hub/z_sb.mp3"}, {"href": "/zoes-mermaid-lagoon/?kid=zoe", "img": "hub/zoes-mermaid-lagoon-v2.jpg", "clip": "hub/z_ml.mp3"}, {"href": "/zoes-princess-castle/?kid=zoe", "img": "hub/zoes-princess-castle.jpg", "clip": "hub/z_pc.mp3"}, {"href": "/zoes-princess-castle/?s=abc&kid=zoe", "img": "hub/zoe-abc123-v2.jpg", "clip": "hub/z_abc.mp3"}, {"href": "/zoes-unicorn-adventure/?kid=zoe", "img": "hub/zoes-unicorn-adventure-v2.jpg", "clip": "hub/z_ua.mp3"}, {"href": "/the-bee-game/?kid=zoe", "img": "hub/the-bee-game.jpg", "clip": "hub/z_bg.mp3"}, {"href": "/wilson-water-pirates/?kid=zoe", "img": "hub/wilson-water-pirates-v2.jpg", "clip": "hub/z_wp.mp3"}, {"href": "/dino-stampede-smash/?mode=zoe&kid=zoe", "img": "hub/dino-stampede-smash-zoe.jpg", "clip": "hub/z_ds.mp3"}],KID="zoe",HASHOST=1;
 document.body.classList.add(HASHOST?'hb':'nh');
 document.getElementById(HASHOST?'sign':'host').remove();
 var g=document.getElementById('grid'),cur=null,busy=false;
@@ -243,7 +243,7 @@ function saved(img){var m=/hub\/([\w-]+)\.(?:png|jpg|webp)/.exec(img),re=m&&SAVE
 T.forEach(function(t,i){var d=document.createElement('div');d.className='t';d.style.backgroundImage='url('+t.img+')';
  d.setAttribute('role','button');d.setAttribute('tabindex','0');d.setAttribute('aria-label',(/([\w-]+)\.(?:png|jpg|webp)/.exec(t.img)||['',''])[1].replace(/-/g,' '));
  if(!t.soon&&saved(t.img)){var cb=document.createElement('span');cb.className='cb';cb.textContent='▶';cb.setAttribute('aria-hidden','true');d.appendChild(cb)}
- if(/zoe-babysitter/.test(t.img)){var nw=document.createElement('span');nw.className='nw';nw.textContent='NEW!';d.appendChild(nw)}
+ if(t.new){var nw=document.createElement('span');nw.className='nw';nw.textContent='NEW!';d.appendChild(nw)}
  d.addEventListener('touchstart',function(){d.classList.add('pr')},{passive:true});['touchend','touchcancel'].forEach(function(n){d.addEventListener(n,function(){d.classList.remove('pr')},{passive:true})});
  if(t.soon){d.className+=' soon';d.addEventListener('click',function(){d.classList.remove('go');void d.offsetWidth;d.classList.add('go')});g.appendChild(d);return}
  d.addEventListener('click',function(){if(busy)return;busy=true;try{HT.fade(500)}catch(e){}d.classList.add('go');talk();var a=play(t.clip);
@@ -261,43 +261,6 @@ var BD="hub/z_bd.mp3",HICLIP='hub/z_hi.mp3';
 /*Eastern-time clock (America/New_York), used by the weekly Dad surprise*/
 function etNow(){var d=new Date(),o={};try{new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hourCycle:'h23',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}).formatToParts(d).forEach(function(p){o[p.type]=p.value})}catch(e){}
  if(!o.year)o={year:d.getFullYear(),month:d.getMonth()+1,day:d.getDate(),hour:d.getHours(),minute:d.getMinutes()};return{y:+o.year,mo:+o.month,d:+o.day,min:(+o.hour%24)*60+(+o.minute)}}
-/*epic-intro: daily-rotating, tap-to-skip cinematic (Zoe only)*/
-(function(){if(KID!=='zoe')return;
-var TH=['stars','rainbow','castle','fireworks','unicorn','zoe','stars2'],BDAY='birthday';
-var d=new Date(),doy=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5),q=(location.search.match(/[?&]intro=(\w+)/)||[])[1];
-var th=q||(doy%8===3&&BD?BDAY:TH[doy%TH.length]);if(q==='off')return;
-if(th==='stars2')th='stars';
-if(th===BDAY)HICLIP=BD;
-var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-var o=document.createElement('div');o.id='intro';o.className='th-'+th+(rm?' rm':'');var TR='hub/zi_'+th+'.mp3';WA.load(HICLIP);
-var H='',i,E;
-function sp(t,cls,st){return '<span class="'+cls+'" style="'+st+'">'+t+'</span>'}
-function rnd(a,b){return a+Math.random()*(b-a)}
-// background sparkles for all themes
-for(i=0;i<22;i++)H+=sp(['✨','⭐','💫'][i%3],'tw','left:'+rnd(2,96)+'%;top:'+rnd(2,90)+'%;font-size:'+rnd(3,6)+'vmin;-webkit-animation-delay:'+rnd(0,2)+'s;animation-delay:'+rnd(0,2)+'s');
-if(th==='stars'){for(i=0;i<5;i++)H+=sp('⭐<b>'+(i+1)+'</b>','cnt','left:'+(14+i*16)+'%;top:'+(i%2?14:24)+'%;-webkit-animation-delay:'+(.4+i*.45)+'s;animation-delay:'+(.4+i*.45)+'s')}
-if(th==='rainbow'){H+='<div class="rb"></div>';for(i=0;i<5;i++)H+=sp('☁️','cl','left:'+(i*22)+'%;bottom:'+rnd(-4,6)+'%;-webkit-animation-delay:'+(i*.15)+'s;animation-delay:'+(i*.15)+'s')}
-if(th==='castle'){H+=sp('🏰','cs','');H+=sp('🌙','mn','')}
-if(th==='unicorn'){H+='<div class="trail"></div>'+sp('🦄','uni','')}
-if(th===BDAY){H+=sp('🎂','cake','');E=['🎉','🎈','🎊','💖','⭐','🎁'];for(i=0;i<24;i++)H+=sp(E[i%6],'fall2','left:'+rnd(0,98)+'%;-webkit-animation-duration:'+rnd(2.5,4.5)+'s;animation-duration:'+rnd(2.5,4.5)+'s;-webkit-animation-delay:'+(-rnd(0,3))+'s;animation-delay:'+(-rnd(0,3))+'s')}
-if(th==='fireworks'||th==='castle'||th===BDAY){var C=['#ff4fa3','#ffd93b','#5fd4ff','#a66bff','#7cf27c'];
- for(var f=0;f<5;f++){var x=rnd(10,90),y=rnd(8,40),dl=.5+f*.55;H+='<div class="fw" style="left:'+x+'%;top:'+y+'%">';
-  for(i=0;i<12;i++)H+='<i style="-webkit-transform:rotate('+(i*30)+'deg);transform:rotate('+(i*30)+'deg)"><u style="background:'+C[(f+i)%5]+';-webkit-animation-delay:'+dl+'s;animation-delay:'+dl+'s"></u></i>';H+='</div>'}}
-if(th==='zoe'){var L=['Z','O','E'];for(i=0;i<3;i++)H+=sp(L[i],'big','left:'+(22+i*22)+'%;-webkit-animation-delay:'+(.3+i*.6)+'s;animation-delay:'+(.3+i*.6)+'s')}
-var msg=th===BDAY?'Happy Birthday, Zoe!':'Hi Zoe!',m='';
-m='<span class="w">';for(i=0;i<msg.length;i++)m+=msg[i]===' '?'</span> <span class="w">':sp(msg[i],'l','-webkit-animation-delay:'+(2.3+i*.07)+'s;animation-delay:'+(2.3+i*.07)+'s');
-m+='</span>';H+='<div class="dogw"><div class="dog" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div></div><div class="msg">'+m+'</div><div class="tap">👆</div>';
-if(0){H+='<div class="zgo">';for(i=0;i<14;i++)H+=sp(['✨','⭐','💖','🌟'][i%4],'tw','left:'+rnd(3,92)+'%;top:'+rnd(3,88)+'%;font-size:'+rnd(4,8)+'vmin;-webkit-animation-delay:'+rnd(0,1.6)+'s;animation-delay:'+rnd(0,1.6)+'s');
-H+='<div class="gd" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div><b>✨ Tap to start! ✨</b></div>'}
-o.innerHTML=H;document.body.appendChild(o);
-var done=false,st=0,au=null,TM=[],t0=Date.now();
-function end(){if(done)return;done=true;TM.forEach(clearTimeout);if(au)au.stop();o.style.opacity=0;
- setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o);if(au&&au.on())hi()},500)}
-function start(){if(st)return;st=1;t0=Date.now();au=HT.due()?HT.start(t0):introAudio(TR,t0);TM.push(setTimeout(end,rm?2500:6200))}
-o.addEventListener('pointerdown',function(e){e.stopPropagation()});
-/*tap = skip, except the touch that just switched the sound on*/
-var last=0;o.addEventListener('click',function(){var t=Date.now();if(t-last<350)return;last=t;if(au&&t-au.kickT<700)return;end()});
-start();window.__ziStart=start})();
 if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js').then(function(){return navigator.serviceWorker.ready}).then(function(){document.getElementById('ok').textContent='✈️✓'}).catch(function(){})}
 </script><script>/*sw-reload*/(function(){if(!('serviceWorker' in navigator))return;var sw=navigator.serviceWorker,had=!!sw.controller,done=false;
 function gameOpen(){return !!window.fw}
@@ -473,7 +436,7 @@ window.__kx={week:week,render:render,openCase:openCase,state:function(){return{b
   if(!el)return;
   el.addEventListener("click",function(e){e.stopPropagation();i=(i+1)%pics.length;var img=el.querySelector("img");if(img)img.src=pics[i]});
 })();
-</script><script src="hub/jukebox.js?v=20261127toots" defer></script><script src="hub/doodle-song.js?v=20261119sillyv3" defer></script>
+</script><script src="hub/intro.js?v=20261127sizzle"></script><script src="hub/jukebox.js?v=20261127toots" defer></script><script src="hub/doodle-song.js?v=20261119sillyv3" defer></script>
 <script src="audio/pack.js?v=20261120el"></script>
 <script>
 (function(){
