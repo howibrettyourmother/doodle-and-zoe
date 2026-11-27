@@ -54,7 +54,7 @@ const AUD=(()=>{
   ];
   function fartPlay(k,force){const t=now();if(t<fNext)return;fTimes=fTimes.filter(x=>t-x<1);if(fTimes.length>=(force?5:3))return;fNext=t+0.12;fTimes.push(t);
     k=k==null?(R()*FARTS.length)|0:Array.isArray(k)?k[(R()*k.length)|0]:k;FARTS[k](t);stats.farts=(stats.farts||0)+1}
-  // ---------- SFX (all original synth) ----------
+  // ---------- SFX (synth defs below are overridden by real CC0 samples in /*real-sfx*/; only the music-maker notes stay synth) ----------
   let lastShot=0;
   const SFX={
     shoot:safe(()=>{const t=now();if(t-lastShot<0.07)return;lastShot=t;blip('square',1400,700,t,0.06,0.025);blip('triangle',900,500,t,0.05,0.03)}),
@@ -124,6 +124,13 @@ const AUD=(()=>{
     crackle:safe(()=>{const t=now();for(let i=0;i<4;i++){const G=g(0,sfxBus),d=i*0.06+R()*0.04;env(G,t+d,0.001,0.005,0.03,0.12);n(t+d,0.05,f('highpass',2500,0.7,G))}}),
     plane:safe(()=>{const t=now(),G=g(0,sfxBus);env(G,t,0.4,1.6,1,0.1);n(t,3,f('lowpass',500,0.7,G));const G2=g(0,sfxBus);env(G2,t,0.4,1.6,1,0.03);o('triangle',110,t,3,G2)}),
   };
+  /*real-sfx*/{const smp=(k,v,r,j)=>{const b=clips['x_'+k];if(!b)return;const t=now(),G=g(v,sfxBus),s=C.createBufferSource();s.buffer=b;s.playbackRate.value=(r||1)*(j?1+rr(-j,j):1);s.connect(G);s.start(t)};
+   const M={boing:['boing',0.8],pop:['pop',0.8,1,0.08],click:['click',0.7,1,0.05],whoosh:['whoosh',0.7],hop:['hop',0.7],hop2:['hop',0.7,1.15],land:['land',0.7],splash:['splash',0.8],treat:['treat',0.75],check:['check',0.75],chime:['chime',0.75],heart:['chime',0.65,1.12],sticker:['sticker',0.8],plop:['plop',0.8,1,0.06],squeak:['squeak',0.7,1,0.08],honk:['honk',0.8],rustle:['rustle',0.7,1,0.1],pat:['pat',0.8,1,0.1],knock:['knock',0.9],munch:['munch',0.8,1,0.06],shutter:['shutter',0.8],plane:['plane',0.6],crackle:['crackle',0.6,1,0.15],beep:['beep',0.7]};
+   for(const k in M){const a=M[k];SFX[k]=safe(()=>smp(a[0],a[1],a[2],a[3]))}
+   /* music maker: real glockenspiel / piano / kick samples, pitched per note */
+   const P2=(m,b)=>Math.pow(2,(m-b)/12);
+   SFX.note=safe(m=>smp('bell',0.7,P2(m,77)));
+   SFX.inst=safe((m,k)=>{if(k==='bell')smp('bell',0.7,P2(m,77));else if(k==='drum')smp('kick',0.9,1);else smp('piano',k==='flute'?0.6:0.75,P2(m,72))})}
   // ---------- one voice at a time, with ducking ----------
   let curEnd=0,curPrio=0,queue=[],curSrc=null;
   // counting: each tap speaks its number NOW, cutting any voice line still playing (never overlaps, never skipped)
@@ -143,15 +150,20 @@ const AUD=(()=>{
     const s=C.createBufferSource();s.buffer=b;s.connect(voiceBus);s.start(t+0.02);curSrc=s;curEnd=t+0.02+b.duration+0.2;curPrio=prio;stats.voice++;stats.last=k;stats.said.push(k);
     musicDuck.gain.cancelScheduledValues(t);musicDuck.gain.setTargetAtTime(0.28,t,0.04);musicDuck.gain.setTargetAtTime(1,curEnd,0.2);
     sfxBus.gain.cancelScheduledValues(t);sfxBus.gain.setTargetAtTime(0.38,t,0.04);sfxBus.gain.setTargetAtTime(0.62,curEnd,0.2);return true}
-  // ---------- free text -> recorded Piper phrase clips (play/v/<id>.mp3, lazy-loaded; never speechSynthesis) ----------
+  // ---------- free text -> recorded neural-voice phrase clips (play/v/<id>.mp3, lazy-loaded; never speechSynthesis) ----------
   const vbuf={},tKeys=[];let tTimer=0,tN=0;
   function vwords(s){s=String(s).replace(/\u2019/g,"'").toLowerCase().replace(/[^a-z0-9' ]+/g,' ').replace(/(^| )'|'( |$)/g,' ');return s.split(' ').filter(function(x){return x})}
   const ANS={meow:'m',meows:'m',mew:'m',mews:'m',purr:'purr',purrs:'purr',quack:'a_duck',quacks:'a_duck',woof:'a_dog',woofs:'a_dog',ribbit:'a_frog',ribbits:'a_frog',hoot:'a_owl',hoots:'a_owl',hoo:'a_owl'};
-  function plan(text){const w0=vwords(text),w=[],sx=[];w0.forEach(function(x){const a=ANS[x];if(a){if(sx.indexOf(a)<0)sx.push(a)}else w.push(x)});const out=[];let i=0;const B=typeof PHR!=='undefined'?PHR:{};
-    while(i<w.length){if(/^\d+$/.test(w[i])){if(clips['n'+w[i]]||+w[i]<=30)out.push('n'+w[i]);i++;continue}let j=Math.min(w.length,i+40),hit=null;
+  /* sentence-aware: prefer whole recorded sentences (or runs of sentences), then fall back to the longest recorded phrase inside one sentence; anything not recorded stays silent */
+  function plan(text){const B=typeof PHR!=='undefined'?PHR:{},out=[],sx=[];
+    const S=String(text).replace(/([.!?]+)\s+/g,'$1\u0001').split('\u0001').map(function(x){const w=[];vwords(x).forEach(function(y){const a=ANS[y];if(a){if(sx.indexOf(a)<0)sx.push(a)}else w.push(y)});return w}).filter(function(w){return w.length});
+    function words(w){let i=0;while(i<w.length){if(/^\d+$/.test(w[i])){if(clips['n'+w[i]]||+w[i]<=30)out.push('n'+w[i]);i++;continue}let j=Math.min(w.length,i+40),hit=null;
       for(;j>i;j--){const k=w.slice(i,j).join(' ');if(B[k]){hit=B[k];break}}
-      if(hit){out.push('v:'+hit);i=j}else{stats.miss=stats.miss||[];if(stats.miss.length<50)stats.miss.push(w[i]);i++}}sx.forEach(function(a){out.push('s:'+(a==='m'?'meow'+(1+Math.floor(Math.random()*5)):a))});return out}
-  function loadV(id){if(vbuf[id])return vbuf[id];vbuf[id]=fetch('v/'+id+'.mp3').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(ab){return new Promise(function(res,rej){const p=C.decodeAudioData(ab,res,rej);p&&p.catch&&p.catch(rej)})}).catch(function(){delete vbuf[id];return null});return vbuf[id]}
+      if(hit){out.push('v:'+hit);i=j}else{stats.miss=stats.miss||[];if(stats.miss.length<50)stats.miss.push(w[i]);i++}}}
+    let i=0;while(i<S.length){let j=S.length,hit=null;for(;j>i;j--){const k=[].concat.apply([],S.slice(i,j)).join(' ');if(B[k]){hit=B[k];break}}
+      if(hit){out.push('v:'+hit);i=j}else{words(S[i]);i++}}
+    sx.forEach(function(a){out.push('s:'+(a==='m'?'meow'+(1+Math.floor(Math.random()*5)):a))});return out}
+  function loadV(id){if(vbuf[id])return vbuf[id];vbuf[id]=fetch('v/'+id+'.mp3?v=20261127j').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(ab){return new Promise(function(res,rej){const p=C.decodeAudioData(ab,res,rej);p&&p.catch&&p.catch(rej)})}).catch(function(){delete vbuf[id];return null});return vbuf[id]}
   function sayText(text,prio){prio=prio||1;if(!ok())return false;const p=plan(text);if(!p.length)return false;const key='t:'+p.join('+'),my=++tN;
     const fire=function(tries){if(C&&now()<curEnd-0.05&&prio<3){if(prio>=2&&tries<40&&my===tN){clearTimeout(tTimer);tTimer=setTimeout(function(){fire(tries+1)},100)}return}say(key,prio)};
     if(clips[key]){fire(0);return true}
@@ -210,8 +222,9 @@ const AUD=(()=>{
       if(th.dr!=='none')drums(th.dr,s16,bar,t);step++;nextT+=sx}}
   function setMuted(m){muted=m;localStorage.setItem('dz_muted',m?'1':'0');if(C)master.gain.setTargetAtTime(m?0:0.9,now(),0.03)}
     /*real-rec*/const _rs={};function rec(k,d,v){const gk=/^meow/.test(k)?"meow":k;const b=clips[k];if(!b||!ok())return false;if(_rs[gk]){try{_rs[gk].stop()}catch(e){}}else if(!sfxOK())return true;const t=now(),G=g(0,sfxBus);const L=d?Math.min(d,b.duration):b.duration;G.gain.setValueAtTime(v||0.9,t);G.gain.setValueAtTime(v||0.9,t+Math.max(0,L-0.25));G.gain.linearRampToValueAtTime(0.0001,t+L);const s=C.createBufferSource();s.buffer=b;s.connect(G);s.start(t);s.stop(t+L+0.05);_rs[gk]=s;s.onended=()=>{if(_rs[gk]===s)_rs[gk]=null};return true}
-  {const sm=SFX.meow,sp=SFX.purr,sq=SFX.quack,sh=SFX.hoot,MW=['meow1','meow2','meow3','meow4','meow5'];
-   SFX.meow=k=>{try{if(!rec(MW[k==null?(R()*5)|0:k%5]))sm(k)}catch(e){}};SFX.purr=d=>{try{if(!rec('purr',(d||1.2)+0.6,0.8))sp(d)}catch(e){}};
-   SFX.quack=()=>{try{if(!rec('a_duck',1.4))sq()}catch(e){}};SFX.hoot=()=>{try{if(!rec('a_owl'))sh()}catch(e){}}}
+  /* real recordings only: if a clip is not ready, stay silent (no synth stand-in) */
+  {const MW=['meow1','meow2','meow3','meow4','meow5'];
+   SFX.meow=k=>{try{rec(MW[k==null?(R()*5)|0:k%5])}catch(e){}};SFX.purr=d=>{try{rec('purr',(d||1.2)+0.6,0.8)}catch(e){}};
+   SFX.quack=()=>{try{rec('a_duck',1.4)}catch(e){}};SFX.hoot=()=>{try{rec('a_owl')}catch(e){}}}
   return{unlock,SFX,say,num,count,sayText,prefetch,plan,setTheme,setMuted,get muted(){return muted},get unlocked(){return unlocked&&!!C},get running(){return !!C&&C.state==='running'},get clipCount(){return Object.keys(clips).length},get theme(){return theme},stats,get speaking(){return C&&now()<curEnd}};
 })();

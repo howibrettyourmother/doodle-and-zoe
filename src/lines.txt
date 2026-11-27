@@ -47,33 +47,58 @@ a_duck|(recording)|rec|1
 a_owl|(recording)|rec|1
 a_dog|(recording)|rec|1
 a_frog|(recording)|rec|1
-n1|1!|kv|1.25
-n2|2!|kv|1.25
-n3|3!|kv|1.25
-n4|4!|kv|1.25
-n5|5!|kv|1.25
-n6|6!|kv|1.25
-n7|7!|kv|1.25
-n8|8!|kv|1.25
-n9|9!|kv|1.25
-n10|10!|kv|1.25
-n11|11!|kv|1.25
-n12|12!|kv|1.25
-n13|13!|kv|1.25
-n14|14!|kv|1.25
-n15|15!|kv|1.25
-n16|16!|kv|1.25
-n17|17!|kv|1.25
-n18|18!|kv|1.25
-n19|19!|kv|1.25
-n20|20!|kv|1.25
-n21|21!|kv|1.25
-n22|22!|kv|1.25
-n23|23!|kv|1.25
-n24|24!|kv|1.25
-n25|25!|kv|1.25
-n26|26!|kv|1.25
-n27|27!|kv|1.25
-n28|28!|kv|1.25
-n29|29!|kv|1.25
-n30|30!|kv|1.25
+n1|One!|el-belle|1.0
+n2|Two!|el-belle|1.0
+n3|Three!|el-belle|1.0
+n4|Four!|el-belle|1.0
+n5|Five!|el-belle|1.0
+n6|Six!|el-belle|1.0
+n7|Seven!|el-belle|1.0
+n8|Eight!|el-belle|1.0
+n9|Nine!|el-belle|1.0
+n10|Ten!|el-belle|1.0
+n11|Eleven!|el-belle|1.0
+n12|Twelve!|el-belle|1.0
+n13|Thirteen!|el-belle|1.0
+n14|Fourteen!|el-belle|1.0
+n15|Fifteen!|el-belle|1.0
+n16|Sixteen!|el-belle|1.0
+n17|Seventeen!|el-belle|1.0
+n18|Eighteen!|el-belle|1.0
+n19|Nineteen!|el-belle|1.0
+n20|Twenty!|el-belle|1.0
+n21|Twenty-one!|el-belle|1.0
+n22|Twenty-two!|el-belle|1.0
+n23|Twenty-three!|el-belle|1.0
+n24|Twenty-four!|el-belle|1.0
+n25|Twenty-five!|el-belle|1.0
+n26|Twenty-six!|el-belle|1.0
+n27|Twenty-seven!|el-belle|1.0
+n28|Twenty-eight!|el-belle|1.0
+n29|Twenty-nine!|el-belle|1.0
+n30|Thirty!|el-belle|1.0
+x_beep|(sound effect beep)|cc0-sfx|1.0
+x_bell|(sound effect bell)|cc0-sfx|1.0
+x_boing|(sound effect boing)|cc0-sfx|1.0
+x_check|(sound effect check)|cc0-sfx|1.0
+x_chime|(sound effect chime)|cc0-sfx|1.0
+x_click|(sound effect click)|cc0-sfx|1.0
+x_crackle|(sound effect crackle)|cc0-sfx|1.0
+x_honk|(sound effect honk)|cc0-sfx|1.0
+x_hop|(sound effect hop)|cc0-sfx|1.0
+x_kick|(sound effect kick)|cc0-sfx|1.0
+x_knock|(sound effect knock)|cc0-sfx|1.0
+x_land|(sound effect land)|cc0-sfx|1.0
+x_munch|(sound effect munch)|cc0-sfx|1.0
+x_pat|(sound effect pat)|cc0-sfx|1.0
+x_piano|(sound effect piano)|cc0-sfx|1.0
+x_plane|(sound effect plane)|cc0-sfx|1.0
+x_plop|(sound effect plop)|cc0-sfx|1.0
+x_pop|(sound effect pop)|cc0-sfx|1.0
+x_rustle|(sound effect rustle)|cc0-sfx|1.0
+x_shutter|(sound effect shutter)|cc0-sfx|1.0
+x_splash|(sound effect splash)|cc0-sfx|1.0
+x_squeak|(sound effect squeak)|cc0-sfx|1.0
+x_sticker|(sound effect sticker)|cc0-sfx|1.0
+x_treat|(sound effect treat)|cc0-sfx|1.0
+x_whoosh|(sound effect whoosh)|cc0-sfx|1.0
