@@ -32,3 +32,14 @@ Letter "pops" and star "pings" are synthesized.
 | Unicorn gallop | https://commons.wikimedia.org/wiki/File:Six_Horses_Galloping_By.ogg (Freesound community) | CC0 |
 
 Animal sounds are never spoken by the TTS voice: lines/phrases contain only the words, and the real recording above (meow1-5, purr, a_duck, a_dog, a_frog, a_owl) plays right after the speech (no overlap). The hub greeting z_hi uses meow1.
+
+## Game voice and sound effects (2026-11-27 update)
+- Spoken phrase clips in `play/v/` are pre-rendered with the Microsoft Edge neural voice en-US-JennyNeural (whole sentences, loudness-normalized to about -16 LUFS). Numbers 1-30 use the ElevenLabs Belle voice, the same voice as the other built-in game lines.
+- Sound effects `src/clips/x_*.mp3` (embedded in play/index.html):
+  - boing, pop, click, whoosh, hop, land, splash, treat, check, chime, sticker, plane: from the game's own `play/audio/sfx` pack. plane is the whoosh, slowed down.
+  - plop, beep: Kenney "Interface Sounds" (CC0, kenney.nl).
+  - rustle, pat, knock, munch, crackle: Kenney "Impact Sounds" (CC0). rustle also uses cloth2 from Kenney "RPG Audio" (CC0).
+  - shutter: Kenney "RPG Audio" metalClick (CC0).
+  - squeak: "Rubber duck toy squeaking.wav" by panmaterac (freesound 201285, CC0).
+  - honk: "Honk! (Vintage Bicycle Horn)" by Breviceps (freesound 468441, CC0).
+  - Music Maker bell, piano and kick: glockenspiel by cabled_mess (freesound 348924), piano C5 by pinkyfinger (freesound 68441), and kick by DWSD (freesound 171104). All CC0, via Silly Beat Band.
