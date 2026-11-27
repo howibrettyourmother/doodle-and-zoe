@@ -127,8 +127,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;bac
 #intro.rm *{animation:none!important;-webkit-animation:none!important;opacity:1!important;transform:none!important;-webkit-transform:none!important}
 #intro.rm .fw,#intro.rm .tw,#intro.rm .fall2,#intro.rm .uni,#intro.rm .tap{display:none}
 @media (orientation:portrait){#intro .msg{font-size:13vw}.th-birthday #intro .msg,#intro.th-birthday .msg{font-size:9vw}#intro .cnt{font-size:9vw}}
-</style><link rel="stylesheet" href="hub/jukebox.css?v=20261119sillyv3"><link rel="stylesheet" href="hub/doodle-song.css?v=20261119sillyv3"></head><body class="zoe"><div id="app">
-<div id="host" style="background-image:url(hub/cgi-doodle-bow.jpg)"></div>
+</style><link rel="stylesheet" href="hub/jukebox.css?v=20261127toots"><link rel="stylesheet" href="hub/doodle-song.css?v=20261119sillyv3"></head><body class="zoe"><div id="app">
+<div id="host" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div>
 <figure id="realdoodle" title="Real Doodle"><img src="hub/real-doodle/judgy-loaf.jpg" alt="Real Doodle the cat"><figcaption>Real Doodle</figcaption></figure>
 <div id="sign">🧭</div><div id="grid"></div></div><div id="ok"></div>
 <script>
@@ -286,9 +286,9 @@ if(th==='fireworks'||th==='castle'||th===BDAY){var C=['#ff4fa3','#ffd93b','#5fd4
 if(th==='zoe'){var L=['Z','O','E'];for(i=0;i<3;i++)H+=sp(L[i],'big','left:'+(22+i*22)+'%;-webkit-animation-delay:'+(.3+i*.6)+'s;animation-delay:'+(.3+i*.6)+'s')}
 var msg=th===BDAY?'Happy Birthday, Zoe!':'Hi Zoe!',m='';
 m='<span class="w">';for(i=0;i<msg.length;i++)m+=msg[i]===' '?'</span> <span class="w">':sp(msg[i],'l','-webkit-animation-delay:'+(2.3+i*.07)+'s;animation-delay:'+(2.3+i*.07)+'s');
-m+='</span>';H+='<div class="dogw"><div class="dog" style="background-image:url(hub/cgi-doodle-bow.jpg)"></div></div><div class="msg">'+m+'</div><div class="tap">👆</div>';
+m+='</span>';H+='<div class="dogw"><div class="dog" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div></div><div class="msg">'+m+'</div><div class="tap">👆</div>';
 if(0){H+='<div class="zgo">';for(i=0;i<14;i++)H+=sp(['✨','⭐','💖','🌟'][i%4],'tw','left:'+rnd(3,92)+'%;top:'+rnd(3,88)+'%;font-size:'+rnd(4,8)+'vmin;-webkit-animation-delay:'+rnd(0,1.6)+'s;animation-delay:'+rnd(0,1.6)+'s');
-H+='<div class="gd" style="background-image:url(hub/cgi-doodle-bow.jpg)"></div><b>✨ Tap to start! ✨</b></div>'}
+H+='<div class="gd" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div><b>✨ Tap to start! ✨</b></div>'}
 o.innerHTML=H;document.body.appendChild(o);
 var done=false,st=0,au=null,TM=[],t0=Date.now();
 function end(){if(done)return;done=true;TM.forEach(clearTimeout);if(au)au.stop();o.style.opacity=0;
@@ -473,7 +473,7 @@ window.__kx={week:week,render:render,openCase:openCase,state:function(){return{b
   if(!el)return;
   el.addEventListener("click",function(e){e.stopPropagation();i=(i+1)%pics.length;var img=el.querySelector("img");if(img)img.src=pics[i]});
 })();
-</script><script src="hub/jukebox.js?v=20261127zoebean" defer></script><script src="hub/doodle-song.js?v=20261119sillyv3" defer></script>
+</script><script src="hub/jukebox.js?v=20261127toots" defer></script><script src="hub/doodle-song.js?v=20261119sillyv3" defer></script>
 <script src="audio/pack.js?v=20261120el"></script>
 <script>
 (function(){

@@ -2,8 +2,9 @@
 (function(){
   if(window.__JB)return;
   var songs=[
+    {title:"NEW! Toots!", art:"hub/toots-zoe.jpg", src:"/alex-games/toots/song/toots-song.mp4", poster:"/alex-games/toots/song/cover.jpg", kind:"video"},
     {title:"Zoe Bean", art:"hub/zoe-bean.jpg", src:"/doodle-and-zoe/hub/videos/zoe-bean-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-bean-poster.jpg", kind:"video"},
-    {title:"Zoe's Games", art:"hub/cgi-doodle-bow.jpg", src:"/doodle-and-zoe/hub/videos/zoe-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-games-poster.jpg", kind:"video"},
+    {title:"Zoe's Games", art:"hub/cgi-doodle-boy.jpg", src:"/doodle-and-zoe/hub/videos/zoe-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-games-poster.jpg", kind:"video"},
     {title:"Doodle's Song", art:"hub/doodles-song.jpg", src:"/doodle-and-zoe/hub/doodle-the-loaf-720p.mp4", kind:"video"},
     {title:"The Doodle Dance", art:"hub/doodle-dance.jpg", src:"/doodle-and-zoe/hub/videos/doodle-dance-720p.mp4", poster:"/doodle-and-zoe/hub/videos/doodle-dance-poster.jpg", kind:"video"},
     {title:"Silly Face Zoe", art:"hub/silly-face-zoe.jpg", src:"/doodle-and-zoe/hub/videos/silly-face-zoe-720p_v3.mp4", poster:"/doodle-and-zoe/hub/videos/silly-face-zoe-poster_v3.jpg", kind:"video"},
@@ -89,7 +90,7 @@
     if(playBtn)playBtn.textContent=(a&&!a.paused)?'❚❚':'▶';
     if(titleEl)titleEl.textContent=all[i].title;
     if(subEl)subEl.textContent=all[i].kind==='loop'?'Game Music':'Song';
-    var art=(all[i]&&all[i].art)||'hub/cgi-doodle-bow.jpg';
+    var art=(all[i]&&all[i].art)||'hub/cgi-doodle-boy.jpg';
     var face=box.querySelector('.doodle');
     if(face)face.style.backgroundImage="url('"+art+"')";
     var cards=box.querySelectorAll('.card');
