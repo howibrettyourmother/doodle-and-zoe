@@ -13,7 +13,7 @@ closet|Dress up time!|amy|1.28
 book|Your sticker book!|amy|1.25
 map|Where should we go?|amy|1.25
 p1|Dad's House!|amy|1.25
-p2|Mom's Apartment!|amy|1.25
+p2|Violet's Place!|amy|1.25
 p3|KiddieKlub!|amy|1.25
 p4|The Park!|amy|1.25
 p5|Grandma Gail's Apartment!|amy|1.25

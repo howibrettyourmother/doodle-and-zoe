@@ -123,7 +123,7 @@ MGS.dance={init(o){o.glow=-1;o.gT=0;o.next=0.5;o.last=-1;o.dance=0;o.mv=0;o.pads
     parade().slice(0,4).forEach((K,i)=>blitKit(K.k,'sit',0,W/2+(W<500?80:110)+i*(W<500?28:46),sy-Math.abs(Math.sin(T*4.6+i))*8,-1,W<500?0.75:1));
     o.pads.forEach((pd,i)=>{const gl=i===o.glow,pr=o.press[i]>0,s=gl?1+Math.sin(T*10)*0.06:1;if(gl){circ(pd.x,pd.y,pd.r*s+14,'rgba(255,245,157,0.85)')}circ(pd.x,pd.y+(pr?3:0),pd.r*s,gl?PADC[i]:'rgba(255,255,255,0.9)');
       const k=pd.r/40,c=gl?'#fff':PADC[i];X.save();X.translate(pd.x,pd.y+(pr?3:0));circ(0,6*k,12*k,c);for(let j=0;j<4;j++)circ((-14+j*9.3)*k,(-10-(j===1||j===2?5:0))*k,5*k,c);X.restore()})}};
-// ---------- Mom's Apartment: Bubble Pop ----------
+// ---------- Violet's Place: Bubble Pop ----------
 const BUBK=['heart','star','fish','flower'];
 MGS.bubble={init(o){o.b=[];o.sp=0.2;o.bat=0},
   update(dt,o){o.sp-=dt;o.bat-=dt;if(o.sp<=0&&o.b.length<10){o.sp=rr(0.55,0.8);o.b.push({x:rr(INL+60,W-INR-60),y:H+40,r:rr(30,42),vy:rr(55,85),ph:R()*6,k:pick(BUBK),pop:0})}

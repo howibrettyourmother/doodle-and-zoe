@@ -1,5 +1,5 @@
 // ================= UI: map, menus, sticker book, closet, kitty collection, HUD, controls, render =================
-const VERSION='1.7.2 (Nov 22 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
+const VERSION='1.7.3 (Nov 27 2026)';let UI=[],HUDB=[],retTo='title';const ICONM=/[?&]icon=1/.test(Q);
 function btn(id,x,y,w,h,fn){const b={id,x,y,w,h,fn};UI.push(b);return b}
 // last-drawn button wins (it is the one on top)
 function uiTap(p){for(let i=UI.length-1;i>=0;i--){const b=UI[i];if(inR(p,b)){if(b.id==='stage')continue;if(b.id!=='block')AUD.SFX.click();b.fn();return true}}return false}
@@ -38,7 +38,7 @@ let trailT=0;function updTrail(dt){if(!SAVE.wear.trail||!SAVE.un.trail)return;tr
 function placeIcon(k,x,y,s){X.save();X.translate(x,y);X.scale(s,s);
   if(k==='dad'){X.fillStyle='#9fd8ff';X.fillRect(-18,-6,36,26);poly([-24,-4,0,-24,24,-4],'#7aa7e8');X.fillStyle='#fff59d';X.fillRect(-6,6,12,14);X.fillStyle='#fff';X.fillRect(-15,0,8,8);X.fillRect(7,0,8,8)}
   else if(k==='mom'){X.fillStyle='#c39bef';X.fillRect(-14,-24,28,44);X.fillStyle='#fff';for(let r=0;r<4;r++)for(let c=0;c<2;c++)X.fillRect(-9+c*11,-19+r*10,7,6);heartP(0,-28,6,'#ff5c9e')}
-  else if(k==='klub'){X.fillStyle='#ffd27f';X.fillRect(-20,-6,40,26);poly([-24,-4,0,-20,24,-4],'#ff8a80');txt('ABC',0,6,10,'#7b3fa0');X.fillStyle='#fff';X.fillRect(-2,-30,2,12);poly([0,-30,10,-27,0,-24],'#ff5c9e')}
+  else if(k==='klub'){X.fillStyle='#ffd27f';X.fillRect(-20,-6,40,26);poly([-24,-4,0,-20,24,-4],'#ff8a80');star5(0,6,7,'#fff59d');X.fillStyle='#fff';X.fillRect(-2,-30,2,12);poly([0,-30,10,-27,0,-24],'#ff5c9e')}
   else if(k==='park'){X.fillStyle='#8d6e63';X.fillRect(-3,-2,6,22);circ(0,-12,15,'#81c784');circ(-9,-6,10,'#a5d6a7');circ(9,-6,10,'#66bb6a');circ(-5,-15,2.5,'#ff8fc8');circ(6,-9,2.5,'#fff59d')}
   else if(k==='gma'){X.fillStyle='#f8bbd0';X.fillRect(-16,-22,32,42);X.fillStyle='#fff';for(let r=0;r<3;r++){X.fillRect(-11,-16+r*11,8,7);X.fillRect(3,-16+r*11,8,7)}circ(0,-30,6,'#f48fb1');X.fillStyle='#fff';txt('♥',0,-30,8,'#fff')}
   X.restore()}
@@ -78,7 +78,7 @@ function drawBook(){UI=[];softBg('#f3e5ff','#ffe0f0');const land=W>H*1.15;txt('M
   bigBack()}
 // ---------- closet (tabs: Doodle / Zoe) ----------
 let closetTab=0;
-function itemIcon(k){if(k==='bow')bow(0,-8,1.3,'#ff5c9e');else if(k==='crown')crown(0,-4,1.3);else if(k==='tutu'){for(let j=0;j<5;j++)ell(-14+j*7,-6,8,7,j%2?'#ffc1e3':'#e1bee7')}else if(k==='cape'){poly([-12,-22,12,-22,18,8,-18,8],'#b388ff');star5(0,-6,5,'#fff59d')}
+function itemIcon(k){if(k==='bow'){star5(0,-4,10,'#fff59d');star5(0,-4,5,'#ff8fc8')}else if(k==='crown')crown(0,-4,1.3);else if(k==='tutu'){for(let j=0;j<5;j++)ell(-14+j*7,-6,8,7,j%2?'#ffc1e3':'#e1bee7')}else if(k==='cape'){poly([-12,-22,12,-22,18,8,-18,8],'#b388ff');star5(0,-6,5,'#fff59d')}
   else if(k==='glasses'){heartP(-9,-8,9,'#ff5c9e');heartP(9,-8,9,'#ff5c9e')}else if(k==='flower'){for(let j=0;j<5;j++){const a=j*TAU/5;circ(Math.cos(a)*7,-8+Math.sin(a)*7,5,'#c5a3ff')}circ(0,-8,4,'#fff59d')}
   else if(k==='collar'){X.beginPath();X.arc(0,-14,14,0.5,2.6);strokeC('#ff5c9e',5);circ(0,0,5,'#ffd54f')}
   else if(k==='horn'){poly([-7,6,7,6,0,-24],'#fff3b0');X.beginPath();X.moveTo(-5,0);X.lineTo(5,-3);X.moveTo(-3,-8);X.lineTo(3,-11);X.moveTo(-2,-15);X.lineTo(2,-17);strokeC('#ff8fc8',2);circ(-10,6,4,'#c5a3ff');circ(10,6,4,'#ffc1e3')}
@@ -170,7 +170,7 @@ function drawDone(){UI=[];X.fillStyle='rgba(90,40,110,0.45)';X.fillRect(0,0,W,H)
 function render(){X.setTransform(RS,0,0,RS,0,0);
   if(ICONM){const g=X.createRadialGradient(W/2,H*0.45,20,W/2,H/2,W*0.75);g.addColorStop(0,'#ffe3f3');g.addColorStop(1,'#d9b8ff');X.fillStyle=g;X.fillRect(0,0,W,H);
     [[0.14,0.16,30],[0.86,0.2,24],[0.12,0.8,20],[0.88,0.84,30],[0.5,0.08,16],[0.78,0.55,14],[0.22,0.5,12]].forEach(([a,b,r])=>star5(W*a,H*b,r,'#fff'));heartP(W*0.84,H*0.38,16,'#ff8fc8');heartP(W*0.17,H*0.33,12,'#ff8fc8');
-    X.save();X.translate(W/2,H/2);X.scale(6.4,6.4);drawCat(-24,50,{t:0.3,st:'idle',acc:{bow:1}});X.restore();return}
+    X.save();X.translate(W/2,H/2);X.scale(6.4,6.4);drawCat(-24,50,{t:0.3,st:'idle',acc:{}});X.restore();return}
   if(state==='play'){drawWorld();drawHUD();if(overlay&&overlay.k==='done')drawDone();else if(overlay&&overlay.k==='name'){UI=[];drawNamePicker(overlay.K,overlay.sel,nameSel,nameConfirm,true)}else UI=[]}
   else if(state==='book')drawBook();else if(state==='closet')drawCloset();else if(state==='menu')drawMenu();else if(state==='kitties')drawKitties();
   else if(state==='mini')drawMini();else if(state==='cafe')drawCafe();else if(state==='photo')drawPhotoScreen();else if(XS[state])XS[state].draw();else drawTitle();

@@ -4,7 +4,7 @@ function v7btn(id,x,y,r,col,draw,fn,glow){const s=1+(glow?Math.sin(T*5)*0.05:0);
   if(typeof draw==='string')txt(draw,x,y+2,r*0.95,'#000');else if(draw)draw(x,y,r);btn(id,x-r-4,y-r-4,2*r+8,2*r+8,fn)}
 const V7R=()=>Math.max(PT(72)/2+1,30);// radius: 72px+ diameter on iPad
 // ---------- souvenirs: one in every place and trip, kept in Doodle's backpack ----------
-const SOUV={dad:['🧩','a puzzle piece',"Dad's House"],mom:['💜','a purple heart',"Mom's Apartment"],klub:['🖍️','a crayon','KiddieKlub'],park:['🍂','a pretty leaf','The Park'],gma:['🧶','a yarn ball',"Grandma Gail's"],
+const SOUV={dad:['🧩','a puzzle piece',"Dad's House"],mom:['💜','a purple heart',"Violet's Place"],klub:['🖍️','a crayon','KiddieKlub'],park:['🍂','a pretty leaf','The Park'],gma:['🧶','a yarn ball',"Grandma Gail's"],
   pumpkin:['🌻','a sunflower','Upland Hills Farm'],snow:['🪁','a kite','Raintree Park'],beach:['🪨','a smooth stone','Stony Creek Beach'],downtown:['💌','a postcard','Downtown Rochester'],
   fl1:['🐚','a seashell',"Grandpa Brian's"],fl2:['🦩','a flamingo postcard',"Gammy's House"],colo:['pinecone','a pinecone','Colorado'],camp:['🌟','a wishing star','the Campout']};
 const SOUVK=Object.keys(SOUV);

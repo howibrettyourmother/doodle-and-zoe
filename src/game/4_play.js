@@ -1,6 +1,6 @@
 // ================= state, save data, cat physics, Zoe, interactions, tasks =================
 let state='title',T=0,stT=0,TS=1,overlay=null,camX=0;
-const ITEMS=[{k:'bow',n:'Pink Bow'},{k:'crown',n:'Crown'},{k:'tutu',n:'Tutu'},{k:'cape',n:'Cape'},{k:'glasses',n:'Heart Sunglasses'},{k:'flower',n:'Flower'},{k:'collar',n:'Bell Collar'},
+const ITEMS=[{k:'bow',n:'Star Badge'},{k:'crown',n:'Crown'},{k:'tutu',n:'Tutu'},{k:'cape',n:'Cape'},{k:'glasses',n:'Heart Sunglasses'},{k:'flower',n:'Flower'},{k:'collar',n:'Bell Collar'},
   {k:'horn',n:'Unicorn Horn'},{k:'bowtie',n:'Purple Bow Tie'},{k:'trail',n:'Sparkle Trail'},{k:'wings',n:'Fairy Wings'},{k:'sweater',n:'Heart Sweater'},
   {k:'witch',n:'Witch Hat',sea:'hal'},{k:'santa',n:'Santa Hat',sea:'win'},{k:'party',n:'Party Hat',sea:'bday'}];
 // how the new items unlock (all gentle): kitty friends found, different mini-games played; seasonal hats unlock on their own during the season
@@ -8,7 +8,7 @@ const UNLOCK2={bowtie:()=>kitCount()>=1,horn:()=>mgCount()>=1,trail:()=>mgCount(
 const UNLOCK_HINT={bowtie:'Find a kitty friend!',horn:'Play a game!',trail:'Play 2 games!',wings:'Find 3 kitty friends!',sweater:'Play 3 games!',witch:'Comes in October!',santa:'Comes in December!',party:"Comes on Zoe's birthday!",collar:'Collect 30 fish!'};
 const UNLOCK={dad:'crown',mom:'tutu',klub:'cape',park:'glasses',gma:'flower'};
 const TOPS=['#ff9cc8','#c39bef','#9fd8ff','#ffe08a','#a8e6c8','#d1a6ff','#ff6fae'],TOPFISH=[0,10,25,40,60,75,90],TUTUS=['#ffb3d9','#ffc1e3','#e1bee7','#fff59d','#c9a8ff','#ffffff'],HBOWS=[null,'#ff5c9e','#b388ff','#ffd54f'],ZEARS=[null,'#ff8fc8','#b388ff','#f2eef0'];
-function defSave(){return{p:{},fish:0,un:{bow:1},wear:{bow:1},zoe:{top:TOPS[0],tutu:TUTUS[0],bow:HBOWS[1],ears:null},kit:{},mg:{},fl:{}}}
+function defSave(){return{p:{},fish:0,un:{bow:1},wear:{},zoe:{top:TOPS[0],tutu:TUTUS[0],bow:HBOWS[1],ears:null},kit:{},mg:{},fl:{}}}
 // older saves (v1.2) simply lack the new fields: fill them in without touching what is there
 let SAVE;try{SAVE=Object.assign(defSave(),JSON.parse(LS.get('save','{}')))}catch(e){SAVE=defSave()}
 for(const k of ['kit','mg','fl','un','wear','p'])if(!SAVE[k]||typeof SAVE[k]!=='object')SAVE[k]={};if(!SAVE.zoe||typeof SAVE.zoe!=='object')SAVE.zoe=defSave().zoe;if(SAVE.zoe.tutu==='#bfe3ff')SAVE.zoe.tutu='#ffb3d9';if(typeof SAVE.fish!=='number')SAVE.fish=+SAVE.fish||0;

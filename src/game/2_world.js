@@ -32,7 +32,7 @@ const DECO={
   skyline(o){X.fillStyle='rgba(180,160,230,0.55)';for(let i=0;i<o.n;i++){const x=o.x+i*70,h=60+((i*37)%70);rrect(x,-90-h,56,h+40,6);X.fill()}},
   pond(o){X.fillStyle='#bfe3ff';X.beginPath();X.ellipse(o.x+o.w/2,-8,o.w/2,22,0,0,TAU);X.fill();X.strokeStyle='#fff';X.lineWidth=2;for(let i=0;i<6;i++){X.beginPath();X.arc(o.x+40+i*(o.w-80)/5,-8,10,0.2,Math.PI-0.2);X.stroke()}
     for(let i=0;i<3;i++){X.fillStyle='#7fcf9a';X.fillRect(o.x+10+i*14,-40,3,40)}},
-  abc(o){const L='ABCDEF';const C=['#ff8fc8','#ffb74d','#fff176','#81c784','#64b5f6','#b39ddb'];for(let i=0;i<6;i++){rrect(o.x+i*44,-300,38,38,8);X.fillStyle=C[i];X.fill();txt(L[i],o.x+i*44+19,-280,24,'#fff',{st:'rgba(0,0,0,0.2)',sw:3})}},
+  abc(o){const C=['#ff8fc8','#ffb74d','#fff176','#81c784','#64b5f6','#b39ddb'];for(let i=0;i<6;i++){rrect(o.x+i*44,-300,38,38,8);X.fillStyle=C[i];X.fill();if(i%2)star5(o.x+i*44+19,-281,10,'#fff');else heartP(o.x+i*44+19,-281,10,'#fff')}},
   hooks(o){X.fillStyle=WOODD;X.fillRect(o.x,-170,o.w,10);for(let i=0;i<4;i++){const c=['#ff8fc8','#64b5f6','#ffd54f','#b39ddb'][i];rrect(o.x+12+i*44,-160,30,40,10);X.fillStyle=c;X.fill()}},
   easel(o){X.strokeStyle=WOODD;X.lineWidth=5;X.beginPath();X.moveTo(o.x,0);X.lineTo(o.x+30,-120);X.lineTo(o.x+60,0);X.stroke();X.fillStyle='#fff';X.fillRect(o.x+4,-120,52,60);heartP(o.x+30,-88,12,'#c5a3ff');circ(o.x+18,-104,6,'#ffd54f')},
   basket(o){X.fillStyle='#d7a77a';rrect(o.x-26,-30,52,30,8);X.fill();X.fillStyle='rgba(0,0,0,0.08)';for(let i=0;i<4;i++)X.fillRect(o.x-24,-26+i*7,48,2);circ(o.x-10,-32,10,'#b39ddb');circ(o.x+8,-34,10,'#80deea')},
@@ -98,7 +98,7 @@ const PLACES=[
   stars:[[300,-152],[905,-268],[1392,-250],[2010,-336],[2560,-40]],fish:[[120,-30],[300,-90],[500,-80],[720,-100],[905,-110],[1100,-130],[1250,-130],[1580,-110],[1950,-180],[2250,-160],[2460,-110],[2500,-30]],
   extras:[{t:'nap',x:200,y:-62,w:180},{t:'blanket',x:560,y:0,w:70},{t:'cup',x:520,y:-48},{t:'yarn',x:2350,y:0},{t:'fly',x:2100},{t:'fly',x:2450}],
   task:{who:'dad',x:780,item:'remote',ix:1395,iy:-212,hi:'dadhi',ty:'dadty',say:'Have you seen my TV remote?',thanks:'My remote! Thank you!'}},
- {k:'mom',n:"Mom's Apartment",th:'cozy',w:2400,col:'#c3a6f0',
+ {k:'mom',n:"Violet's Place",th:'cozy',w:2400,col:'#c3a6f0',
   secs:[{x0:0,x1:900,wall:'#f6ecff',wall2:'#ead9ff',pat:'stripes',floor:'#e8c7a5'},{x0:900,x1:1650,wall:'#ffe9f3',wall2:'#ffd3e6',pat:'hearts',floor:'#ecd8f5'},{x0:1650,x1:2400,out:1}],
   deco:[{t:'picture',x:500,k:'sun',y:-240},{t:'lamp',x:860},{t:'rug',x:480,w:260,c:'#ffd6ec'},{t:'picture',x:1120,k:'heart',y:-250},{t:'window',x:1440,y:-260},{t:'skyline',x:1700,n:10},{t:'flowers',x:2150,n:5}],
   furn:[{t:'windowseat',x:100},{t:'shelf',x:340,h:160},{t:'couch',x:500,c:'#c3a6f0',d:'#9f7fd8'},{t:'table',x:760,w:60,h:60},{t:'bed',x:1000},{t:'dresser',x:1290},{t:'wallshelf',x:1280,y:-210,w:140},{t:'cattree',x:1480},{t:'table',x:1820,w:110,h:62},{t:'stand',x:2060,h:110},{t:'rail',x:1700,w:700}],

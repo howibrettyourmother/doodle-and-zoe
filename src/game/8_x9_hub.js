@@ -3,7 +3,7 @@
 // My Stuff) and a row of favorites. Every tile is a big picture, every tap is spoken, Back from anything opened in a hub returns to that hub.
 let HUBRET=null;
 const HUBS={
- town:{n:'Town',ic:'🏡',c:'#ffd6ec',say:'Town! Where do you want to go?',tiles:()=>PLACES.slice(0,8).map((P,i)=>({pi:P.k,n:P.n,say:P.n+'!',c:['#ffe0f0','#efe0ff','#fff3c4','#dff7e6','#ffe4ec','#ffe0b2','#e3f2fd','#b2ebf2'][i],fn:()=>enterPlace(i),done:pdata(P.k).sticker}))
+ town:{n:'Town',ic:'🏡',c:'#ffd6ec',say:'Town! Where do you want to go?',tiles:()=>PLACES.slice(0,8).map((P,i)=>({pi:P.k,n:P.n,say:P.k==='mom'?'Let\'s play!':P.n+'!',c:['#ffe0f0','#efe0ff','#fff3c4','#dff7e6','#ffe4ec','#ffe0b2','#e3f2fd','#b2ebf2'][i],fn:()=>enterPlace(i),done:pdata(P.k).sticker}))
    .concat([{dt:1,n:'Downtown Rochester',say:'Downtown Rochester!',c:'#ffd6ec',fn:()=>openScreen('downtown')},{e:'🍪',n:'Bakery Cookies',say:'Give Thanks Bakery! Cookie decorating!',c:'#ffe0b2',fn:()=>openScreen('cookies')}])},
  trips:{n:'Trips',ic:'✈️',c:'#b3e5fc',say:'Trips! Where should we go?',tiles:()=>TRIPS.map(tr=>({pi:tr.k,n:tr.n,sub:tr.sub,say:tr.sub==='Florida'?tr.n+' in Florida!':tr.k==='camp'?'Campout at the state park!':'The Colorado mountains!',c:{fl1:'#b2ebf2',fl2:'#ffe0e8',colo:'#dcedc8',camp:'#d1c4e9'}[tr.k],fn:()=>tripGo(tr),done:tr.k==='camp'?SAVE.x.souv.camp:pdata(tr.k).sticker}))},
  make:{n:'Play & Make',ic:'🎨',c:'#fff59d',say:'Play and make! What do you want to do?',tiles:()=>[
