@@ -4,7 +4,8 @@
   var songs=[
     {title:"NEW! Babysitter Zoe!", art:"hub/zoe-babysitter-song.jpg", src:"/doodle-and-zoe/hub/videos/zoe-babysitter-song-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-babysitter-song-poster.jpg", kind:"video"},
     {title:"Toots!", art:"hub/toots-zoe.jpg", src:"/alex-games/toots/song/toots-song.mp4", poster:"/alex-games/toots/song/cover.jpg", kind:"video"},
-    {title:"Zoe Bean", art:"hub/zoe-bean.jpg?v=2", src:"/doodle-and-zoe/hub/videos/zoe-bean-720p.mp4?v=2", poster:"/doodle-and-zoe/hub/videos/zoe-bean-poster.jpg?v=2", kind:"video"},
+    {title:"Zoe Bean", art:"hub/zoe-bean.jpg", src:"/doodle-and-zoe/hub/videos/zoe-bean-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-bean-poster.jpg", kind:"video"},
+    {title:"Zoe Bean 2: Candy Quest", art:"hub/zoe-bean-2.jpg", src:"/doodle-and-zoe/hub/videos/zoe-bean-2-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-bean-2-poster.jpg", kind:"video"},
     {title:"Zoe's Games", art:"hub/cgi-doodle-boy.jpg", src:"/doodle-and-zoe/hub/videos/zoe-games-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-games-poster.jpg", kind:"video"},
     {title:"Doodle's Song", art:"hub/doodles-song.jpg", src:"/doodle-and-zoe/hub/doodle-the-loaf-720p.mp4", kind:"video"},
     {title:"The Doodle Dance", art:"hub/doodle-dance.jpg", src:"/doodle-and-zoe/hub/videos/doodle-dance-720p.mp4", poster:"/doodle-and-zoe/hub/videos/doodle-dance-poster.jpg", kind:"video"},
