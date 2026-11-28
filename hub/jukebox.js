@@ -3,7 +3,7 @@
   if(window.__JB)return;
   var songs=[
     {title:"NEW! Babysitter Zoe!", art:"hub/zoe-babysitter-song.jpg", src:"/doodle-and-zoe/hub/videos/zoe-babysitter-song-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-babysitter-song-poster.jpg", kind:"video"},
-    {title:"Toots! Game Song", art:"hub/toots-zoe.jpg", src:"/alex-games/toots/game/m/intro.m4a"},
+    {title:"Toots! Game Song", art:"hub/toots-zoe.jpg", src:"/alex-games/toots/song/toots-game-song.mp4", poster:"/alex-games/toots/song/toots-game-song-poster.jpg", kind:"video"},
     {title:"Toots!", art:"hub/toots-zoe.jpg", src:"/alex-games/toots/song/toots-song.mp4", poster:"/alex-games/toots/song/cover.jpg", kind:"video"},
     {title:"Zoe Bean", art:"hub/zoe-bean.jpg", src:"/doodle-and-zoe/hub/videos/zoe-bean-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-bean-poster.jpg", kind:"video"},
     {title:"Zoe Bean 2: Candy Quest", art:"hub/zoe-bean-2.jpg", src:"/doodle-and-zoe/hub/videos/zoe-bean-2-720p.mp4", poster:"/doodle-and-zoe/hub/videos/zoe-bean-2-poster.jpg", kind:"video"},
