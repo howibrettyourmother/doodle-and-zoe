@@ -65,7 +65,7 @@ function drawKitties(){UI=[];softBg('#ffe0f0','#e8dcff');const land=W>H*1.15,n=k
       btn('kit'+i,x,y,cw,ch,()=>{AUD.SFX.purr(1.2);AUD.SFX.meow(i%3);sHearts(x+cw/2,fy-60,6);sayT(kitName(K.k)+'!',2)});
       btn('kitname'+i,x+cw-rb-8,y,rb+8,rb+8,()=>{kitPick={K,sel:Math.max(0,K.names.findIndex(q=>q[0]===kitName(K.k)))};sayT('Pick a name!',2)})}
     else{X.globalAlpha=0.22;blitKit(K.k,'sit',0,x+cw/2,fy,1,ks,{party:false});X.globalAlpha=1;txt('?',x+cw/2,fy-50*ks,40,'rgba(150,90,170,0.6)');placeIcon(K.p,x+cw/2-cw*0.25,y+ch-24,0.6);
-      txt(PLACES.find(q=>q.k===K.p).n,x+cw/2+12,y+ch-22,Math.min(14,cw/10),'#ab47bc');btn('kit'+i,x,y,cw,ch,()=>{AUD.SFX.boing();const pn=PLACES.find(q=>q.k===K.p);sayT(pn.k==='mom'?'Let\'s play!':'Find this kitty at '+pn.n.replace("Gail's","Gail's place")+'!',2)})}});
+      txt(PLACES.find(q=>q.k===K.p).n,x+cw/2+12,y+ch-22,Math.min(14,cw/10),'#ab47bc');btn('kit'+i,x,y,cw,ch,()=>{AUD.SFX.boing();const pn=PLACES.find(q=>q.k===K.p);sayT('Find this kitty at '+pn.n.replace("Gail's","Gail's place")+'!',2)})}});
   const cb=Math.max(150,PT(120)),chh=Math.max(56,PT(46));pill(W/2-cb/2,H-Math.max(BOT,8)-chh-12,cb,chh,'🍰 Café','#f06292',20);btn('toCafe',W/2-cb/2,H-Math.max(BOT,8)-chh-12,cb,chh,()=>openScreen('cafe'));
   bigBack();
   if(kitPick)drawNamePicker(kitPick.K,kitPick.sel,nameSel,()=>{nameDone(kitPick.K,kitPick.sel);kitPick=null})}

@@ -98,7 +98,7 @@ const PLACES=[
   stars:[[300,-152],[905,-268],[1392,-250],[2010,-336],[2560,-40]],fish:[[120,-30],[300,-90],[500,-80],[720,-100],[905,-110],[1100,-130],[1250,-130],[1580,-110],[1950,-180],[2250,-160],[2460,-110],[2500,-30]],
   extras:[{t:'nap',x:200,y:-62,w:180},{t:'blanket',x:560,y:0,w:70},{t:'cup',x:520,y:-48},{t:'yarn',x:2350,y:0},{t:'fly',x:2100},{t:'fly',x:2450}],
   task:{who:'dad',x:780,item:'remote',ix:1395,iy:-212,hi:'dadhi',ty:'dadty',say:'Have you seen my TV remote?',thanks:'My remote! Thank you!'}},
- {k:'mom',n:"Violet's Place",th:'cozy',w:2400,col:'#c3a6f0',
+ {k:'mom',n:"Mom's Apartment",th:'cozy',w:2400,col:'#c3a6f0',
   secs:[{x0:0,x1:900,wall:'#f6ecff',wall2:'#ead9ff',pat:'stripes',floor:'#e8c7a5'},{x0:900,x1:1650,wall:'#ffe9f3',wall2:'#ffd3e6',pat:'hearts',floor:'#ecd8f5'},{x0:1650,x1:2400,out:1}],
   deco:[{t:'picture',x:500,k:'sun',y:-240},{t:'lamp',x:860},{t:'rug',x:480,w:260,c:'#ffd6ec'},{t:'picture',x:1120,k:'heart',y:-250},{t:'window',x:1440,y:-260},{t:'skyline',x:1700,n:10},{t:'flowers',x:2150,n:5}],
   furn:[{t:'windowseat',x:100},{t:'shelf',x:340,h:160},{t:'couch',x:500,c:'#c3a6f0',d:'#9f7fd8'},{t:'table',x:760,w:60,h:60},{t:'bed',x:1000},{t:'dresser',x:1290},{t:'wallshelf',x:1280,y:-210,w:140},{t:'cattree',x:1480},{t:'table',x:1820,w:110,h:62},{t:'stand',x:2060,h:110},{t:'rail',x:1700,w:700}],
