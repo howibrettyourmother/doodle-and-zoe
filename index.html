@@ -337,7 +337,7 @@ var EBP=[['coney','🌭','Detroit Coney Dog'],['mitten','🧤','Michigan Mitten'
  EBM={water:['💦','Water Balloon'],bouncy:['🟣','Super Bouncy'],bowling:['🎳','Bowling Ball'],slime:['🟢','Slime Ball'],rocket:['🚀','Rocket Ball'],moon:['🌙','Moon Gravity'],triple:['✨','Triple Ball']},
  GMB=[["first","🚀","First Blast"],["s5","🔥","Hot Streak"],["s10","🎆","Supernova Streak"],["s20","🌟","Unstoppable"],["lv5","🦖","Dino Planet"],["lv10","🪐","Ring Rider"],["lv15","❄️","Ice Explorer"],["lv20","🌌","Nebula Navigator"],["lv24","🕳️","Black Hole Hero"],["blast25","☄️","Rock Smasher"],["blast100","💥","Mega Smasher"],["back5","💪","Never Give Up"],["facts8","📖","Space Scientist"],["factsAll","🎓","Galaxy Professor"],["lv30","💥","Supernova"],["lv40","👑","Galactic Commander"],["lv50","🌌","Universe Admiral"],["deep25","🌌","Deep Diver"],["deep60","🕳️","Abyss Explorer"],["blitz15","⚡","Blitz Pilot"],["master3","🏅","Triple Master"]],
  FTS=['Grand Haven Beach','Holland State Park','Sleeping Bear Dunes','Belle Isle Beach','Pictured Rocks','Mackinac Island'],FTE=['🏖️','🌲','🏜️','🏝️','🪨','🏰'],
- WPB={camp:['🏕️','Made it to camp'],dadcam:['📸','Dad splash cam'],hardrun:['💪','Hard mode run'],loot20:['💰','20 treasures'],splash30:['💦','30 splashes'],star3:['⭐','3 stars']},
+ WPB={camp:['🏕️','Made it to camp'],dadcam:['📸','Dad splash cam'],hardrun:['💪','Hard mode run'],loot20:['💰','20 treasures'],splash30:['💦','30 splashes'],star3:['⭐','3 stars'],boss:['🏴‍☠️','Soaked Captain Toot-Beard'],super:['🐱','Super Soak with Doodle'],doodle:['🛟','Doodle to the rescue'],parade:['🦆','Duck Parade']},
  CAN={rocket:['🚀','Rocket Canoe'],pirate:['🏴‍☠️','Pirate Canoe'],hotdog:['🌭','Hot Dog Canoe']},
  JWL={color:['🌈','Rainbow Jewel'],shape:['🔷','Shape Jewel'],hunt:['💎','Treasure Hunt Jewel']};
 function sum(o){var n=0;if(o&&typeof o==='object')for(var k in o){var v=o[k];n+=Array.isArray(v)?v.filter(Boolean).length:(+v||0)}return n}
@@ -436,7 +436,7 @@ window.__kx={week:week,render:render,openCase:openCase,state:function(){return{b
   if(!el)return;
   el.addEventListener("click",function(e){e.stopPropagation();i=(i+1)%pics.length;var img=el.querySelector("img");if(img)img.src=pics[i]});
 })();
-</script><script src="hub/intro.js?v=20261127arcade"></script><script src="hub/jukebox.js?v=20261127toots" defer></script><script src="hub/doodle-song.js?v=20261119sillyv3" defer></script>
+</script><script src="hub/intro.js?v=20261127arcade"></script><script src="hub/jukebox.js?v=20261127bsong" defer></script><script src="hub/doodle-song.js?v=20261119sillyv3" defer></script>
 <script src="audio/pack.js?v=20261120el"></script>
 <script>
 (function(){
