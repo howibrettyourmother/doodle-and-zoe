@@ -1,106 +1,204 @@
-/* Hub sizzle intro — 20261127. Full ~12s first visit each ET day, short ~4s after. */
-#intro.hx{position:fixed;inset:0;z-index:99;overflow:hidden;cursor:pointer;background:#0a0618;
+/* Hub arcade intro — 20261127arcade. Full ~12s first ET-day visit, short ~4s after.
+   Game-feel only (no specific titles). Doodle is featured; Dad is a brief cameo. */
+#intro.hx{position:fixed;inset:0;z-index:99;overflow:hidden;cursor:pointer;background:#07061a;
   transition:opacity .4s;-webkit-transition:opacity .4s;font-family:system-ui,-apple-system,sans-serif;
   color:#fff;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none}
-#intro.hx.zoe{background:radial-gradient(circle at 50% 40%,#ffb3de 0%,#d36ad8 42%,#5a2a9a 100%)}
-#intro.hx.alex{background:radial-gradient(circle at 50% 30%,#2a4a8c 0%,#0b1233 55%,#07060f 100%)}
-#intro.hx.bday{background:radial-gradient(circle at 50% 40%,#fff3c4 0%,#ff9ad5 45%,#c2185b 100%)}
-#intro.hx .hx-bg,#intro.hx .hx-shot,#intro.hx .hx-logo,#intro.hx .hx-new,#intro.hx .hx-tap,
-#intro.hx .hx-spark,#intro.hx .hx-city,#intro.hx .hx-confetti{position:absolute}
-#intro.hx .hx-bg{inset:-4%;background-size:cover;background-position:center;opacity:.28;filter:blur(8px) saturate(1.1);
-  transform:scale(1.08);-webkit-transform:scale(1.08)}
-#intro.hx.alex .hx-bg{opacity:.22}
-#intro.hx.play:not(.short) .hx-bg{animation:hxken 12s linear both;-webkit-animation:hxken 12s linear both}
-@keyframes hxken{to{transform:scale(1.18)}}@-webkit-keyframes hxken{to{-webkit-transform:scale(1.18)}}
-
-/* Detroit skyline (CSS only) */
-#intro.hx .hx-city{left:0;right:0;bottom:0;height:28%;pointer-events:none;opacity:0;
+#intro.hx.alex{background:radial-gradient(circle at 50% 28%,#1a3a7a 0%,#0b1233 52%,#06040f 100%)}
+#intro.hx.zoe{background:radial-gradient(circle at 50% 36%,#ffb7e4 0%,#c45ed8 46%,#4a1d86 100%)}
+#intro.hx.bday{background:radial-gradient(circle at 50% 38%,#fff0b8 0%,#ff9ad8 48%,#c2185b 100%)}
+#intro.hx .hx-scan,#intro.hx .hx-grid,#intro.hx .hx-city,#intro.hx .hx-spark,#intro.hx .hx-coins,
+#intro.hx .hx-pad,#intro.hx .hx-stick,#intro.hx .hx-badge,#intro.hx .hx-gt,#intro.hx .hx-press,
+#intro.hx .hx-logo,#intro.hx .hx-doodle,#intro.hx .hx-cat,#intro.hx .hx-dad,#intro.hx .hx-tap,
+#intro.hx .hx-confetti{position:absolute;pointer-events:none}
+#intro.hx .hx-scan{inset:0;z-index:8;background:repeating-linear-gradient(180deg,#0000 0 2px,#0003 2px 3px);opacity:.35}
+#intro.hx.zoe .hx-scan{opacity:.18}
+#intro.hx .hx-grid{left:-10%;right:-10%;bottom:-8%;height:48%;z-index:1;
   background:
-    linear-gradient(#0000 40%,#07060fe6 100%),
-    repeating-linear-gradient(90deg,#0000 0 18px,#ffd24a33 18px 20px) 0 60%/100% 40% no-repeat,
-    linear-gradient(180deg,#1a2744 0%,#0a1020 100%);
+    linear-gradient(#4df 1.5px,transparent 1.5px) 0 0/8vmin 8vmin,
+    linear-gradient(90deg,#4df 1.5px,transparent 1.5px) 0 0/8vmin 8vmin;
+  transform:perspective(70vmin) rotateX(62deg);-webkit-transform:perspective(70vmin) rotateX(62deg);
+  opacity:.35;mask-image:linear-gradient(#000,transparent 85%)}
+#intro.hx.zoe .hx-grid{background:
+    linear-gradient(#ff9ad5 1.5px,transparent 1.5px) 0 0/8vmin 8vmin,
+    linear-gradient(90deg,#ff9ad5 1.5px,transparent 1.5px) 0 0/8vmin 8vmin;opacity:.4}
+#intro.hx.play:not(.short) .hx-grid{animation:hxgrid 12s linear both;-webkit-animation:hxgrid 12s linear both}
+@keyframes hxgrid{to{background-position:0 16vmin,8vmin 0}}
+@-webkit-keyframes hxgrid{to{background-position:0 16vmin,8vmin 0}}
+
+/* Detroit skyline — Alex only */
+#intro.hx .hx-city{left:0;right:0;bottom:0;height:30%;z-index:2;opacity:0;
+  background:
+    linear-gradient(#0000 30%,#07060fe8 100%),
+    repeating-linear-gradient(90deg,#0000 0 16px,#ffd24a44 16px 18px) 0 58%/100% 42% no-repeat,
+    linear-gradient(180deg,#1c2c4e,#0a1020);
   clip-path:polygon(0 100%,0 62%,4% 62%,4% 38%,8% 38%,8% 54%,11% 54%,11% 22%,13% 18%,15% 22%,15% 54%,18% 54%,18% 44%,22% 44%,22% 58%,26% 58%,26% 30%,29% 24%,32% 30%,32% 50%,36% 50%,36% 40%,40% 28%,42% 22%,44% 28%,48% 50%,52% 46%,56% 58%,60% 36%,63% 20%,66% 36%,70% 58%,74% 48%,78% 58%,82% 42%,86% 30%,90% 42%,94% 60%,100% 60%,100% 100%)}
-#intro.hx.alex.play:not(.short) .hx-city{animation:hxcity 5.4s ease both;-webkit-animation:hxcity 5.4s ease both}
-@keyframes hxcity{0%{opacity:0;transform:translateY(8%)}12%{opacity:.95}70%{opacity:.95}100%{opacity:0;transform:translateY(2%)}}
-@-webkit-keyframes hxcity{0%{opacity:0;-webkit-transform:translateY(8%)}12%{opacity:.95}70%{opacity:.95}100%{opacity:0;-webkit-transform:translateY(2%)}}
+#intro.hx.alex.play:not(.short) .hx-city{animation:hxcity 6s ease both;-webkit-animation:hxcity 6s ease both}
+@keyframes hxcity{0%{opacity:0;transform:translateY(10%)}14%{opacity:.95}72%{opacity:.9}100%{opacity:.35;transform:none}}
+@-webkit-keyframes hxcity{0%{opacity:0;-webkit-transform:translateY(10%)}14%{opacity:.95}72%{opacity:.9}100%{opacity:.35;-webkit-transform:none}}
 
-/* shot cards */
-#intro.hx .hx-shots{position:absolute;inset:0}
-#intro.hx .hx-shot{inset:0;opacity:0;visibility:hidden;background:#111 center/cover no-repeat;transform:scale(1.16);
-  -webkit-transform:scale(1.16)}
-#intro.hx .hx-shot b{position:absolute;left:0;right:0;bottom:11%;text-align:center;font:900 8vmin/1 system-ui,sans-serif;
-  letter-spacing:.04em;color:#fff;text-transform:uppercase;text-shadow:0 .6vmin 0 #000,0 0 3vmin #000a;
-  -webkit-text-stroke:.35vmin #000}
-#intro.hx.zoe .hx-shot b{-webkit-text-stroke:.35vmin #c2185b;text-shadow:0 .6vmin 0 #9b1f63,0 0 3vmin #fff8}
-#intro.hx.play:not(.short) .hx-shot{animation:hxcut 1.28s ease both;animation-delay:var(--d,0s);
-  -webkit-animation:hxcut 1.28s ease both;-webkit-animation-delay:var(--d,0s)}
-@keyframes hxcut{0%{opacity:0;visibility:visible;transform:scale(1.2)}7%{opacity:1;transform:scale(1.14)}
-  82%{opacity:1;transform:scale(1)}100%{opacity:0;visibility:visible;transform:scale(1)}}
-@-webkit-keyframes hxcut{0%{opacity:0;visibility:visible;-webkit-transform:scale(1.2)}7%{opacity:1;-webkit-transform:scale(1.14)}
-  82%{opacity:1;-webkit-transform:scale(1)}100%{opacity:0;visibility:visible;-webkit-transform:scale(1)}}
+/* sparks + coins / stars / pixels */
+#intro.hx .hx-spark{inset:0;z-index:3;overflow:hidden}
+#intro.hx .hx-spark i{position:absolute;width:.9vmin;height:.9vmin;border-radius:50%;background:#fff;opacity:0;box-shadow:0 0 1.4vmin #fff}
+#intro.hx.play .hx-spark i{animation:hxtw 1.5s ease-in-out infinite;animation-delay:var(--d,0s);
+  -webkit-animation:hxtw 1.5s ease-in-out infinite;-webkit-animation-delay:var(--d,0s)}
+@keyframes hxtw{50%{opacity:1;transform:scale(1.7)}}@-webkit-keyframes hxtw{50%{opacity:1;-webkit-transform:scale(1.7)}}
+#intro.hx .hx-coins{inset:0;z-index:5;overflow:hidden}
+#intro.hx .hx-coins i{position:absolute;width:3.2vmin;height:3.2vmin;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff8e0,#ffd24a 45%,#e09a00);box-shadow:0 0 1.2vmin #ffd24a99;
+  opacity:0;offset-path:path('M 0 0 C 20 -80, 40 -120, 10 -200');}
+#intro.hx .hx-coins i.star{border-radius:0;width:2.6vmin;height:2.6vmin;background:#ffe86a;
+  clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  box-shadow:0 0 1.4vmin #ffe86a}
+#intro.hx .hx-coins i.pix{border-radius:0;width:2vmin;height:2vmin;background:#5ff;box-shadow:0 0 1vmin #5ff}
+#intro.hx.zoe .hx-coins i{background:radial-gradient(circle at 35% 30%,#fff,#ff9ad5 50%,#e0559c)}
+#intro.hx.zoe .hx-coins i.star{background:#fff3a8;box-shadow:0 0 1.4vmin #fff}
+#intro.hx.zoe .hx-coins i.pix{background:#ff8ad4;box-shadow:0 0 1vmin #ff8ad4}
+#intro.hx.play:not(.short) .hx-coins i{animation:hxburst 1.15s ease-out both;animation-delay:var(--d,0s);
+  -webkit-animation:hxburst 1.15s ease-out both;-webkit-animation-delay:var(--d,0s)}
+#intro.hx.play.short .hx-coins i{animation:hxburst .9s ease-out both;animation-delay:var(--d,0s);
+  -webkit-animation:hxburst .9s ease-out both;-webkit-animation-delay:var(--d,0s)}
+@keyframes hxburst{0%{opacity:0;transform:translate(0,0) scale(.3)}18%{opacity:1}
+  100%{opacity:0;transform:translate(var(--x,0),var(--y,-18vmin)) scale(.6) rotate(80deg)}}
+@-webkit-keyframes hxburst{0%{opacity:0;-webkit-transform:translate(0,0) scale(.3)}18%{opacity:1}
+  100%{opacity:0;-webkit-transform:translate(var(--x,0),var(--y,-18vmin)) scale(.6) rotate(80deg)}}
 
-/* logo reveal */
-#intro.hx .hx-logo{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;z-index:3}
-#intro.hx .hx-doodle{position:relative;width:28vmin;height:28vmin;border-radius:50%;border:.9vmin solid #fff;
-  background:#fff center/cover;box-shadow:0 0 0 .7vmin #ffd24a,0 0 6vmin 1.5vmin #fff7;margin-bottom:3vmin;
-  flex:0 0 auto}
-#intro.hx.zoe .hx-doodle{box-shadow:0 0 0 .7vmin #ff8fc8,0 0 7vmin 2vmin #fff8}
+/* CSS controller + joystick */
+#intro.hx .hx-pad{width:28vmin;height:16vmin;border-radius:5vmin;z-index:6;
+  background:linear-gradient(#3a3a48,#1a1a22);border:.5vmin solid #fff3;box-shadow:0 1.4vmin 0 #000,0 0 3vmin #4df6;
+  opacity:0;left:10%;top:18%}
+#intro.hx .hx-pad .d{position:absolute;left:3.2vmin;top:3.6vmin;width:8vmin;height:8vmin;
+  background:#1a1a22;
+  background-image:linear-gradient(#3a3a48,#3a3a48),linear-gradient(#3a3a48,#3a3a48);
+  background-size:34% 100%,100% 34%;background-position:center;background-repeat:no-repeat;
+  border-radius:1.1vmin;box-shadow:inset 0 0 0 .35vmin #0008}
+#intro.hx .hx-pad .ba,#intro.hx .hx-pad .bb{position:absolute;right:4.2vmin;width:4.2vmin;height:4.2vmin;border-radius:50%;
+  box-shadow:inset 0 .4vmin 0 #fff5,0 .4vmin 0 #0008}
+#intro.hx .hx-pad .ba{top:3.2vmin;background:#e23;right:8.2vmin}
+#intro.hx .hx-pad .bb{top:7.2vmin;background:#3ae;right:3.4vmin}
+#intro.hx.zoe .hx-pad{background:linear-gradient(#ffe1f3,#e9a0d0);box-shadow:0 1.4vmin 0 #c2185b,0 0 3vmin #ff9ad5;
+  border-color:#fff}
+#intro.hx.zoe .hx-pad .d{background:#c2185b;
+  background-image:linear-gradient(#ffd0ea,#ffd0ea),linear-gradient(#ffd0ea,#ffd0ea);
+  background-size:34% 100%,100% 34%;background-position:center;background-repeat:no-repeat}
+#intro.hx.zoe .hx-pad .ba{background:#ff5aa5}#intro.hx.zoe .hx-pad .bb{background:#7ae}
+#intro.hx .hx-stick{width:12vmin;height:16vmin;left:72%;top:14%;z-index:6;opacity:0}
+#intro.hx .hx-stick .base{position:absolute;left:1vmin;bottom:0;width:10vmin;height:5vmin;border-radius:50%;
+  background:linear-gradient(#555,#222);box-shadow:0 .6vmin 0 #000}
+#intro.hx .hx-stick .shaft{position:absolute;left:5.1vmin;bottom:3vmin;width:1.8vmin;height:9vmin;
+  background:linear-gradient(90deg,#ddd,#888);border-radius:1vmin}
+#intro.hx .hx-stick .ball{position:absolute;left:2.6vmin;top:0;width:7vmin;height:7vmin;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ff7a7a,#c00);box-shadow:0 0 2vmin #f448}
+#intro.hx.zoe .hx-stick .base{background:linear-gradient(#ffd0ea,#c2185b)}
+#intro.hx.zoe .hx-stick .ball{background:radial-gradient(circle at 35% 30%,#fff,#ff6bb5);box-shadow:0 0 2vmin #ff9ad5}
+#intro.hx.play:not(.short) .hx-pad{animation:hxin .55s cubic-bezier(.2,1.4,.4,1) .9s both,hxfloat 1.6s ease-in-out 1.5s infinite;
+  -webkit-animation:hxin .55s cubic-bezier(.2,1.4,.4,1) .9s both,hxfloat 1.6s ease-in-out 1.5s infinite}
+#intro.hx.play:not(.short) .hx-stick{animation:hxin .55s cubic-bezier(.2,1.4,.4,1) 1.15s both,hxfloat 1.7s ease-in-out 1.7s infinite;
+  -webkit-animation:hxin .55s cubic-bezier(.2,1.4,.4,1) 1.15s both,hxfloat 1.7s ease-in-out 1.7s infinite}
+#intro.hx.play:not(.short) .hx-pad,#intro.hx.play:not(.short) .hx-stick{animation-fill-mode:both,none}
+@keyframes hxin{0%{opacity:0;transform:scale(.4) rotate(-18deg)}100%{opacity:1;transform:none}}
+@-webkit-keyframes hxin{0%{opacity:0;-webkit-transform:scale(.4) rotate(-18deg)}100%{opacity:1;-webkit-transform:none}}
+@keyframes hxfloat{50%{transform:translateY(-1.2vmin)}}@-webkit-keyframes hxfloat{50%{-webkit-transform:translateY(-1.2vmin)}}
+/* hide arcade toys once the logo takes over */
+#intro.hx.play:not(.short) .hx-pad{animation:hxin .55s cubic-bezier(.2,1.4,.4,1) .9s both,hxfloat 1.6s ease-in-out 1.5s 3,hxout .4s ease 5.15s forwards}
+#intro.hx.play:not(.short) .hx-stick{animation:hxin .55s cubic-bezier(.2,1.4,.4,1) 1.15s both,hxfloat 1.7s ease-in-out 1.7s 3,hxout .4s ease 5.15s forwards}
+@keyframes hxout{to{opacity:0;transform:scale(.8) translateY(-6vmin)}}
+@-webkit-keyframes hxout{to{opacity:0;-webkit-transform:scale(.8) translateY(-6vmin)}}
+
+/* badges + GAME TIME / PRESS START */
+#intro.hx .hx-badge{z-index:7;font:900 3.4vmin/1 system-ui,sans-serif;letter-spacing:.08em;padding:1.1vmin 1.8vmin;
+  border-radius:1vmin;opacity:0;color:#0a0418;box-shadow:0 .5vmin 0 #0006,0 0 2vmin currentColor}
+#intro.hx .hx-badge.power{left:8%;top:8%;background:#7dff4d;color:#062}
+#intro.hx .hx-badge.level{right:8%;top:10%;background:#ffd24a;color:#3a1a00}
+#intro.hx.zoe .hx-badge.power{background:#ff9ad5;color:#6b1140}
+#intro.hx.zoe .hx-badge.level{background:#fff3a8;color:#6b3a00}
+#intro.hx.play:not(.short) .hx-badge.power{animation:hxpop .45s cubic-bezier(.2,1.7,.4,1) 1.8s both,hxout .35s ease 4.8s forwards}
+#intro.hx.play:not(.short) .hx-badge.level{animation:hxpop .45s cubic-bezier(.2,1.7,.4,1) 2.15s both,hxout .35s ease 4.9s forwards}
+@keyframes hxpop{0%{opacity:0;transform:scale(0) rotate(-12deg)}100%{opacity:1;transform:rotate(-6deg)}}
+@-webkit-keyframes hxpop{0%{opacity:0;-webkit-transform:scale(0) rotate(-12deg)}100%{opacity:1;-webkit-transform:rotate(-6deg)}}
+#intro.hx .hx-press{left:0;right:0;top:44%;text-align:center;z-index:7;font:900 7vmin/1 system-ui,sans-serif;
+  letter-spacing:.28em;color:#fff;text-shadow:0 0 2vmin #4df,0 .5vmin 0 #000;opacity:0}
+#intro.hx.zoe .hx-press{text-shadow:0 0 2vmin #ff9ad5,0 .5vmin 0 #9b1f63;letter-spacing:.2em}
+#intro.hx.play:not(.short) .hx-press{animation:hxblink .55s steps(2,end) 2.55s 3,hxhide .01s linear 4.55s forwards;
+  -webkit-animation:hxblink .55s steps(2,end) 2.55s 3,hxhide .01s linear 4.55s forwards}
+@keyframes hxhide{to{opacity:0;visibility:hidden}}
+@-webkit-keyframes hxhide{to{opacity:0;visibility:hidden}}
+@keyframes hxblink{0%,100%{opacity:0}40%,80%{opacity:1}}@-webkit-keyframes hxblink{0%,100%{opacity:0}40%,80%{opacity:1}}
+#intro.hx .hx-gt{left:0;right:0;top:38%;text-align:center;z-index:7;font:900 14vmin/1 system-ui,sans-serif;
+  letter-spacing:.06em;color:#ffd24a;-webkit-text-stroke:.45vmin #1a0a00;text-shadow:0 1vmin 0 #1a0a00,0 0 4vmin #ffd24a;
+  opacity:0}
+#intro.hx.zoe .hx-gt{color:#fff;-webkit-text-stroke:.45vmin #c2185b;text-shadow:0 1vmin 0 #9b1f63,0 0 4vmin #ff9ad5}
+#intro.hx.play:not(.short) .hx-gt{animation:hxslam .5s cubic-bezier(.5,0,.5,1.4) 4.35s both,hxout .4s ease 5.55s forwards;
+  -webkit-animation:hxslam .5s cubic-bezier(.5,0,.5,1.4) 4.35s both,hxout .4s ease 5.55s forwards}
+
+/* Doodle — prominent in both versions */
+#intro.hx .hx-cat{z-index:6;width:36vmin;height:auto;left:-40vmin;bottom:16%;opacity:0;
+  filter:drop-shadow(0 1vmin 1.4vmin #0008)}
+#intro.hx.play:not(.short) .hx-cat{animation:hxrun 1.1s cubic-bezier(.2,.8,.3,1) .55s both;
+  -webkit-animation:hxrun 1.1s cubic-bezier(.2,.8,.3,1) .55s both}
+@keyframes hxrun{0%{opacity:0;left:-40vmin}100%{opacity:1;left:6%}}
+@-webkit-keyframes hxrun{0%{opacity:0;left:-40vmin}100%{opacity:1;left:6%}}
+/* after GAME TIME, the running cat eases off so the portrait can take the logo */
+#intro.hx.play:not(.short) .hx-cat{animation:hxrun 1.1s cubic-bezier(.2,.8,.3,1) .55s both,hxout .4s ease 5.15s forwards}
+#intro.hx .hx-doodle{z-index:10;width:26vmin;height:26vmin;left:50%;top:12%;margin:0 0 0 -13vmin;border-radius:50%;
+  border:.85vmin solid #fff;background:#fff center/cover;box-shadow:0 0 0 .65vmin #ffd24a,0 0 6vmin 1.4vmin #fff6;
+  opacity:0}
+#intro.hx.zoe .hx-doodle{box-shadow:0 0 0 .65vmin #ff8fc8,0 0 7vmin 2vmin #fff8}
+#intro.hx.play .hx-doodle{animation:hxburstin .6s cubic-bezier(.2,1.6,.4,1) 5.5s both;
+  -webkit-animation:hxburstin .6s cubic-bezier(.2,1.6,.4,1) 5.5s both}
+#intro.hx.play.short .hx-doodle,#intro.hx.play.hx-rm .hx-doodle{animation-delay:.08s;-webkit-animation-delay:.08s}
+@keyframes hxburstin{0%{opacity:0;transform:scale(0) rotate(-28deg)}100%{opacity:1;transform:none}}
+@-webkit-keyframes hxburstin{0%{opacity:0;-webkit-transform:scale(0) rotate(-28deg)}100%{opacity:1;-webkit-transform:none}}
+
+/* Dad — brief funny cameo on the full intro only, then gone */
+#intro.hx .hx-dad{z-index:7;height:38vmin;width:auto;bottom:10%;left:-30vmin;opacity:0;
+  filter:drop-shadow(0 1vmin 1.2vmin #0007)}
+#intro.hx.play:not(.short):not(.hx-rm) .hx-dad{animation:hxcameo 1.7s ease-in 2.55s both;
+  -webkit-animation:hxcameo 1.7s ease-in 2.55s both}
+@keyframes hxcameo{
+  0%{opacity:0;left:-30vmin;transform:rotate(-8deg)}
+  18%{opacity:1;left:28%;transform:rotate(4deg)}
+  42%{opacity:1;left:42%;transform:rotate(-6deg) translateY(-2vmin)}
+  100%{opacity:0;left:112%;transform:rotate(12deg) translateY(4vmin)}
+}
+@-webkit-keyframes hxcameo{
+  0%{opacity:0;left:-30vmin;-webkit-transform:rotate(-8deg)}
+  18%{opacity:1;left:28%;-webkit-transform:rotate(4deg)}
+  42%{opacity:1;left:42%;-webkit-transform:rotate(-6deg) translateY(-2vmin)}
+  100%{opacity:0;left:112%;-webkit-transform:rotate(12deg) translateY(4vmin)}
+}
+
+/* logo */
+#intro.hx .hx-logo{inset:auto 0 0 0;top:42%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  opacity:0;padding-top:2vmin}
 #intro.hx .hx-word,#intro.hx .hx-word2{position:relative;text-align:center;width:100%;margin:0;padding:0 4vmin;
-  font:900 14vmin/0.9 system-ui,-apple-system,sans-serif;letter-spacing:.04em;color:#fff;
+  font:900 14vmin/.9 system-ui,-apple-system,sans-serif;letter-spacing:.04em;color:#fff;
   -webkit-text-stroke:.55vmin #1a0a00;text-shadow:0 1.1vmin 0 #1a0a00,0 0 4vmin #ffd24a88}
-#intro.hx .hx-word{font-size:9vmin;letter-spacing:.18em;opacity:.95}
-#intro.hx .hx-word2{font-size:18vmin;letter-spacing:.06em}
-#intro.hx.zoe .hx-word,#intro.hx.zoe .hx-word2{-webkit-text-stroke:.5vmin #c2185b;text-shadow:0 1vmin 0 #9b1f63,0 0 4vmin #fff8}
+#intro.hx .hx-word{font-size:8.5vmin;letter-spacing:.18em;opacity:.95}
+#intro.hx .hx-word2{font-size:17vmin;letter-spacing:.06em}
 #intro.hx.alex .hx-word2{color:#ffd24a;-webkit-text-stroke:.6vmin #3a1400}
-#intro.hx.play .hx-logo{animation:hxslam .55s cubic-bezier(.5,0,.5,1.35) 5.35s both;-webkit-animation:hxslam .55s cubic-bezier(.5,0,.5,1.35) 5.35s both}
-#intro.hx.play.short .hx-logo,#intro.hx.play.hx-rm .hx-logo{animation-delay:0.05s;-webkit-animation-delay:0.05s}
+#intro.hx.zoe .hx-word,#intro.hx.zoe .hx-word2{-webkit-text-stroke:.5vmin #c2185b;text-shadow:0 1vmin 0 #9b1f63,0 0 4vmin #fff8}
+#intro.hx.play .hx-logo{animation:hxslam .55s cubic-bezier(.5,0,.5,1.35) 5.45s both;-webkit-animation:hxslam .55s cubic-bezier(.5,0,.5,1.35) 5.45s both}
+#intro.hx.play.short .hx-logo,#intro.hx.play.hx-rm .hx-logo{animation-delay:.12s;-webkit-animation-delay:.12s}
 @keyframes hxslam{0%{opacity:0;transform:scale(3)}70%{opacity:1;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
 @-webkit-keyframes hxslam{0%{opacity:0;-webkit-transform:scale(3)}70%{opacity:1;-webkit-transform:scale(.94)}100%{opacity:1;-webkit-transform:scale(1)}}
-#intro.hx.play .hx-doodle{animation:hxburst .6s cubic-bezier(.2,1.6,.4,1) 5.45s both;-webkit-animation:hxburst .6s cubic-bezier(.2,1.6,.4,1) 5.45s both}
-#intro.hx.play.short .hx-doodle,#intro.hx.play.hx-rm .hx-doodle{animation-delay:0.12s;-webkit-animation-delay:0.12s}
-@keyframes hxburst{0%{transform:scale(0) rotate(-40deg)}100%{transform:none}}
-@-webkit-keyframes hxburst{0%{-webkit-transform:scale(0) rotate(-40deg)}100%{-webkit-transform:none}}
 
-/* NEW! spotlight, filled from tile + jukebox data */
-#intro.hx .hx-new{left:0;right:0;bottom:11%;z-index:4;display:flex;align-items:center;justify-content:center;gap:2vmin;
-  opacity:0;padding:0 4vmin;flex-wrap:nowrap}
-#intro.hx .hx-newtag{position:relative;flex:0 0 auto;background:#ff2d55;color:#fff;font:900 3.4vmin/1 system-ui,sans-serif;
-  padding:1.1vmin 1.8vmin;border-radius:1.2vmin;letter-spacing:.06em;box-shadow:0 .5vmin 0 #9b0030,0 .6vmin 2vmin #0006;
-  transform:rotate(-6deg)}
-#intro.hx .hx-newcard{position:relative;width:14vmin;height:10vmin;border-radius:1.6vmin;background:#fff center/cover;
-  box-shadow:0 .5vmin 0 #0005,0 1vmin 2.4vmin #0006;border:.4vmin solid #fff;flex:0 0 auto}
-#intro.hx .hx-newname{position:relative;font:800 2.6vmin/1.2 system-ui,sans-serif;color:#fff;text-shadow:0 .3vmin 0 #000,0 0 1.4vmin #0008;
-  white-space:normal;max-width:58vmin;overflow:visible}
-#intro.hx.play .hx-new{animation:hxup .45s ease 7.15s both;-webkit-animation:hxup .45s ease 7.15s both}
-#intro.hx.play.short .hx-new,#intro.hx.play.hx-rm .hx-new{animation-delay:.7s;-webkit-animation-delay:.7s}
-@keyframes hxup{0%{opacity:0;transform:translateY(6vmin)}100%{opacity:1;transform:none}}
-@-webkit-keyframes hxup{0%{opacity:0;-webkit-transform:translateY(6vmin)}100%{opacity:1;-webkit-transform:none}}
-#intro.hx .hx-new.empty{display:none}
-
-/* skip hint + sparks */
-#intro.hx .hx-tap{right:3vmin;bottom:3vmin;z-index:5;font:800 3.6vmin/1 system-ui,sans-serif;color:#fff;
-  background:rgba(0,0,0,.4);padding:1vmin 2.2vmin;border-radius:4vmin;letter-spacing:.02em}
-#intro.hx .hx-spark{inset:0;pointer-events:none;z-index:2;overflow:hidden}
-#intro.hx .hx-spark i{position:absolute;width:.9vmin;height:.9vmin;border-radius:50%;background:#fff;opacity:0;
-  box-shadow:0 0 1.4vmin #fff}
-#intro.hx.play .hx-spark i{animation:hxtw 1.6s ease-in-out infinite;animation-delay:var(--d,0s);
-  -webkit-animation:hxtw 1.6s ease-in-out infinite;-webkit-animation-delay:var(--d,0s)}
-@keyframes hxtw{50%{opacity:1;transform:scale(1.6)}}@-webkit-keyframes hxtw{50%{opacity:1;-webkit-transform:scale(1.6)}}
-#intro.hx .hx-confetti{inset:0;pointer-events:none;z-index:2;overflow:hidden}
-#intro.hx .hx-confetti i{position:absolute;top:-8%;font-style:normal;font-size:5.5vmin;animation:hxfall linear infinite;
-  animation-duration:var(--dur,3.2s);animation-delay:var(--d,0s);-webkit-animation:hxfall linear infinite;
-  -webkit-animation-duration:var(--dur,3.2s);-webkit-animation-delay:var(--d,0s)}
+#intro.hx .hx-tap{right:3vmin;bottom:3vmin;z-index:9;font:800 3.6vmin/1 system-ui,sans-serif;color:#fff;
+  background:rgba(0,0,0,.42);padding:1vmin 2.2vmin;border-radius:4vmin;letter-spacing:.02em;pointer-events:none}
+#intro.hx .hx-confetti{inset:0;z-index:4;overflow:hidden}
+#intro.hx .hx-confetti i{position:absolute;top:-8%;width:1.6vmin;height:2.4vmin;border-radius:.3vmin;
+  animation:hxfall linear infinite;animation-duration:var(--dur,3.2s);animation-delay:var(--d,0s);
+  -webkit-animation:hxfall linear infinite;-webkit-animation-duration:var(--dur,3.2s);-webkit-animation-delay:var(--d,0s)}
 @keyframes hxfall{to{transform:translateY(120vh) rotate(520deg)}}
 @-webkit-keyframes hxfall{to{-webkit-transform:translateY(120vh) rotate(520deg)}}
 
-/* reduced motion: static logo */
-#intro.hx.hx-rm .hx-shot,#intro.hx.hx-rm .hx-city,#intro.hx.hx-rm .hx-spark,#intro.hx.hx-rm .hx-confetti,
-#intro.hx.hx-rm .hx-bg{display:none}
-#intro.hx.hx-rm .hx-logo,#intro.hx.hx-rm .hx-new{opacity:1;animation:none!important;-webkit-animation:none!important;transform:none}
+#intro.hx.hx-rm .hx-scan,#intro.hx.hx-rm .hx-grid,#intro.hx.hx-rm .hx-city,#intro.hx.hx-rm .hx-spark,
+#intro.hx.hx-rm .hx-coins,#intro.hx.hx-rm .hx-pad,#intro.hx.hx-rm .hx-stick,#intro.hx.hx-rm .hx-badge,
+#intro.hx.hx-rm .hx-gt,#intro.hx.hx-rm .hx-press,#intro.hx.hx-rm .hx-cat,#intro.hx.hx-rm .hx-dad,
+#intro.hx.hx-rm .hx-confetti{display:none}
+#intro.hx.hx-rm .hx-logo,#intro.hx.hx-rm .hx-doodle{opacity:1;animation:none!important;-webkit-animation:none!important;transform:none}
 
 @media (orientation:portrait){
-  #intro.hx .hx-word{font-size:10vw}#intro.hx .hx-word2{font-size:18vw}
-  #intro.hx .hx-doodle{width:32vw;height:32vw}
-  #intro.hx .hx-shot b{font-size:9vw}#intro.hx .hx-newcard{width:18vw;height:13vw}
+  #intro.hx .hx-word{font-size:10vw}#intro.hx .hx-word2{font-size:16vw}
+  #intro.hx .hx-doodle{width:30vw;height:30vw;margin-left:-15vw}#intro.hx .hx-gt{font-size:16vw}
+  #intro.hx .hx-cat{width:44vw}#intro.hx .hx-dad{height:32vw}
 }

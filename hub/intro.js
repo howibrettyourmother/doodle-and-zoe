@@ -1,8 +1,8 @@
-/* Hub sizzle intro, 20261127sizzle.
+/* Hub arcade intro, 20261127arcade.
    Full (~11.7s) on the first open each Eastern-time day, short (~4.2s) after that.
    Tap anywhere skips, except the first gesture that unlocks iOS audio.
    Query: ?intro=off|full|short|birthday
-   NEW! strip is filled from tiles with t.new (and a jukebox-only extra), not hardcoded shots. */
+   No specific games — arcade energy, hub logo, Doodle, and a brief Dad cameo. */
 (function(){
   var q=(location.search.match(/[?&]intro=(\w+)/)||[])[1];
   if(q==='off'||self!==top)return;
@@ -30,48 +30,8 @@
   var short=!!(rm||(seen&&q!=='birthday'&&q!=='full'));
   try{localStorage[KEY]=day}catch(e){}
 
-  function pretty(img){
-    var id=(/([\w-]+)\.(?:png|jpg|webp)/.exec(img||'')||['',''])[1];
-    var map={'toots':'Toots!','toots-zoe':'Toots!','alex-amazing-mazes':'Amazing Mazes','alex-doodle-adventure-v2':'Alex & Doodle','alex-doodle-adventure':'Alex & Doodle','alex-excavator-blowout':'Excavator Blowout','alex-cave-rescue-v2':'Cave Rescue','alex-cave-rescue':'Cave Rescue','alex-floor-is-lava-v2':'Floor Is Lava','alex-floor-is-lava':'Floor Is Lava','dino-stampede-smash-alex-v2':'Dino Smash','dino-stampede-smash-zoe':'Dino Smash','zoe-babysitter':'Babysitter','zoe-bean':'Zoe Bean','doodle-and-zoe-v2':'Doodle & Zoe','doodle-and-zoe':'Doodle & Zoe','zoes-unicorn-adventure-v2':'Unicorn Adventure','zoes-unicorn-adventure':'Unicorn Adventure','zoes-princess-castle':'Princess Castle','zoes-mermaid-lagoon-v2':'Mermaid Lagoon','silly-beat-band':'Silly Beat Band','wilson-water-pirates-v2':'Water Pirates','the-bee-game':'The Bee Game','alex-river-run':'River Run','fry-thief-seagull':'Poopy Seagull','go-alex-go':'Go, Alex, Go!'};
-    if(map[id])return map[id];
-    return id.replace(/-v\d+$/,'').replace(/-(?:alex|zoe)$/,'').replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()});
-  }
-  function learning(t){return /galaxy-math|abc123|abc-123/.test((t&&t.img)||'')}
-  function tiles(){return (typeof T!=='undefined'&&T&&T.length)?T.slice():[]}
-
-  /* Montage order prefers the newest / most-played games, then the rest of the hub, skipping learning titles. */
-  var PREFER=zoe
-    ?[/zoe-bean/,/babysitter/,/toots/,/unicorn/,/princess/,/mermaid/,/doodle-and-zoe/]
-    :[/toots(?!-zoe)/,/excavator/,/mazes/,/floor-is-lava/,/cave-rescue/,/dino/,/adventure/];
-  function montage(){
-    var src=tiles().filter(function(t){return t&&t.img&&!learning(t)});
-    if(zoe)src=[{img:'hub/zoe-bean.jpg',title:'Zoe Bean'}].concat(src);
-    var out=[],used={};
-    PREFER.forEach(function(re){src.forEach(function(t){if(!used[t.img]&&re.test(t.img)){used[t.img]=1;out.push(t)}})});
-    src.forEach(function(t){if(!used[t.img])out.push(t)});
-    return out.slice(0,4);
-  }
-  /* Spotlight: every tile flagged new:true, plus Zoe Bean on Zoe's hub when the art is present. */
-  function spotlight(){
-    var items=[],used={};
-    function add(t){
-      if(!t||!t.img||used[t.img]||learning(t))return;
-      used[t.img]=1;items.push({img:t.img,title:t.title||pretty(t.img)});
-    }
-    tiles().forEach(function(t){if(t.new)add(t)});
-    if(zoe)add({img:'hub/zoe-bean.jpg',title:'Zoe Bean'});
-    try{
-      var songs=(window.__JB&&(__JB.songs||__JB.list))||[];
-      songs.forEach(function(s){if(s&&/^NEW!/i.test(s.title||'')&&s.art)add({img:s.art,title:String(s.title).replace(/^NEW!\s*/i,'')})});
-    }catch(e){}
-    return items.slice(0,3);
-  }
-
-  var shots=short||rm?[]:montage();
-  var news=spotlight();
   var word1=zoe?(bday?'HAPPY':'DOODLE &'):"ALEX'S";
   var word2=zoe?(bday?'BIRTHDAY':'ZOE'):'GAMES';
-  if(bday){word1='HAPPY';word2='BIRTHDAY'}
 
   var o=document.createElement('div');
   o.id='intro';
@@ -80,39 +40,45 @@
   o.setAttribute('aria-label',zoe?(bday?"Zoe's birthday intro":'Doodle and Zoe intro'):"Alex's Games intro");
 
   function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-  var H='',i,bg=(shots[0]&&shots[0].img)||(news[0]&&news[0].img)||(zoe?'hub/doodle-and-zoe-v2.jpg':'hub/toots.jpg');
-  H+='<div class="hx-bg" style="background-image:url('+esc(bg)+')"></div>';
-  if(!zoe&&!rm)H+='<div class="hx-city" aria-hidden="true"></div>';
+  var H='',i,cols=zoe?['#fff','#ffe9a8','#ff9ad5']:['#fff','#ffd24a','#7fd0ff'];
+  H+='<div class="hx-scan" aria-hidden="true"></div>';
+  H+='<div class="hx-grid" aria-hidden="true"></div>';
+  if(!zoe)H+='<div class="hx-city" aria-hidden="true"></div>';
   H+='<div class="hx-spark" aria-hidden="true">';
-  for(i=0;i<18;i++)H+='<i style="left:'+(4+i*5.3)+'%;top:'+(8+(i*37)%80)+'%;--d:'+(i*.17)+'s;background:'+(zoe?['#fff','#ffe9a8','#ff9ad5'][i%3]:['#fff','#ffd24a','#7fd0ff'][i%3])+'"></i>';
+  for(i=0;i<18;i++)H+='<i style="left:'+(4+i*5.3)+'%;top:'+(8+(i*37)%80)+'%;--d:'+(i*.17)+'s;background:'+cols[i%3]+'"></i>';
   H+='</div>';
+  H+='<div class="hx-coins" aria-hidden="true">';
+  var kinds=['','star','pix'];
+  for(i=0;i<(short?10:18);i++){
+    var ang=(i/18)*Math.PI*2, dist=18+ (i%5)*7;
+    var x=(Math.cos(ang)*dist).toFixed(1)+'vmin', y=(Math.sin(ang)*dist-8).toFixed(1)+'vmin';
+    H+='<i class="'+kinds[i%3]+'" style="left:50%;top:48%;--x:'+x+';--y:'+y+';--d:'+(short?(.15+i*.04):(.85+i*.07))+'s"></i>';
+  }
+  H+='</div>';
+  if(!rm){
+    H+='<div class="hx-pad" aria-hidden="true"><i class="d"></i><i class="ba"></i><i class="bb"></i></div>';
+    H+='<div class="hx-stick" aria-hidden="true"><i class="base"></i><i class="shaft"></i><i class="ball"></i></div>';
+    H+='<div class="hx-badge power">POWER UP</div><div class="hx-badge level">LEVEL UP</div>';
+    H+='<div class="hx-press">PRESS START</div><div class="hx-gt">GAME TIME!</div>';
+    H+='<img class="hx-cat" src="hub/intro/doodle.webp" alt="">';
+    if(!short)H+='<img class="hx-dad" src="hub/intro/dad.webp" alt="">';
+  }
   if(bday&&!rm){
-    var bits=['🎉','🎈','🎂','💖','⭐','🎁','🎊'];
+    var bits=zoe?['#ff4fa3','#ffd93b','#fff','#a66bff','#7cf27c']:['#ffd24a','#ff4fa3','#5fd4ff','#fff'];
     H+='<div class="hx-confetti" aria-hidden="true">';
-    for(i=0;i<16;i++)H+='<i style="left:'+(2+i*6.2)+'%;--dur:'+(2.6+(i%5)*.4)+'s;--d:'+(-i*.3)+'s">'+bits[i%bits.length]+'</i>';
+    for(i=0;i<16;i++)H+='<i style="left:'+(2+i*6.2)+'%;background:'+bits[i%bits.length]+';--dur:'+(2.6+(i%5)*.4)+'s;--d:'+(-i*.3)+'s"></i>';
     H+='</div>';
   }
-  H+='<div class="hx-shots">';
-  shots.forEach(function(t,n){
-    H+='<div class="hx-shot" style="background-image:url('+esc(t.img)+');--d:'+(0.7+n*1.18)+'s"><b>'+esc(t.title||pretty(t.img))+'</b></div>';
-  });
-  H+='</div>';
-  H+='<div class="hx-logo"><div class="hx-doodle" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div>';
-  H+='<div class="hx-word">'+esc(word1)+'</div><div class="hx-word2">'+esc(word2)+'</div></div>';
-  H+='<div class="hx-new'+(news.length?'':' empty')+'"><span class="hx-newtag">NEW!</span>';
-  news.forEach(function(t){H+='<div class="hx-newcard" title="'+esc(t.title)+'" style="background-image:url('+esc(t.img)+')"></div>'});
-  if(news.length)H+='<span class="hx-newname">'+esc(news.map(function(t){return t.title}).join(' · '))+'</span>';
-  H+='</div><div class="hx-tap">tap to skip ⏭</div>';
+  H+='<div class="hx-doodle" style="background-image:url(hub/cgi-doodle-boy.jpg)"></div>';
+  H+='<div class="hx-logo"><div class="hx-word">'+esc(word1)+'</div><div class="hx-word2">'+esc(word2)+'</div></div>';
+  H+='<div class="hx-tap">tap to skip ⏭</div>';
   o.innerHTML=H;
   document.body.appendChild(o);
-
-  /* Warm the first few already-cached tile images; don't fetch giant videos. */
-  shots.concat(news).slice(0,6).forEach(function(t){var im=new Image();im.src=t.img});
 
   var src;
   if(bday)src=short?'hub/intro-bday-short.mp3':'hub/intro-bday.mp3';
   else src=short?'hub/intro-short.mp3':'hub/intro-full.mp3';
-  try{if(window.WA&&WA.load)WA.load(typeof HICLIP==='string'?HICLIP: (zoe?'hub/z_hi.mp3':'hub/a_hi.mp3'))}catch(e){}
+  try{if(window.WA&&WA.load)WA.load(typeof HICLIP==='string'?HICLIP:(zoe?'hub/z_hi.mp3':'hub/a_hi.mp3'))}catch(e){}
 
   var done=false,st=0,au=null,TM=[],t0=0;
   var FULL=rm?2200:(short?4200:11700);
@@ -127,9 +93,7 @@
   function start(){
     if(st)return;st=1;t0=Date.now();
     o.className+=' play';
-    try{
-      if(typeof introAudio==='function')au=introAudio(src,t0);
-    }catch(e){}
+    try{if(typeof introAudio==='function')au=introAudio(src,t0)}catch(e){}
     TM.push(setTimeout(end,FULL));
   }
   o.addEventListener('pointerdown',function(e){e.stopPropagation()});
